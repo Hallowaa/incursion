@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json.schemastore.org/prettierrc",
+  "tabWidth": 2,
+  "useTabs": false,
+  "endOfLine": "auto",
+  "semi": false,
+  "singleQuote": true,
+  "trailingComma": "none",
+  "parser": "typescript",
+  "vueIndentScriptAndStyle": true
+}
