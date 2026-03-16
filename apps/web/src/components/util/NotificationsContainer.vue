@@ -1,7 +1,8 @@
 <script lang="ts">
-import type { Notification } from '@/barrel'
+import type Notification from '@/datatypes/util/Notification'
 import { defineComponent } from 'vue'
-import { NotificationType, NotificationManager } from '@/barrel'
+import { NotificationType } from '@/datatypes/util/NotificationType'
+import NotificationManager from '@/managers/NotificationManager'
 
 export default defineComponent({
   name: 'NotificationsContainer',

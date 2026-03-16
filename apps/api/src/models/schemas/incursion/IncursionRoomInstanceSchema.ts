@@ -1,5 +1,7 @@
 import { Schema } from 'mongoose'
-import { EntitySchema, IIncursionRoom, IncursionRoomType } from '../../../barrel'
+import { IncursionRoomType } from '../../domain/enums/IncursionRoomType'
+import IIncursionRoom from '../../interfaces/incursion/IIncursionRoom'
+import { EntitySchema } from '../entity/EntitySchema'
 
 export const IncursionRoomInstanceSchema = new Schema<IIncursionRoom>({
   type: {

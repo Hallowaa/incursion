@@ -1,4 +1,6 @@
-import { CharacterClass, EntityStat, EntitystatId } from "../barrel";
+import CharacterClass from "../models/domain/entity/CharacterClass"
+import EntityStat from "../models/domain/entity/EntityStat"
+import { EntitystatId } from "../models/domain/enums/EntityStatId"
 
 
 export default class CharacterClassMapper {

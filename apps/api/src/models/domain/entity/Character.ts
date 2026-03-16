@@ -1,4 +1,10 @@
-import { CharacterClass, CharacterClassMapper, CharacterConfig, Entity, EntityStat, ICharacter } from "../../../barrel"
+import CharacterClassMapper from "../../../mappers/CharacterClassMapper"
+import ICharacter from "../../interfaces/entity/ICharacter"
+import CharacterClass from "./CharacterClass"
+import Entity from "./Entity"
+import EntityStat from "./EntityStat"
+import ICharacterConfig from "./ICharacterConfig"
+
 
 
 export default class Character extends Entity {
@@ -6,7 +12,7 @@ export default class Character extends Entity {
   public classes: CharacterClass[]
   public stats: EntityStat[]
 
-  public constructor(config: CharacterConfig) {
+  public constructor(config: ICharacterConfig) {
     super(config)
 
     this.experience = config.experience

@@ -4,8 +4,6 @@ import jwt from 'jsonwebtoken'
 import { UserModel } from '../models/schemas/UserSchema'
 import { randomBytes, randomInt } from 'crypto'
 import { CharacterModel } from '../models/schemas/entity/CharacterSchema'
-import { ObjectId } from 'mongodb'
-import { EntitystatId } from '../models/domain/enums/EntityStatId'
 import CharacterGenerator from '../generators/CharacterGenerator'
 
 const router = Router()
@@ -81,7 +79,7 @@ router.post('/register/', async (req, res) => {
   const character = await CharacterModel.create(
     CharacterGenerator.generateCharacter(user.id, characterName),
   )
-  user.character = new ObjectId(character.id)
+  user.character = character.id
   await user.save()
 
   res.json({ success: true })

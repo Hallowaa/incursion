@@ -1,5 +1,9 @@
 import { model, Schema } from 'mongoose'
-import { AdversaryTag, IncursionId, IncursionRoomTemplateSchema, IncursionRoomType, IncursionTheme } from '../../../barrel'
+import { AdversaryTag } from '../../domain/enums/AdversaryTag'
+import { IncursionId } from '../../domain/enums/IncursionId'
+import { IncursionRoomType } from '../../domain/enums/IncursionRoomType'
+import { IncursionTheme } from '../../domain/enums/IncursionTheme'
+import { IncursionRoomTemplateSchema } from './IncursionRoomTemplateSchema'
 
 export const IncursionTemplateSchema = new Schema({
   incursionId: {

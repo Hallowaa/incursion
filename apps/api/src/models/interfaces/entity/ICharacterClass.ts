@@ -1,4 +1,4 @@
-import { IEntityStat } from "../../../barrel"
+import IEntityStat from "./IEntityStat"
 
 export default interface ICharacterClass {
   name: string

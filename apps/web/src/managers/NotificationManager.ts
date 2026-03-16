@@ -1,5 +1,6 @@
 import { ref } from 'vue'
-import { Notification, NotificationType } from '@/barrel'
+import Notification from '@/datatypes/util/Notification'
+import { NotificationType } from '@/datatypes/util/NotificationType'
 
 export default class NotificationManager {
   public static notifications = ref<Array<Notification>>([])

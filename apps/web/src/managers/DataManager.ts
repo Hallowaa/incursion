@@ -1,4 +1,7 @@
-import type { CommunicationManager, BusListener, UserUpdateBus, User } from '@/barrel'
+import type CommunicationManager from './CommunicationManager'
+import type BusListener from '@/buses/BusListener'
+import type UserUpdateBus from '@/buses/UserUpdateBus'
+import type User from '@/datatypes/business/User'
 
 export default class DataManager implements BusListener<UserUpdateBus> {
   public user: User | undefined

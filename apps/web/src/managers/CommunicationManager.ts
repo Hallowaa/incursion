@@ -1,7 +1,14 @@
 import type { Socket } from 'socket.io-client'
-import type { LocalStorageManager, UserUpdateBus, Result } from '@/barrel'
+import type LocalStorageManager from './LocalStorageManager'
+import type UserUpdateBus from '@/buses/UserUpdateBus'
+import type { Result } from '@/datatypes/util/Result'
 import { io } from 'socket.io-client'
-import { Character, Incursion, User, RestErrorDataTransfer, RestError, NotificationManager } from '@/barrel'
+import Character from '@/datatypes/business/entity/Character'
+import Incursion from '@/datatypes/business/incursion/Incursion'
+import User from '@/datatypes/business/User'
+import RestErrorDataTransfer from '@/datatypes/transfer/RestErrorDataTransfer'
+import RestError from '@/errors/RestError'
+import NotificationManager from './NotificationManager'
 
 export default class CommunicationManager {
   // only to be set after validation

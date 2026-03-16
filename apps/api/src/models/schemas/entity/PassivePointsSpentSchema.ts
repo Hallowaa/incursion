@@ -1,5 +1,5 @@
-import { model, Schema } from 'mongoose'
-import { IPassivePointsSpent } from '../../../barrel'
+import { Schema } from 'mongoose'
+import IPassivePointsSpent from '../../interfaces/entity/IPassivePointsSpent'
 
 export const PassivePointsSpentSchema = new Schema<IPassivePointsSpent>({
   name: { type: String, required: true },

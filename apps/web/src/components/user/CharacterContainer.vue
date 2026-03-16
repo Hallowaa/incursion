@@ -1,5 +1,8 @@
 <script lang="ts">
-import type { Character, CharacterClass, EntityStat, DataManager } from '@/barrel'
+import type Character from '@/datatypes/business/entity/Character'
+import type { CharacterClass } from '@/datatypes/business/entity/CharacterClass'
+import type EntityStat from '@/datatypes/business/entity/EntityStat'
+import type DataManager from '@/managers/DataManager'
 import { defineComponent, inject } from 'vue'
 import ButtonBackgrounded from '../util/button/ButtonBackgrounded.vue'
 import CharacterStat from './CharacterStat.vue'

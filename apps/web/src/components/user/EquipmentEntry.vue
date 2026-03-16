@@ -1,6 +1,6 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { Item } from '@/barrel'
+import Item from '@/datatypes/business/item/Item'
 import HorizontalSeparator from '../util/HorizontalSeparator.vue'
 
 export default defineComponent({

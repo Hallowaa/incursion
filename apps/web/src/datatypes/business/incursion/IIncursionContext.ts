@@ -1,4 +1,4 @@
-import type { IIncursionRoom } from '@/barrel'
+import type IIncursionRoom from './IIncursionRoom'
 
 export default interface IIncursionContext {
   name: string

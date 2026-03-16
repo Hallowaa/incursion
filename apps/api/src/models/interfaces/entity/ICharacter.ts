@@ -1,6 +1,7 @@
 import mongoose from "mongoose"
-import { IEntityStat, IItem, IPassivePointsSpent } from "../../../barrel"
-
+import IItem from "../IItem"
+import IEntityStat from "./IEntityStat"
+import IPassivePointsSpent from "./IPassivePointsSpent"
 
 // Used for translating between doc and domain object
 export default interface ICharacter {

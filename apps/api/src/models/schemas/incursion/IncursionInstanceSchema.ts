@@ -1,5 +1,8 @@
 import { model, Schema } from 'mongoose'
-import { IIncursionInstance, IncursionContextSchema, IncursionId, IncursionTheme } from '../../../barrel'
+import { IncursionId } from '../../domain/enums/IncursionId'
+import { IncursionTheme } from '../../domain/enums/IncursionTheme'
+import IIncursionInstance from '../../interfaces/incursion/IIncursionInstance'
+import { IncursionContextSchema } from './IncursionContextSchema'
 
 export const IncursionInstanceSchema = new Schema<IIncursionInstance>({
   incursionId: {

@@ -1,5 +1,7 @@
 import { Schema } from 'mongoose'
-import { EntityStatSchema, IEntity } from '../../../barrel'
+import IEntity from '../../interfaces/entity/IEntity'
+import { EntityStatSchema } from './EntityStatSchema'
+
 
 export const EntitySchema = new Schema<IEntity>({
   entityId: { type: String, required: true },

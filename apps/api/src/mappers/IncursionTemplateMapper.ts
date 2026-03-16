@@ -1,4 +1,5 @@
-import { IIncursionTemplate } from "../barrel";
+import IIncursionTemplate from "../models/interfaces/incursion/IIncursionTemplate"
+
 
 export default class IncursionTemplateMapper {
   public static toDomain(doc: IIncursionTemplate): IIncursionTemplate {

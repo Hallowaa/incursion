@@ -1,5 +1,11 @@
 import { Server, Socket } from 'socket.io'
-import { CharacterModel, IncursionTemplateModel, IncursionTemplateMapper, IncursionInstanceModel, Character, IncursionGenerator, Incursion } from '../../barrel'
+import IncursionGenerator from '../../generators/IncursionGenerator'
+import IncursionTemplateMapper from '../../mappers/IncursionTemplateMapper'
+import Character from '../../models/domain/entity/Character'
+import Incursion from '../../models/domain/incursion/Incursion'
+import { CharacterModel } from '../../models/schemas/entity/CharacterSchema'
+import { IncursionInstanceModel } from '../../models/schemas/incursion/IncursionInstanceSchema'
+import { IncursionTemplateModel } from '../../models/schemas/incursion/IncursionTemplateSchema'
 
 
 export function registerIncursionHandlers(io: Server, socket: Socket) {

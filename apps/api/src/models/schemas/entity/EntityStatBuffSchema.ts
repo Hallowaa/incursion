@@ -1,5 +1,5 @@
 import { model, Schema } from 'mongoose'
-import { IEntityStatBuff } from '../../../barrel'
+import IEntityStatBuff from '../../interfaces/entity/IEntityStatBuff'
 
 export const EntityStatBuffSchema = new Schema<IEntityStatBuff>({
   name: { type: String, required: true },

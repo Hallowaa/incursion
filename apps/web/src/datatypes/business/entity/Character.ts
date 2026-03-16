@@ -1,4 +1,7 @@
-import { type Inventory, type CharacterClass, EntityStat, PassivePointsSpent } from '@/barrel'
+import type Inventory from '../item/Inventory'
+import type { CharacterClass } from './CharacterClass'
+import EntityStat from './EntityStat'
+import PassivePointsSpent from './PassivePointsSpent'
 
 export default class Character {
   public constructor(

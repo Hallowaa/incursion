@@ -1,5 +1,6 @@
-import { Entity, IncursionRoomType } from "../../../barrel"
 import IIncursionRoom from "../../interfaces/incursion/IIncursionRoom"
+import Entity from "../entity/Entity"
+import { IncursionRoomType } from "../enums/IncursionRoomType"
 
 export default class IncursionRoom {
   type: IncursionRoomType

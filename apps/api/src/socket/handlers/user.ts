@@ -1,6 +1,7 @@
 import { Socket, Server } from 'socket.io'
 import type { ICharacterDto } from '@incursion/dto'
-import { CharacterModel, UserModel } from '../../barrel'
+import { CharacterModel } from '../../models/schemas/entity/CharacterSchema'
+import { UserModel } from '../../models/schemas/UserSchema'
 
 export function registerUserHandlers(io: Server, socket: Socket) {
   socket.on('user:getCharacter', async (_data, callback) => {

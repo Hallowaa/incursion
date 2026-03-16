@@ -1,4 +1,5 @@
-import type { LoadedResources, Incursion } from '@/barrel'
+import type LoadedResources from './LoadedResources'
+import type Incursion from '@/datatypes/business/incursion/Incursion'
 import {
   OrthographicCamera,
   Raycaster,
@@ -8,7 +9,7 @@ import {
   WebGLRenderTarget
 } from 'three'
 import { EffectComposer } from 'three/examples/jsm/Addons.js'
-import { NotificationManager } from '@/barrel'
+import NotificationManager from '@/managers/NotificationManager'
 
 export default class Renderer {
   public static resources: LoadedResources = {}

@@ -1,5 +1,6 @@
-import { IIncursionContext, IncursionId, IncursionTheme } from "../../../barrel"
-
+import { IncursionId } from "../../domain/enums/IncursionId"
+import { IncursionTheme } from "../../domain/enums/IncursionTheme"
+import IIncursionContext from "./IIncursionContext"
 
 export default interface IIncursionInstance {
   incursionId: IncursionId

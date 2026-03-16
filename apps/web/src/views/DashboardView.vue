@@ -1,5 +1,8 @@
 <script lang="ts">
-import type { User, CommunicationManager, DataManager, LocalStorageManager } from '@/barrel'
+import type User from '@/datatypes/business/User'
+import type CommunicationManager from '@/managers/CommunicationManager'
+import type DataManager from '@/managers/DataManager'
+import type LocalStorageManager from '@/managers/LocalStorageManager'
 import { defineComponent, inject } from 'vue'
 import MainMenu from '@/components/MainMenu.vue'
 import TopBar from '@/components/TopBar.vue'

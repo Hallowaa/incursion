@@ -1,5 +1,5 @@
-import { model, Schema } from 'mongoose'
-import { ItemModSchema } from '../../../barrel'
+import { Schema } from 'mongoose'
+import { ItemModSchema } from './ItemModSchema'
 
 export const ItemSchema = new Schema({
   itemIndex: Number,

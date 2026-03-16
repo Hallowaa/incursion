@@ -1,4 +1,5 @@
-import { type User, Bus } from '@/barrel'
+import type User from '@/datatypes/business/User'
+import Bus from './Bus'
 
 export default class UserUpdateBus extends Bus {
   public user: User | undefined

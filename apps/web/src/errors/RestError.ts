@@ -1,4 +1,4 @@
-import { BaseError } from '@/barrel'
+import BaseError from './BaseError'
 
 /**
  * Class representing if an error occurs in an RESTAPI call.

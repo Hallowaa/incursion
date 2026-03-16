@@ -1,4 +1,4 @@
-import type { Character } from '@/barrel'
+import type Character from './entity/Character'
 
 export default class User {
   public constructor(

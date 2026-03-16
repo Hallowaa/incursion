@@ -1,4 +1,4 @@
-import { IEntity } from "../../../barrel"
+import IEntity from "../entity/IEntity"
 
 export default interface IIncursionRoom {
   type: string

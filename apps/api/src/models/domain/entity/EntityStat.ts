@@ -1,4 +1,6 @@
-import { EntityStatBuff, IEntityStat } from "../../../barrel"
+import IEntityStat from "../../interfaces/entity/IEntityStat"
+import EntityStatBuff from "./EntityStatBuff"
+
 
 export default class EntityStat {
   public constructor(

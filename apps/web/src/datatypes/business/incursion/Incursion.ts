@@ -1,4 +1,4 @@
-import type { IIncursionContext } from '@/barrel'
+import type IIncursionContext from './IIncursionContext'
 
 export default class Incursion {
   public constructor(

@@ -1,4 +1,8 @@
-import { Ability, AbilityMapper, EntityStat, ICharacterClass } from "../../../barrel"
+import AbilityMapper from "../../../mappers/AbilityMapper"
+import ICharacterClass from "../../interfaces/entity/ICharacterClass"
+import Ability from "../ability/Ability"
+import EntityStat from "./EntityStat"
+
 
 export default class CharacterClass {
   public name: string

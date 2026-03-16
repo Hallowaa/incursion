@@ -1,4 +1,4 @@
-import { IncursionRoomType } from "../../../barrel"
+import { IncursionRoomType } from "../../domain/enums/IncursionRoomType"
 
 export default interface IIncursionRoomTemplate {
   type: IncursionRoomType

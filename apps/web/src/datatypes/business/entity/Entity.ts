@@ -1,4 +1,4 @@
-import type { EntityStat } from '@/barrel'
+import type EntityStat from './EntityStat'
 
 export default class Entity {
   public constructor(

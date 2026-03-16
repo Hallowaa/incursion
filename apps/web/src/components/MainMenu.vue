@@ -1,5 +1,5 @@
 <script lang="ts">
-import type { IncursionManager } from '@/barrel'
+import type IncursionManager from '@/managers/IncursionManager'
 import { defineComponent, inject } from 'vue'
 import MainMenuButton from './util/button/MainMenuButton.vue'
 

@@ -1,5 +1,6 @@
 import { Schema } from 'mongoose'
-import { IIncursionRoomTemplate, IncursionRoomType } from '../../../barrel'
+import { IncursionRoomType } from '../../domain/enums/IncursionRoomType'
+import IIncursionRoomTemplate from '../../interfaces/incursion/IIncursionRoomTemplate'
 
 export const IncursionRoomTemplateSchema = new Schema<IIncursionRoomTemplate>({
   type: {

@@ -1,4 +1,8 @@
-import { IIncursionInstance, IncursionContext, IncursionId, IncursionTheme } from "../../../barrel"
+import IIncursionInstance from "../../interfaces/incursion/IIncursionInstance"
+import { IncursionId } from "../enums/IncursionId"
+import { IncursionTheme } from "../enums/IncursionTheme"
+import IncursionContext from "./IncursionContext"
+
 
 export default class Incursion {
   public constructor(

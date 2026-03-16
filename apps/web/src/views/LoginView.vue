@@ -1,5 +1,6 @@
 <script lang="ts">
-import type { CommunicationManager, LocalStorageManager } from '@/barrel'
+import type CommunicationManager from '@/managers/CommunicationManager'
+import type LocalStorageManager from '@/managers/LocalStorageManager'
 import { defineComponent, inject } from 'vue'
 import ButtonSimple from '@/components/util/button/ButtonSimple.vue'
 import HorizontalSeparator from '@/components/util/HorizontalSeparator.vue'

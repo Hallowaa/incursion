@@ -1,4 +1,4 @@
-import type { NotificationType } from '@/barrel'
+import type { NotificationType } from './NotificationType'
 
 export default class Notification {
   public timestamp: number

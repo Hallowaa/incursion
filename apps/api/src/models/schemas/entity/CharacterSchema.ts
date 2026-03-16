@@ -1,5 +1,8 @@
 import { model, Schema } from 'mongoose'
-import { EntityStatSchema, ICharacter, ItemSchema, PassivePointsSpentSchema } from '../../../barrel'
+import ICharacter from '../../interfaces/entity/ICharacter'
+import { ItemSchema } from '../item/ItemSchema'
+import { EntityStatSchema } from './EntityStatSchema'
+import { PassivePointsSpentSchema } from './PassivePointsSpentSchema'
 
 export const CharacterSchema = new Schema<ICharacter>({
   owner: { type: Schema.Types.ObjectId, ref: 'User' },

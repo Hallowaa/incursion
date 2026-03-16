@@ -1,5 +1,6 @@
 import mongoose from 'mongoose'
-import { EntitystatId, ICharacter } from '../barrel'
+import { EntitystatId } from '../models/domain/enums/EntityStatId'
+import ICharacter from '../models/interfaces/entity/ICharacter'
 
 export default class CharacterGenerator {
   public static generateCharacter(

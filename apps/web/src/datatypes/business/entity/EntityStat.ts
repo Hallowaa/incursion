@@ -1,4 +1,4 @@
-import { EntityStatBuff } from '@/barrel'
+import EntityStatBuff from './EntityStatBuff'
 
 export default class EntityStat {
   public constructor(

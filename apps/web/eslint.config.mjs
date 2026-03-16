@@ -81,6 +81,13 @@ export default antfu(
     }
   },
   {
+    files: ['**/barrel.ts'],
+    rules: {
+      'unused-imports/no-unused-vars': 'off',
+      'ts/no-unused-vars': 'off'
+    }
+  },
+  {
     files: ['**/*.{vue,js,jsx,cjs,mjs,ts,tsx,cts,mts}'],
     ignores: [
       'playwright.config.ts',

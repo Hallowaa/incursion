@@ -1,5 +1,6 @@
-import { Ability, AbilityId, TargetType } from "../barrel"
-
+import Ability from "../models/domain/ability/Ability"
+import { AbilityId } from "../models/domain/enums/AbilityId"
+import { TargetType } from "../models/domain/enums/TargetType"
 
 export default class AbilityMapper {
   public static toDomain(abilityName: string) {

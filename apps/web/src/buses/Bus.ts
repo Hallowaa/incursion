@@ -1,4 +1,4 @@
-import type { BusListener } from '@/barrel'
+import type BusListener from './BusListener'
 
 export default class Bus {
   private listeners: BusListener<any>[] = []

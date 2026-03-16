@@ -1,4 +1,9 @@
-import { AbilityId, Entity, IAbilityConfig, IncursionContext, TargetType } from "../../../barrel"
+import Entity from "../entity/Entity"
+import { AbilityId } from "../enums/AbilityId"
+import { TargetType } from "../enums/TargetType"
+import IncursionContext from "../incursion/IncursionContext"
+import IAbilityConfig from "./IAbilityConfig"
+
 
 // DOES NOT need conversion, as the mapper does that
 export default class Ability {

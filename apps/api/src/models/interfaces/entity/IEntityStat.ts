@@ -1,4 +1,4 @@
-import { IEntityStatBuff } from "../../../barrel"
+import IEntityStatBuff from "./IEntityStatBuff"
 
 // Used for translating between doc and domain object
 export default interface IEntityStat {

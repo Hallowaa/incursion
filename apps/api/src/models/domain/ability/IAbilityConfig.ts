@@ -1,4 +1,8 @@
-import { AbilityId, Entity, IncursionContext, TargetType } from "../../../barrel"
+import Entity from "../entity/Entity"
+import { AbilityId } from "../enums/AbilityId"
+import { TargetType } from "../enums/TargetType"
+import IncursionContext from "../incursion/IncursionContext"
+
 
 export default interface IAbilityConfig {
   abilityId: AbilityId

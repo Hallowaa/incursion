@@ -1,6 +1,8 @@
-import type { CommunicationManager, DataManager, Incursion } from '@/barrel'
+import type CommunicationManager from './CommunicationManager'
+import type DataManager from './DataManager'
+import type Incursion from '@/datatypes/business/incursion/Incursion'
 import { ref } from 'vue'
-import { NotificationManager } from '@/barrel'
+import NotificationManager from './NotificationManager'
 
 export default class IncursionManager {
   public currentIncursion = ref<Incursion>()

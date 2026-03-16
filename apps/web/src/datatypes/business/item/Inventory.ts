@@ -1,4 +1,4 @@
-import { Item } from '@/barrel'
+import Item from './Item'
 
 export default class Inventory {
   public constructor(public items: Item[]) {}

@@ -1,4 +1,4 @@
-import { RestError } from '@/barrel'
+import RestError from '@/errors/RestError'
 
 export default class RestErrorDataTransfer {
   public constructor(

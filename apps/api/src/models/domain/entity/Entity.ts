@@ -1,4 +1,5 @@
-import { EntityConfig, EntityStat } from "../../../barrel"
+import EntityStat from "./EntityStat"
+import IEntityConfig from "./IEntityConfig"
 
 export default class Entity {
   public entityId: string
@@ -6,7 +7,7 @@ export default class Entity {
   public stats: EntityStat[]
   public cooldowns: Record<string, number> = {}
 
-  public constructor(config: EntityConfig) {
+  public constructor(config: IEntityConfig) {
     this.entityId = config.entityId
     this.name = config.name
     this.stats = structuredClone(config.stats)

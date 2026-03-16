@@ -1,5 +1,6 @@
 import { Schema } from 'mongoose'
-import { EntityStatBuffSchema, IEntityStat } from '../../../barrel'
+import IEntityStat from '../../interfaces/entity/IEntityStat'
+import { EntityStatBuffSchema } from './EntityStatBuffSchema'
 
 export const EntityStatSchema = new Schema<IEntityStat>({
   statId: { type: String, required: true },
