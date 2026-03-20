@@ -1,8 +1,8 @@
 import { model, Schema } from 'mongoose'
-import { AdversaryTag } from '../../domain/enums/AdversaryTag'
-import { IncursionId } from '../../domain/enums/IncursionId'
-import { IncursionRoomType } from '../../domain/enums/IncursionRoomType'
-import { IncursionTheme } from '../../domain/enums/IncursionTheme'
+import { AdversaryTag } from '@incursion/dto/src/enums/AdversaryTag'
+import { IncursionId } from '@incursion/dto/src/enums/IncursionId'
+import { IncursionRoomType } from '@incursion/dto/src/enums/IncursionRoomType'
+import { IncursionTheme } from '@incursion/dto/src/enums/IncursionTheme'
 import { IncursionRoomTemplateSchema } from './IncursionRoomTemplateSchema'
 
 export const IncursionTemplateSchema = new Schema({

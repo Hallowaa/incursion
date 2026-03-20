@@ -1,4 +1,4 @@
-export enum CharacterClass {
+export enum CharacterClassId {
   ROGUE = 'ROGUE',
   WARRIOR = 'WARRIOR',
   MAGE = 'MAGE',
@@ -27,5 +27,6 @@ export enum CharacterClass {
   GODSLAYER = 'GODSLAYER',
   TANK = 'TANK',
   CASTLE = 'CASTLE',
-  WALL_OF_FLESH = 'WALL_OF_FLESH'
+  WALL_OF_FLESH = 'WALL_OF_FLESH',
+  CLASSLESS = 'CLASSLESS'
 }

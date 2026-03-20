@@ -1,3 +1,5 @@
+import type { IEntityStatBuffDto } from '@incursion/dto'
+
 export default class EntityStatBuff {
   public constructor(
     public name: string,
@@ -7,7 +9,7 @@ export default class EntityStatBuff {
     public imageUrl?: string
   ) {}
 
-  public static fromDb(doc: EntityStatBuff) {
+  public static toDomain(doc: IEntityStatBuffDto) {
     return new EntityStatBuff(
       doc.name,
       doc.flatValue,

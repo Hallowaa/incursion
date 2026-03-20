@@ -1,10 +1,11 @@
+import { EntityStatId } from "@incursion/dto"
 import IEntityStat from "../../interfaces/entity/IEntityStat"
 import EntityStatBuff from "./EntityStatBuff"
 
 
 export default class EntityStat {
   public constructor(
-    public statId: string,
+    public statId: EntityStatId,
     private _baseValue: number,
     private _buffs: EntityStatBuff[],
   ) {}

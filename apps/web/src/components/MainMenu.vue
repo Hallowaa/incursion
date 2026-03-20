@@ -1,6 +1,7 @@
 <script lang="ts">
 import type IncursionManager from '@/managers/IncursionManager'
 import { defineComponent, inject } from 'vue'
+import { useUIStore } from '@/stores/UIStore'
 import MainMenuButton from './util/button/MainMenuButton.vue'
 
 export default defineComponent({
@@ -8,6 +9,12 @@ export default defineComponent({
 
   components: {
     MainMenuButton
+  },
+
+  setup() {
+    const uiStore = useUIStore()
+
+    return { uiStore }
   },
 
   data() {

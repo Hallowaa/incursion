@@ -1,6 +1,6 @@
 import mongoose from 'mongoose'
-import { EntitystatId } from '../models/domain/enums/EntityStatId'
 import ICharacter from '../models/interfaces/entity/ICharacter'
+import { EntityStatId } from '@incursion/dto'
 
 export default class CharacterGenerator {
   public static generateCharacter(
@@ -11,32 +11,34 @@ export default class CharacterGenerator {
       owner: new mongoose.Types.ObjectId(userId),
       name: characterName,
       experience: 0,
-      classes: [],
+      classes: [
+        'CLASSLESS'
+      ],
       inventory: [],
       passivePointsSpent: [],
       stats: [
         {
-          statId: EntitystatId.STRENGTH,
+          statId: EntityStatId.STRENGTH,
           baseValue: 0,
           buffs: [],
         },
         {
-          statId: EntitystatId.DEXTERITY,
+          statId: EntityStatId.DEXTERITY,
           baseValue: 0,
           buffs: [],
         },
         {
-          statId: EntitystatId.INTELLIGENCE,
+          statId: EntityStatId.INTELLIGENCE,
           baseValue: 0,
           buffs: [],
         },
         {
-          statId: EntitystatId.PHSYICAL_ENDURANCE,
+          statId: EntityStatId.PHSYICAL_ENDURANCE,
           baseValue: 0,
           buffs: [],
         },
         {
-          statId: EntitystatId.MAGIC_ENDURANCE,
+          statId: EntityStatId.MAGIC_ENDURANCE,
           baseValue: 0,
           buffs: [],
         },

@@ -1,5 +1,5 @@
 import { Schema } from 'mongoose'
-import { IncursionRoomType } from '../../domain/enums/IncursionRoomType'
+import { IncursionRoomType } from '@incursion/dto/src/enums/IncursionRoomType'
 import IIncursionRoom from '../../interfaces/incursion/IIncursionRoom'
 import { EntitySchema } from '../entity/EntitySchema'
 

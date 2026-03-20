@@ -1,6 +1,6 @@
 import IIncursionRoom from "../../interfaces/incursion/IIncursionRoom"
 import Entity from "../entity/Entity"
-import { IncursionRoomType } from "../enums/IncursionRoomType"
+import { IncursionRoomType } from "@incursion/dto/src/enums/IncursionRoomType"
 
 export default class IncursionRoom {
   type: IncursionRoomType

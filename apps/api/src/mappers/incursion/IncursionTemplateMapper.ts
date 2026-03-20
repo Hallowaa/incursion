@@ -1,4 +1,4 @@
-import IIncursionTemplate from "../models/interfaces/incursion/IIncursionTemplate"
+import IIncursionTemplate from "../../models/interfaces/incursion/IIncursionTemplate"
 
 
 export default class IncursionTemplateMapper {

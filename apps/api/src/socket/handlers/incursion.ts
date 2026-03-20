@@ -1,6 +1,6 @@
 import { Server, Socket } from 'socket.io'
 import IncursionGenerator from '../../generators/IncursionGenerator'
-import IncursionTemplateMapper from '../../mappers/IncursionTemplateMapper'
+import IncursionTemplateMapper from '../../mappers/incursion/IncursionTemplateMapper'
 import Character from '../../models/domain/entity/Character'
 import Incursion from '../../models/domain/incursion/Incursion'
 import { CharacterModel } from '../../models/schemas/entity/CharacterSchema'

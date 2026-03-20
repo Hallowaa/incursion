@@ -1,5 +1,5 @@
-import type Inventory from '../item/Inventory'
-import type { CharacterClass } from './CharacterClass'
+import type { CharacterClassId, ICharacterDto } from '@incursion/dto'
+import Inventory from '../item/Inventory'
 import EntityStat from './EntityStat'
 import PassivePointsSpent from './PassivePointsSpent'
 
@@ -7,20 +7,20 @@ export default class Character {
   public constructor(
     public name: string,
     public experience: number,
-    public classes: CharacterClass[],
+    public classes: CharacterClassId[],
     public inventory: Inventory,
     public passivePointsSpent: PassivePointsSpent[],
     public stats: EntityStat[]
   ) {}
 
-  public static toDomain(doc: Character) {
+  public static toDomain(doc: ICharacterDto) {
     return new Character(
       doc.name,
       doc.experience,
       doc.classes,
-      doc.inventory,
-      doc.passivePointsSpent.map((pps) => PassivePointsSpent.fromDb(pps)),
-      doc.stats.map((stat) => EntityStat.fromDb(stat))
+      Inventory.toDomain(doc.inventory),
+      doc.passivePointsSpent.map((pps) => PassivePointsSpent.toDomain(pps)),
+      doc.stats.map((stat) => EntityStat.toDomain(stat))
     )
   }
 }

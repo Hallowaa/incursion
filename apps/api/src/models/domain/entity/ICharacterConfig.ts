@@ -1,4 +1,4 @@
-import CharacterClass from "./CharacterClass"
+import CharacterClass from "./character-classes/CharacterClass"
 import IEntityConfig from "./IEntityConfig"
 
 

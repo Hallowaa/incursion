@@ -1,6 +1,6 @@
 import IIncursionInstance from "../../interfaces/incursion/IIncursionInstance"
-import { IncursionId } from "../enums/IncursionId"
-import { IncursionTheme } from "../enums/IncursionTheme"
+import { IncursionId } from "@incursion/dto/src/enums/IncursionId"
+import { IncursionTheme } from "@incursion/dto/src/enums/IncursionTheme"
 import IncursionContext from "./IncursionContext"
 
 

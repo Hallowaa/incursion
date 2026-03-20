@@ -1,6 +1,5 @@
+import { AbilityId, TargetType } from "@incursion/dto"
 import Entity from "../entity/Entity"
-import { AbilityId } from "../enums/AbilityId"
-import { TargetType } from "../enums/TargetType"
 import IncursionContext from "../incursion/IncursionContext"
 import IAbilityConfig from "./IAbilityConfig"
 

@@ -1,10 +1,10 @@
 import * as dotenv from 'dotenv'
 dotenv.config()
 
-import { AdversaryTag } from '../models/domain/enums/AdversaryTag'
-import { IncursionId } from '../models/domain/enums/IncursionId'
-import { IncursionRoomType } from '../models/domain/enums/IncursionRoomType'
-import { IncursionTheme } from '../models/domain/enums/IncursionTheme'
+import { AdversaryTag } from '@incursion/dto/src/enums/AdversaryTag'
+import { IncursionId } from '@incursion/dto/src/enums/IncursionId'
+import { IncursionRoomType } from '@incursion/dto/src/enums/IncursionRoomType'
+import { IncursionTheme } from '@incursion/dto/src/enums/IncursionTheme'
 import mongoose from 'mongoose'
 import { IncursionTemplateModel } from '../models/schemas/incursion/IncursionTemplateSchema'
 import { IIncursionTemplate } from '../models/interfaces/incursion/IIncursionTemplate'

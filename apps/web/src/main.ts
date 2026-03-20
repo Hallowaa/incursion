@@ -1,33 +1,40 @@
+import type StoreContainer from './stores/StoreContainer'
+import { createPinia } from 'pinia'
 import { createApp } from 'vue'
 import App from './App.vue'
-import UserUpdateBus from './buses/UserUpdateBus'
 import CommunicationManager from './managers/CommunicationManager'
-import DataManager from './managers/DataManager'
 import IncursionManager from './managers/IncursionManager'
 import LocalStorageManager from './managers/LocalStorageManager'
 import router from './router'
+import { useCharacterStore } from './stores/CharacterStore'
+import { useIncursionStore } from './stores/IncursionStore'
+import { useUIStore } from './stores/UIStore'
 
 const uri = '/api'
 
-// BUSES
-const userUpdateBus = new UserUpdateBus()
+const pinia = createPinia()
+const app = createApp(App)
+app.use(pinia)
+
+// STORES
+const characterStore = useCharacterStore()
+const incursionStore = useIncursionStore()
+const uiStore = useUIStore()
+
+const stores: StoreContainer = {
+  characterStore,
+  incursionStore,
+  uiStore
+}
 
 // MANAGERS
 const localStorageManager = new LocalStorageManager()
-const communicationManager = new CommunicationManager(uri, localStorageManager)
-const dataManager = new DataManager(communicationManager)
-const incursionManager = new IncursionManager(dataManager, communicationManager)
-
-// ASSIGNMENTS
-communicationManager.userUpdateBus = userUpdateBus
-
-// ATTACHMENTS
-userUpdateBus.attach(dataManager)
+const communicationManager = new CommunicationManager(uri, localStorageManager, stores)
+const incursionManager = new IncursionManager(communicationManager)
 
 // PROVIDE
-const app = createApp(App)
+
 app.provide('communicationManager', communicationManager)
-app.provide('dataManager', dataManager)
 app.provide('localStorageManager', localStorageManager)
 app.provide('incursionManager', incursionManager)
 

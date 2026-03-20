@@ -1,0 +1,8 @@
+export enum ItemRarity {
+  BASE = 'BASE',
+  EXCEPTIONAL = 'EXCEPTIONAL',
+  RARE = 'RARE',
+  LEGENDARY = 'LEGENDARY',
+  FORBIDDEN = 'FORBIDDEN',
+  CELESTIAL = 'CELESTIAL'
+}

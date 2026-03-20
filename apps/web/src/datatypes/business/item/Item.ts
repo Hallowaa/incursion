@@ -1,16 +1,18 @@
+import type { EquipmentType, IItemDto } from '@incursion/dto'
+
 export default class Item {
   public constructor(
     readonly id: string,
     readonly name: string,
     readonly description: string,
-    readonly type: string,
+    readonly type: EquipmentType,
     readonly rarity: string,
     readonly levelRequirement: number,
     readonly stats: Record<string, number>,
     readonly imageUrl?: string
   ) {}
 
-  public static fromDb(doc: Item) {
+  public static toDomain(doc: IItemDto) {
     return new Item(
       doc.id,
       doc.name,

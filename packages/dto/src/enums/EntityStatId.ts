@@ -1,4 +1,4 @@
-export enum EntitystatId {
+export enum EntityStatId {
   HEALTH = 'stat_health',
   STRENGTH = 'stat_strength',
   DEXTERITY = 'stat_dexterity',

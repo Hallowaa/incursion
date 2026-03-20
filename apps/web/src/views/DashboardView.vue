@@ -1,17 +1,20 @@
 <script lang="ts">
-import type User from '@/datatypes/business/User'
 import type CommunicationManager from '@/managers/CommunicationManager'
-import type DataManager from '@/managers/DataManager'
 import type LocalStorageManager from '@/managers/LocalStorageManager'
+import { mapState } from 'pinia'
 import { defineComponent, inject } from 'vue'
 import MainMenu from '@/components/MainMenu.vue'
+import PopUpBase from '@/components/popup/PopUpBase.vue'
+import PopUpChooseClass from '@/components/popup/PopUpChooseClass.vue'
 import TopBar from '@/components/TopBar.vue'
 import CharacterContainer from '@/components/user/CharacterContainer.vue'
 import InventoryContainer from '@/components/user/InventoryContainer.vue'
 import NotificationsContainer from '@/components/util/NotificationsContainer.vue'
 import VerticalSeparator from '@/components/util/VerticalSeparator.vue'
 import UtilityBar from '@/components/UtilityBar.vue'
+import { PopUpType } from '@/enums/PopUpType'
 import router from '@/router'
+import { useUIStore } from '@/stores/UIStore'
 
 export default defineComponent({
   name: 'DashboardView',
@@ -23,21 +26,29 @@ export default defineComponent({
     UtilityBar,
     MainMenu,
     TopBar,
-    NotificationsContainer
+    NotificationsContainer,
+    PopUpBase,
+    PopUpChooseClass
+  },
+
+  setup() {
+    const uiStore = useUIStore()
+
+    return { uiStore }
   },
 
   data() {
     return {
       communicationManager: inject('communicationManager') as CommunicationManager,
-      dataManager: inject('dataManager') as DataManager,
       localStorageManager: inject('localStorageManager') as LocalStorageManager
     }
   },
 
   computed: {
-    user(): User | undefined {
-      return this.dataManager.user
-    }
+    ...mapState(useUIStore, {
+      isPopUpOpen: (store) => store.currentPopUp !== undefined,
+      isPopupChooseClass: (store) => store.currentPopUp === PopUpType.CHOOSE_CLASS
+    })
   },
 
   async mounted() {
@@ -63,6 +74,9 @@ export default defineComponent({
   methods: {
     routeToLogin() {
       router.push('/')
+    },
+    closePopUp() {
+      this.uiStore.closeCurrentPopUp()
     }
   }
 })
@@ -91,6 +105,11 @@ export default defineComponent({
     <div class="notifications-container">
       <NotificationsContainer />
     </div>
+  </div>
+  <div v-if="isPopUpOpen" class="popup-container">
+    <PopUpBase @close="closePopUp()">
+      <PopUpChooseClass v-if="isPopupChooseClass" />
+    </PopUpBase>
   </div>
 </template>
 
@@ -153,5 +172,19 @@ export default defineComponent({
   left: 0;
 
   padding: 20px;
+}
+
+.popup-container {
+  height: 100%;
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 50;
 }
 </style>

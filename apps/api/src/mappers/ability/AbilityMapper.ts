@@ -1,6 +1,6 @@
-import Ability from "../models/domain/ability/Ability"
-import { AbilityId } from "../models/domain/enums/AbilityId"
-import { TargetType } from "../models/domain/enums/TargetType"
+import Ability from "../../models/domain/ability/Ability"
+import { AbilityId } from "@incursion/dto/src/enums/AbilityId"
+import { TargetType } from "@incursion/dto/src/enums/TargetType"
 
 export default class AbilityMapper {
   public static toDomain(abilityName: string) {

@@ -1,7 +1,8 @@
+import type { ICharacterDto } from '@incursion/dto'
 import type { Socket } from 'socket.io-client'
 import type LocalStorageManager from './LocalStorageManager'
-import type UserUpdateBus from '@/buses/UserUpdateBus'
 import type { Result } from '@/datatypes/util/Result'
+import type StoreContainer from '@/stores/StoreContainer'
 import { io } from 'socket.io-client'
 import Character from '@/datatypes/business/entity/Character'
 import Incursion from '@/datatypes/business/incursion/Incursion'
@@ -18,16 +19,14 @@ export default class CommunicationManager {
   private alive = false
   private socket: Socket | undefined
 
-  // buses
-  public userUpdateBus: UserUpdateBus | undefined
-
   /**
    * Creates a new CommunicationManager.
    * @param uri - The uri of the backend.
    */
   public constructor(
     private readonly uri: string,
-    public readonly localStorageManager: LocalStorageManager
+    public readonly localStorageManager: LocalStorageManager,
+    public readonly stores: StoreContainer
   ) {}
 
   public async login(
@@ -102,7 +101,7 @@ export default class CommunicationManager {
   public async fetchUser(): Promise<Result<User, Error>> {
     const characterResult = await this.fetchCharacter()
     if (!characterResult.success) {
-      NotificationManager.error('Error fetching user.')
+      NotificationManager.error('Error fetching character.')
       return characterResult
     }
 
@@ -114,7 +113,6 @@ export default class CommunicationManager {
         characterResult.result
       )
 
-      this.userUpdateBus?.updateUser(result)
       return {
         success: true,
         result
@@ -130,7 +128,7 @@ export default class CommunicationManager {
   public async fetchCharacter(): Promise<Result<Character, Error>> {
     try {
       const characterData =
-        await this.socketEmit<Character>('user:getCharacter')
+        await this.socketEmit<ICharacterDto>('character:getCharacter')
 
       if (!characterData) {
         NotificationManager.error(
@@ -142,9 +140,12 @@ export default class CommunicationManager {
         }
       }
 
+      const result = Character.toDomain(characterData)
+      this.stores.characterStore.character = result
+
       return {
         success: true,
-        result: Character.toDomain(characterData)
+        result
       }
     } catch (err) {
       return {

@@ -1,9 +1,10 @@
 <script lang="ts">
-import type Character from '@/datatypes/business/entity/Character'
-import type { CharacterClass } from '@/datatypes/business/entity/CharacterClass'
-import type EntityStat from '@/datatypes/business/entity/EntityStat'
-import type DataManager from '@/managers/DataManager'
-import { defineComponent, inject } from 'vue'
+import { CharacterClassId } from '@incursion/dto'
+import { mapState } from 'pinia'
+import { defineComponent } from 'vue'
+import { PopUpType } from '@/enums/PopUpType'
+import { useCharacterStore } from '@/stores/CharacterStore'
+import { useUIStore } from '@/stores/UIStore'
 import ButtonBackgrounded from '../util/button/ButtonBackgrounded.vue'
 import CharacterStat from './CharacterStat.vue'
 import EquipmentEntry from './EquipmentEntry.vue'
@@ -17,23 +18,29 @@ export default defineComponent({
     ButtonBackgrounded
   },
 
+  setup() {
+    const uiStore = useUIStore()
+
+    return { uiStore }
+  },
+
   data() {
     return {
-      dataManager: inject('dataManager') as DataManager
     }
   },
 
   computed: {
-    character(): Character | undefined {
-      return this.dataManager.user?.character as Character | undefined
-    },
-    characterClass(): CharacterClass | undefined {
-      const char = this.dataManager.user?.character
-      return char?.classes[char.classes.length - 1]
-    },
-    characterStats(): EntityStat[] {
-      const char = this.dataManager.user?.character
-      return (char?.stats as EntityStat[]) ?? []
+    ...mapState(useCharacterStore, {
+      characterName: (store) => store.character?.name,
+      characterClass: (store) => store.character?.classes[store.character.classes.length - 1],
+      characterStats: (store) => store.character?.stats ?? [],
+      isClassless: (store) => store.character?.classes[store.character.classes.length - 1] === CharacterClassId.CLASSLESS
+    })
+  },
+
+  methods: {
+    openChooseClassPopUp() {
+      this.uiStore.setCurrentPopUp(PopUpType.CHOOSE_CLASS)
     }
   }
 })
@@ -51,14 +58,14 @@ export default defineComponent({
           </div>
           <div class="stats">
             <CharacterStat text="NAME">
-              {{ character?.name }}
+              {{ characterName ?? 'NOT LOADED' }}
             </CharacterStat>
             <CharacterStat text="CLASS">
-              <div v-if="characterClass">
+              <div v-if="characterClass && !isClassless">
                 {{ characterClass }}
               </div>
               <div v-else>
-                <ButtonBackgrounded text="CHOOSE CLASS" />
+                <ButtonBackgrounded text="CHOOSE CLASS" @clicked="openChooseClassPopUp()" />
               </div>
             </CharacterStat>
             <CharacterStat v-for="stat in characterStats" :key="stat.statId" :text="stat.displayName">

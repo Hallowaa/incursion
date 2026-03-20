@@ -1,5 +1,4 @@
 import type CommunicationManager from './CommunicationManager'
-import type DataManager from './DataManager'
 import type Incursion from '@/datatypes/business/incursion/Incursion'
 import { ref } from 'vue'
 import NotificationManager from './NotificationManager'
@@ -7,7 +6,6 @@ import NotificationManager from './NotificationManager'
 export default class IncursionManager {
   public currentIncursion = ref<Incursion>()
   public constructor(
-    public dataManager: DataManager,
     public communicationManager: CommunicationManager
   ) {}
 

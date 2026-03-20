@@ -1,3 +1,4 @@
+import type { IEntityStatDto } from '@incursion/dto'
 import EntityStatBuff from './EntityStatBuff'
 
 export default class EntityStat {
@@ -7,11 +8,11 @@ export default class EntityStat {
     public buffs: EntityStatBuff[]
   ) {}
 
-  public static fromDb(doc: EntityStat) {
+  public static toDomain(doc: IEntityStatDto) {
     return new EntityStat(
       doc.statId,
       doc.baseValue,
-      doc.buffs.map((buff) => EntityStatBuff.fromDb(buff))
+      doc.buffs.map((buff) => EntityStatBuff.toDomain(buff))
     )
   }
 

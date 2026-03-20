@@ -1,11 +1,9 @@
-import CharacterClassMapper from "../../../mappers/CharacterClassMapper"
+import CharacterClassMapper from "../../../mappers/entity/CharacterClassMapper"
 import ICharacter from "../../interfaces/entity/ICharacter"
-import CharacterClass from "./CharacterClass"
+import CharacterClass from "./character-classes/CharacterClass"
 import Entity from "./Entity"
 import EntityStat from "./EntityStat"
 import ICharacterConfig from "./ICharacterConfig"
-
-
 
 export default class Character extends Entity {
   public experience: number

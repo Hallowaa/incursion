@@ -6,5 +6,5 @@
     "module": "CommonJS",
     "moduleResolution": "node"
   },
-  "include": ["src"]
+  "include": ["src", "../../packages/dto/src/enums/AbilityId.ts", "../../packages/dto/src/enums/AdversaryId.ts", "../../packages/dto/src/enums/AdversaryTag.ts", "../../packages/dto/src/enums/EntityStatId.ts", "../../packages/dto/src/enums/IncursionId.ts", "../../packages/dto/src/enums/IncursionRoomType.ts", "../../packages/dto/src/enums/IncursionTheme.ts", "../../packages/dto/src/enums/TargetType.ts"]
 }
