@@ -1,6 +1,4 @@
-import { IncursionId } from "@incursion/dto/src/enums/IncursionId"
-import { IncursionRoomType } from "@incursion/dto/src/enums/IncursionRoomType"
-import { IncursionTheme } from "@incursion/dto/src/enums/IncursionTheme"
+import type { IncursionId, IncursionRoomType, IncursionTheme } from '@incursion/dto'
 
 // Used for translating between doc and domain object
 export default interface IIncursionTemplate {
@@ -11,6 +9,6 @@ export default interface IIncursionTemplate {
   maxLevel: number
   roomCountRange: number[]
   guaranteedRooms: IncursionRoomType[]
-  possibleRooms: { type: IncursionRoomType; weight: number }[]
+  possibleRooms: { type: IncursionRoomType, weight: number }[]
   adversaryTags: string[]
 }

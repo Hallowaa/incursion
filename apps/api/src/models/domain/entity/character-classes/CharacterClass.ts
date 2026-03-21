@@ -1,12 +1,9 @@
-import { CharacterClassId } from "@incursion/dto"
-import AbilityMapper from "../../../../mappers/ability/AbilityMapper"
-import ICharacterClass from "../../../interfaces/entity/ICharacterClass"
-import Ability from "../../ability/Ability"
-import EntityStat from "../EntityStat"
-
+import type Ability from '../../ability/Ability'
+import type EntityStat from '../EntityStat'
+import { CharacterClassId } from '@incursion/dto'
 
 export default class CharacterClass {
-  public name: string
+  public name: CharacterClassId
   public stats: EntityStat[]
   public abilities: Ability[]
   public advancements: CharacterClassId[] = [
@@ -15,17 +12,19 @@ export default class CharacterClass {
     CharacterClassId.MAGE
   ]
 
-  public constructor(name: string, stats: EntityStat[], abilities: Ability[]) {
+  public description = ''
+
+  public constructor(name: CharacterClassId, stats: EntityStat[], abilities: Ability[], advancements?: CharacterClassId[], description?: string) {
     this.name = name
     this.stats = stats
     this.abilities = abilities
-  }
 
-  public static toDomain(doc: ICharacterClass) {
-    return new CharacterClass(
-      doc.name,
-      doc.stats.map((s) => EntityStat.toDomain(s)),
-      doc.abilities.map((a) => AbilityMapper.toDomain(a)),
-    )
+    if (advancements) {
+      this.advancements = advancements
+    }
+
+    if (description) {
+      this.description = description
+    }
   }
 }

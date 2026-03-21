@@ -1,4 +1,4 @@
-import IncursionRoom from "./IncursionRoom"
+import type IncursionRoom from './IncursionRoom'
 
 export default interface IncursionContext {
   name: string

@@ -1,13 +1,11 @@
-import * as dotenv from 'dotenv'
-dotenv.config()
+import type { IIncursionTemplate } from '../models/interfaces/incursion/IIncursionTemplate'
 
-import { AdversaryTag } from '@incursion/dto/src/enums/AdversaryTag'
-import { IncursionId } from '@incursion/dto/src/enums/IncursionId'
-import { IncursionRoomType } from '@incursion/dto/src/enums/IncursionRoomType'
-import { IncursionTheme } from '@incursion/dto/src/enums/IncursionTheme'
+import { AdversaryTag, IncursionId, IncursionRoomType, IncursionTheme } from '@incursion/dto'
+import * as dotenv from 'dotenv'
 import mongoose from 'mongoose'
 import { IncursionTemplateModel } from '../models/schemas/incursion/IncursionTemplateSchema'
-import { IIncursionTemplate } from '../models/interfaces/incursion/IIncursionTemplate'
+
+dotenv.config()
 
 export const incursionTemplates: IIncursionTemplate[] = [
   {
@@ -21,15 +19,15 @@ export const incursionTemplates: IIncursionTemplate[] = [
     possibleRooms: [
       {
         type: IncursionRoomType.FIGHT,
-        weight: 60,
+        weight: 60
       },
       {
         type: IncursionRoomType.TREASURE,
-        weight: 15,
-      },
+        weight: 15
+      }
     ],
-    adversaryTags: [AdversaryTag.HUMANOID],
-  },
+    adversaryTags: [AdversaryTag.HUMANOID]
+  }
 ]
 
 async function seed() {
@@ -42,8 +40,8 @@ async function seed() {
       template,
       {
         upsert: true,
-        new: true,
-      },
+        new: true
+      }
     )
     console.log(`Seeded: ${template.name}`)
   }

@@ -5,6 +5,7 @@ import { defineComponent, inject } from 'vue'
 import ButtonSimple from '@/components/util/button/ButtonSimple.vue'
 import HorizontalSeparator from '@/components/util/HorizontalSeparator.vue'
 import router from '@/router'
+import { useUserStore } from '@/stores/UserStore'
 
 export default defineComponent({
   name: 'LoginView',
@@ -14,10 +15,16 @@ export default defineComponent({
     HorizontalSeparator
   },
 
+  setup() {
+    const communicationManager = inject('communicationManager') as CommunicationManager
+    const localStorageManager = inject('localStorageManager') as LocalStorageManager
+    const userStore = useUserStore()
+
+    return { communicationManager, localStorageManager, userStore }
+  },
+
   data() {
     return {
-      communicationManager: inject('communicationManager') as CommunicationManager,
-      localStorageManager: inject('localStorageManager') as LocalStorageManager,
       username: '',
       password: '',
       message: ''
@@ -26,7 +33,7 @@ export default defineComponent({
 
   methods: {
     async login() {
-      const result = await this.communicationManager.login(this.username, this.password)
+      const result = await this.userStore.login(this.username, this.password, this.communicationManager)
       if (!result.success) {
         this.message = result.error.message
         return
@@ -36,7 +43,7 @@ export default defineComponent({
     },
 
     async register() {
-      const result = await this.communicationManager.register(this.username, this.password)
+      const result = await this.userStore.register(this.username, this.password, this.communicationManager)
       if (!result.success) {
         this.message = result.error.message
         return

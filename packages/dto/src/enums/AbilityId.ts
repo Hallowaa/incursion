@@ -1,3 +1,3 @@
 export enum AbilityId {
-  STAB = 'ability_stab',
+  SWIFT_STRIKE = 'ability_swift_strike',
 }

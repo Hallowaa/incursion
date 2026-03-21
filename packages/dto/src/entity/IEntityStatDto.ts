@@ -1,7 +1,8 @@
+import { EntityStatId } from '../enums/EntityStatId'
 import { IEntityStatBuffDto } from './IEntityStatBuffDto'
 
 export interface IEntityStatDto {
-  statId: string
+  statId: EntityStatId
   baseValue: number
   buffs: IEntityStatBuffDto[]
 }

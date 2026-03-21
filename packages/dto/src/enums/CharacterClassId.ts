@@ -28,5 +28,6 @@ export enum CharacterClassId {
   TANK = 'TANK',
   CASTLE = 'CASTLE',
   WALL_OF_FLESH = 'WALL_OF_FLESH',
-  CLASSLESS = 'CLASSLESS'
+  CLASSLESS = 'CLASSLESS',
+  UNKNOWN = 'UNKNOWN'
 }

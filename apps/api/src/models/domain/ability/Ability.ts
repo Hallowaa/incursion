@@ -1,13 +1,13 @@
-import { AbilityId, TargetType } from "@incursion/dto"
-import Entity from "../entity/Entity"
-import IncursionContext from "../incursion/IncursionContext"
-import IAbilityConfig from "./IAbilityConfig"
-
+import type { AbilityId, TargetType } from '@incursion/dto'
+import type Entity from '../entity/Entity'
+import type IncursionContext from '../incursion/IncursionContext'
+import type IAbilityConfig from './IAbilityConfig'
 
 // DOES NOT need conversion, as the mapper does that
 export default class Ability {
   public abilityId: AbilityId
   public name: string
+  public description: string
   public cooldown: number
   public targetType: TargetType
   public effect: (user: Entity, context: IncursionContext) => void
@@ -16,6 +16,7 @@ export default class Ability {
   public constructor(config: IAbilityConfig) {
     this.abilityId = config.abilityId
     this.name = config.name
+    this.description = config.description
     this.cooldown = config.cooldown
     this.targetType = config.targetType
     this.effect = config.effect

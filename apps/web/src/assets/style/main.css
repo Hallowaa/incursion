@@ -47,4 +47,8 @@ div {
   --border-radius-small: 4px;
   --border-radius-medium: 8px;
   --border-radius-large: 12px;
+
+  --dexterity-color: #93ff8f;
+  --strength-color: #ff7a8c;
+  --intelligence-color: #7a9cfc;
 }

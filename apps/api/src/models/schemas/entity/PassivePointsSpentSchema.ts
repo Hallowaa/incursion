@@ -1,7 +1,7 @@
+import type IPassivePointsSpent from '../../interfaces/entity/IPassivePointsSpent'
 import { Schema } from 'mongoose'
-import IPassivePointsSpent from '../../interfaces/entity/IPassivePointsSpent'
 
 export const PassivePointsSpentSchema = new Schema<IPassivePointsSpent>({
   name: { type: String, required: true },
-  amount: { type: Number, default: 0 },
+  amount: { type: Number, default: 0 }
 })

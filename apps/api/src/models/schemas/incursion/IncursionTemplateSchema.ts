@@ -1,15 +1,12 @@
+import { AdversaryTag, IncursionId, IncursionRoomType, IncursionTheme } from '@incursion/dto'
 import { model, Schema } from 'mongoose'
-import { AdversaryTag } from '@incursion/dto/src/enums/AdversaryTag'
-import { IncursionId } from '@incursion/dto/src/enums/IncursionId'
-import { IncursionRoomType } from '@incursion/dto/src/enums/IncursionRoomType'
-import { IncursionTheme } from '@incursion/dto/src/enums/IncursionTheme'
 import { IncursionRoomTemplateSchema } from './IncursionRoomTemplateSchema'
 
 export const IncursionTemplateSchema = new Schema({
   incursionId: {
     type: String,
     enum: Object.values(IncursionId),
-    required: true,
+    required: true
   },
   name: { type: String, required: true },
   theme: { type: String, enum: Object.values(IncursionTheme), required: true },
@@ -20,16 +17,16 @@ export const IncursionTemplateSchema = new Schema({
   guaranteedRooms: {
     type: [String],
     enum: Object.values(IncursionRoomType),
-    default: [],
+    default: []
   },
   adversaryTags: {
     type: [String],
     enum: Object.values(AdversaryTag),
-    default: [],
-  },
+    default: []
+  }
 })
 
 export const IncursionTemplateModel = model(
   'IncursionTemplate',
-  IncursionTemplateSchema,
+  IncursionTemplateSchema
 )

@@ -1,4 +1,4 @@
-import { Socket, Server } from 'socket.io'
+import type { Server, Socket } from 'socket.io'
 
 export function registerConnectionHandlers(io: Server, socket: Socket) {
   console.log('User connected:', socket.data.userId)

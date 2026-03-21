@@ -1,5 +1,4 @@
-import IIncursionTemplate from "../../models/interfaces/incursion/IIncursionTemplate"
-
+import type IIncursionTemplate from '../../models/interfaces/incursion/IIncursionTemplate'
 
 export default class IncursionTemplateMapper {
   public static toDomain(doc: IIncursionTemplate): IIncursionTemplate {
@@ -12,7 +11,7 @@ export default class IncursionTemplateMapper {
       roomCountRange: doc.roomCountRange,
       guaranteedRooms: doc.guaranteedRooms,
       possibleRooms: doc.possibleRooms,
-      adversaryTags: doc.adversaryTags,
+      adversaryTags: doc.adversaryTags
     }
   }
 }

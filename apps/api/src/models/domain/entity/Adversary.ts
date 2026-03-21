@@ -1,6 +1,6 @@
-import Ability from "../ability/Ability"
-import Entity from "./Entity"
-import IAdversaryConfig from "./IAdversaryConfig"
+import type Ability from '../ability/Ability'
+import type IAdversaryConfig from './IAdversaryConfig'
+import Entity from './Entity'
 
 export default class Adversary extends Entity {
   public abilities: Ability[]

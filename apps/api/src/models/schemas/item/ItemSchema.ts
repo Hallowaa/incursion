@@ -6,5 +6,5 @@ export const ItemSchema = new Schema({
   createdAt: { type: Date, default: Date.now },
   levelRequirement: Number,
   itemMods: { type: [ItemModSchema], default: [] },
-  rarity: { type: String, required: true },
+  rarity: { type: String, required: true }
 })

@@ -1,4 +1,5 @@
-export enum EquipmentType {
+export enum ItemType {
+  CONSUMABLE = 'CONSUMABLE',
   MAIN_HAND = 'MAIN_HAND',
   OFF_HAND = 'OFF_HAND',
   HEAD = 'HEAD',

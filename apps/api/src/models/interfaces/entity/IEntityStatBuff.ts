@@ -3,4 +3,5 @@ export default interface IEntityStatBuff {
   flatValue: number
   percentualValue: number
   isAdditive: boolean
+  imageUrl: string
 }

@@ -15,6 +15,7 @@ import UtilityBar from '@/components/UtilityBar.vue'
 import { PopUpType } from '@/enums/PopUpType'
 import router from '@/router'
 import { useUIStore } from '@/stores/UIStore'
+import { useUserStore } from '@/stores/UserStore'
 
 export default defineComponent({
   name: 'DashboardView',
@@ -33,15 +34,10 @@ export default defineComponent({
 
   setup() {
     const uiStore = useUIStore()
+    const communicationManager = inject('communicationManager') as CommunicationManager
+    const localStorageManager = inject('localStorageManager') as LocalStorageManager
 
-    return { uiStore }
-  },
-
-  data() {
-    return {
-      communicationManager: inject('communicationManager') as CommunicationManager,
-      localStorageManager: inject('localStorageManager') as LocalStorageManager
-    }
+    return { uiStore, communicationManager, localStorageManager }
   },
 
   computed: {
@@ -52,18 +48,14 @@ export default defineComponent({
   },
 
   async mounted() {
-    /*
-    if (!this.communicationManager.isAlive()) {
-      this.routeToLogin()
-    }
-      */
-
     const accessToken = this.localStorageManager.getToken()
 
     if (accessToken) {
       this.communicationManager.accessToken = accessToken
       this.communicationManager.initSocket()
-      const result = await this.communicationManager.fetchUser()
+
+      const userStore = useUserStore()
+      const result = await userStore.fetchUser(this.communicationManager)
 
       if (result.success === false) {
         this.routeToLogin()
@@ -125,7 +117,8 @@ export default defineComponent({
   display: flex;
   flex-direction: column;
   height: 100%;
-  width: 100%;
+  width: 70dvw;
+  min-width: 600px;
 }
 
 .dashboard-left-top {
@@ -141,7 +134,9 @@ export default defineComponent({
 
 .dashboard-right {
   display: flex;
-  min-width: 30dvw;
+  width: 30dvw;
+  height: 100%;
+  min-width: 500px;
   flex-direction: column;
 }
 

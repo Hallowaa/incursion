@@ -1,5 +1,5 @@
-import EntityStat from "./EntityStat"
-import IEntityConfig from "./IEntityConfig"
+import type EntityStat from './EntityStat'
+import type IEntityConfig from './IEntityConfig'
 
 export default class Entity {
   public entityId: string

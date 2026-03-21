@@ -1,10 +1,10 @@
-import { Router } from 'express'
+import { randomBytes, randomInt } from 'node:crypto'
 import bcrypt from 'bcrypt'
+import { Router } from 'express'
 import jwt from 'jsonwebtoken'
-import { UserModel } from '../models/schemas/UserSchema'
-import { randomBytes, randomInt } from 'crypto'
-import { CharacterModel } from '../models/schemas/entity/CharacterSchema'
 import CharacterGenerator from '../generators/CharacterGenerator'
+import { CharacterModel } from '../models/schemas/entity/CharacterSchema'
+import { UserModel } from '../models/schemas/UserSchema'
 
 const router = Router()
 const ACCESS_SECRET = 'access-secret'
@@ -20,11 +20,11 @@ router.post('/login/', async (req, res) => {
   if (!valid) return res.status(401).json({ message: 'Invalid credentials' })
 
   const accessToken = jwt.sign({ userId: user.id }, ACCESS_SECRET, {
-    expiresIn: '15m',
+    expiresIn: '15m'
   })
 
   const refreshToken = jwt.sign({ userId: user.id }, REFRESH_SECRET, {
-    expiresIn: '7d',
+    expiresIn: '7d'
   })
 
   user.refreshToken = refreshToken
@@ -33,7 +33,7 @@ router.post('/login/', async (req, res) => {
   res.cookie('refreshToken', refreshToken, {
     httpOnly: true,
     sameSite: 'strict',
-    maxAge: 7 * 24 * 60 * 60 * 1000,
+    maxAge: 7 * 24 * 60 * 60 * 1000
   })
 
   res.json(accessToken)
@@ -53,7 +53,7 @@ router.post('/refresh', async (req, res) => {
     }
 
     const newAccessToken = jwt.sign({ userId: user.id }, ACCESS_SECRET, {
-      expiresIn: '15m',
+      expiresIn: '15m'
     })
 
     res.json(newAccessToken)
@@ -77,7 +77,7 @@ router.post('/register/', async (req, res) => {
   const user = await UserModel.create({ refreshToken, username, passwordHash })
   const characterName = `TEMP #${randomInt(10000, 99999)}`
   const character = await CharacterModel.create(
-    CharacterGenerator.generateCharacter(user.id, characterName),
+    CharacterGenerator.generateCharacter(user.id, characterName)
   )
   user.character = character.id
   await user.save()

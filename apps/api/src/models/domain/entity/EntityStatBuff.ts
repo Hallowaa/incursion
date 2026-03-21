@@ -4,5 +4,6 @@ export default class EntityStatBuff {
     public flatValue: number,
     public percentualValue: number,
     public isAdditive: boolean,
+    public imageUrl: string
   ) {}
 }

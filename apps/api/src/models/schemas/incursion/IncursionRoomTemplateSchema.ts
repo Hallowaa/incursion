@@ -1,12 +1,12 @@
+import type IIncursionRoomTemplate from '../../interfaces/incursion/IIncursionRoomTemplate'
+import { IncursionRoomType } from '@incursion/dto'
 import { Schema } from 'mongoose'
-import { IncursionRoomType } from '@incursion/dto/src/enums/IncursionRoomType'
-import IIncursionRoomTemplate from '../../interfaces/incursion/IIncursionRoomTemplate'
 
 export const IncursionRoomTemplateSchema = new Schema<IIncursionRoomTemplate>({
   type: {
     type: String,
     enum: Object.values(IncursionRoomType),
-    required: true,
+    required: true
   },
-  weight: { type: Number, default: 0 },
+  weight: { type: Number, default: 0 }
 })

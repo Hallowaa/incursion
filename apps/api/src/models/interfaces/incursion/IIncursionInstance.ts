@@ -1,6 +1,5 @@
-import { IncursionId } from "@incursion/dto/src/enums/IncursionId"
-import { IncursionTheme } from "@incursion/dto/src/enums/IncursionTheme"
-import IIncursionContext from "./IIncursionContext"
+import type { IncursionId, IncursionTheme } from '@incursion/dto'
+import type IIncursionContext from './IIncursionContext'
 
 export default interface IIncursionInstance {
   incursionId: IncursionId

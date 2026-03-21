@@ -1,6 +1,8 @@
 <script lang="ts">
-import type IncursionManager from '@/managers/IncursionManager'
+import type CommunicationManager from '@/managers/CommunicationManager'
 import { defineComponent, inject } from 'vue'
+import NotificationManager from '@/managers/NotificationManager'
+import { useIncursionStore } from '@/stores/IncursionStore'
 import { useUIStore } from '@/stores/UIStore'
 import MainMenuButton from './util/button/MainMenuButton.vue'
 
@@ -13,19 +15,20 @@ export default defineComponent({
 
   setup() {
     const uiStore = useUIStore()
+    const incursionStore = useIncursionStore()
+    const communicationManager = inject('communicationManager') as CommunicationManager
 
-    return { uiStore }
-  },
-
-  data() {
-    return {
-      incursionManager: inject('incursionManager') as IncursionManager
-    }
+    return { uiStore, incursionStore, communicationManager }
   },
 
   methods: {
     async beginIncursion() {
-      await this.incursionManager.beginIncursion()
+      NotificationManager.info('Beginning incursion.')
+      const result = await this.incursionStore.beginIncursion(this.communicationManager)
+
+      if (!result.success) {
+        NotificationManager.error('Could not begin incursion')
+      }
     }
   }
 })

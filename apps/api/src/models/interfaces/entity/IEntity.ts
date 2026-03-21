@@ -1,4 +1,4 @@
-import IEntityStat from "./IEntityStat"
+import type IEntityStat from './IEntityStat'
 
 export default interface IEntity {
   entityId: string

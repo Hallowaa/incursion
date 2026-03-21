@@ -1,14 +1,16 @@
-import CharacterClassMapper from "../../../mappers/entity/CharacterClassMapper"
-import ICharacter from "../../interfaces/entity/ICharacter"
-import CharacterClass from "./character-classes/CharacterClass"
-import Entity from "./Entity"
-import EntityStat from "./EntityStat"
-import ICharacterConfig from "./ICharacterConfig"
+import type IPassivePointsSpent from '../../interfaces/entity/IPassivePointsSpent'
+import type CharacterClass from './character-classes/CharacterClass'
+import type EntityStat from './EntityStat'
+import type ICharacterConfig from './ICharacterConfig'
+import type Inventory from './Inventory'
+import Entity from './Entity'
 
 export default class Character extends Entity {
   public experience: number
   public classes: CharacterClass[]
   public stats: EntityStat[]
+  public inventory: Inventory
+  public passivePointsSpent: IPassivePointsSpent[]
 
   public constructor(config: ICharacterConfig) {
     super(config)
@@ -16,17 +18,7 @@ export default class Character extends Entity {
     this.experience = config.experience
     this.classes = structuredClone(config.classes)
     this.stats = structuredClone(config.stats)
+    this.inventory = structuredClone(config.inventory)
+    this.passivePointsSpent = structuredClone(config.passivePointsSpent)
   }
-
-  public static toDomain(doc: ICharacter): Character {
-    return new Character({
-      entityId: 'character',
-      name: doc.name,
-      experience: doc.experience,
-      classes: doc.classes.map((c) => CharacterClassMapper.toDomain(c)),
-      stats: doc.stats.map((s) => EntityStat.toDomain(s)),
-    })
-  }
-
-  public static toDto(doc: ICharacter) {}
 }

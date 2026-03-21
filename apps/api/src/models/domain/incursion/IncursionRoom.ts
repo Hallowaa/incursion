@@ -1,6 +1,5 @@
-import IIncursionRoom from "../../interfaces/incursion/IIncursionRoom"
-import Entity from "../entity/Entity"
-import { IncursionRoomType } from "@incursion/dto/src/enums/IncursionRoomType"
+import type { IncursionRoomType } from '@incursion/dto'
+import type Entity from '../entity/Entity'
 
 export default class IncursionRoom {
   type: IncursionRoomType
@@ -9,12 +8,5 @@ export default class IncursionRoom {
   public constructor(type: IncursionRoomType, entities: Entity[]) {
     this.type = type
     this.entities = structuredClone(entities)
-  }
-
-  public static toDb(incursionRoom: IncursionRoom): IIncursionRoom {
-    return {
-      type: incursionRoom.type,
-      entities: [],
-    }
   }
 }

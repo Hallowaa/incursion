@@ -1,12 +1,7 @@
-import type { ICharacterDto } from '@incursion/dto'
 import type { Socket } from 'socket.io-client'
 import type LocalStorageManager from './LocalStorageManager'
 import type { Result } from '@/datatypes/util/Result'
-import type StoreContainer from '@/stores/StoreContainer'
 import { io } from 'socket.io-client'
-import Character from '@/datatypes/business/entity/Character'
-import Incursion from '@/datatypes/business/incursion/Incursion'
-import User from '@/datatypes/business/User'
 import RestErrorDataTransfer from '@/datatypes/transfer/RestErrorDataTransfer'
 import RestError from '@/errors/RestError'
 import NotificationManager from './NotificationManager'
@@ -25,30 +20,8 @@ export default class CommunicationManager {
    */
   public constructor(
     private readonly uri: string,
-    public readonly localStorageManager: LocalStorageManager,
-    public readonly stores: StoreContainer
+    public readonly localStorageManager: LocalStorageManager
   ) {}
-
-  public async login(
-    username: string,
-    password: string
-  ): Promise<Result<string, RestError>> {
-    const init = this.generateRequestInit(
-      'POST',
-      JSON.stringify({ username, password }),
-      ''
-    )
-
-    const result = await this.generateResult<string>('/auth/login/', init)
-
-    if (result.success) {
-      this.accessToken = result.result
-    }
-
-    this.initSocket()
-
-    return result
-  }
 
   public async loginWithToken(token: string) {
     this.accessToken = token
@@ -81,104 +54,8 @@ export default class CommunicationManager {
     })
   }
 
-  public async register(
-    username: string,
-    password: string
-  ): Promise<Result<undefined, RestError>> {
-    const init = this.generateRequestInit(
-      'POST',
-      JSON.stringify({ username, password }),
-      ''
-    )
-
-    return this.generateResult<undefined>('/auth/register/', init)
-  }
-
   public isAlive(): boolean {
     return this.alive
-  }
-
-  public async fetchUser(): Promise<Result<User, Error>> {
-    const characterResult = await this.fetchCharacter()
-    if (!characterResult.success) {
-      NotificationManager.error('Error fetching character.')
-      return characterResult
-    }
-
-    try {
-      const userData = await this.socketEmit<User>('user:getUser')
-      const result = new User(
-        userData.username,
-        userData.createdAt,
-        characterResult.result
-      )
-
-      return {
-        success: true,
-        result
-      }
-    } catch (err) {
-      return {
-        success: false,
-        error: err as Error
-      }
-    }
-  }
-
-  public async fetchCharacter(): Promise<Result<Character, Error>> {
-    try {
-      const characterData =
-        await this.socketEmit<ICharacterDto>('character:getCharacter')
-
-      if (!characterData) {
-        NotificationManager.error(
-          'Could not fetch character. Character not found.'
-        )
-        return {
-          success: false,
-          error: new Error('No character found')
-        }
-      }
-
-      const result = Character.toDomain(characterData)
-      this.stores.characterStore.character = result
-
-      return {
-        success: true,
-        result
-      }
-    } catch (err) {
-      return {
-        success: false,
-        error: err as Error
-      }
-    }
-  }
-
-  public async beginIncursion(): Promise<Result<Incursion, Error>> {
-    try {
-      const incursionData = await this.socketEmit<Incursion>('incursion:begin')
-
-      if (!incursionData) {
-        NotificationManager.error(
-          'Could not being incursion. Incursion data missing.'
-        )
-        return {
-          success: false,
-          error: new Error('Could not begin incursion')
-        }
-      }
-
-      return {
-        success: true,
-        result: Incursion.fromDb(incursionData)
-      }
-    } catch (err) {
-      return {
-        success: false,
-        error: err as Error
-      }
-    }
   }
 
   public async generateResult<T>(
@@ -282,14 +159,14 @@ export default class CommunicationManager {
     }
   }
 
-  private socketEmit<T>(event: string): Promise<T> {
+  public socketEmit<T>(event: string, data?: any): Promise<T> {
     return new Promise((resolve, reject) => {
       if (!this.socket) {
         reject(new Error('Socket not connected'))
         return
       }
 
-      this.socket.emit(event, null, (response: T) => {
+      this.socket.emit(event, data, (response: T) => {
         resolve(response)
       })
     })
@@ -302,7 +179,7 @@ export default class CommunicationManager {
    * @param token - The token to use for authentication.
    * @returns The generated request init.
    */
-  private generateRequestInit(
+  public generateRequestInit(
     method: string,
     body?: string,
     token?: string

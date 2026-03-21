@@ -1,5 +1,5 @@
-import { EntityStatId } from "@incursion/dto"
-import IEntityStatBuff from "./IEntityStatBuff"
+import type { EntityStatId } from '@incursion/dto'
+import type IEntityStatBuff from './IEntityStatBuff'
 
 // Used for translating between doc and domain object
 export default interface IEntityStat {

@@ -1,4 +1,4 @@
-import { Socket, Server } from 'socket.io'
+import type { Server, Socket } from 'socket.io'
 import { UserModel } from '../../models/schemas/UserSchema'
 
 export function registerUserHandlers(io: Server, socket: Socket) {

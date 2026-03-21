@@ -1,5 +1,4 @@
-import EntityStat from "./EntityStat"
-
+import type EntityStat from './EntityStat'
 
 export default interface IEntityConfig {
   entityId: string

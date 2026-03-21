@@ -1,5 +1,7 @@
 <script lang="ts">
+import { mapState } from 'pinia'
 import { defineComponent } from 'vue'
+import { useCharacterStore } from '@/stores/CharacterStore'
 import ChooseClassButton from './ChooseClassButton.vue'
 import PopUpTitle from './PopUpTitle.vue'
 
@@ -9,6 +11,12 @@ export default defineComponent({
   components: {
     PopUpTitle,
     ChooseClassButton
+  },
+
+  computed: {
+    ...mapState(useCharacterStore, {
+      classAdvancements: (store) => store.classAdvancements
+    })
   }
 })
 </script>
@@ -19,9 +27,7 @@ export default defineComponent({
       <PopUpTitle text="CHOOSE YOUR CLASS" />
     </div>
     <div class="popup-bottom">
-      <ChooseClassButton name="rogue" />
-      <ChooseClassButton name="warrior" />
-      <ChooseClassButton name="mage" />
+      <ChooseClassButton v-for="characterClass in classAdvancements" :key="characterClass.name" :character-class="characterClass" />
     </div>
   </div>
 </template>
@@ -30,6 +36,7 @@ export default defineComponent({
 .popup-choose-class-container {
   width: 60dvw;
   height: 70dvh;
+  min-width: 700px;
   background-color: var(--panel-background-color);
   border-radius: var(--border-radius-large);
   border: 1px solid var(--secondary-color);

@@ -1,4 +1,4 @@
-import { IncursionRoomType } from "@incursion/dto/src/enums/IncursionRoomType"
+import type { IncursionRoomType } from '@incursion/dto'
 
 export default interface IIncursionRoomTemplate {
   type: IncursionRoomType

@@ -1,17 +1,16 @@
-import { Server, Socket } from 'socket.io'
+import type { Server, Socket } from 'socket.io'
 import IncursionGenerator from '../../generators/IncursionGenerator'
+import CharacterMapper from '../../mappers/entity/CharacterMapper'
+import IncursionMapper from '../../mappers/incursion/IncursionMapper'
 import IncursionTemplateMapper from '../../mappers/incursion/IncursionTemplateMapper'
-import Character from '../../models/domain/entity/Character'
-import Incursion from '../../models/domain/incursion/Incursion'
 import { CharacterModel } from '../../models/schemas/entity/CharacterSchema'
 import { IncursionInstanceModel } from '../../models/schemas/incursion/IncursionInstanceSchema'
 import { IncursionTemplateModel } from '../../models/schemas/incursion/IncursionTemplateSchema'
 
-
 export function registerIncursionHandlers(io: Server, socket: Socket) {
   socket.on('incursion:begin', async (_data, callback) => {
     const characterDoc = await CharacterModel.findOne({
-      owner: socket.data.userId,
+      owner: socket.data.userId
     }).lean()
 
     if (characterDoc == null) {
@@ -20,7 +19,7 @@ export function registerIncursionHandlers(io: Server, socket: Socket) {
       return
     }
 
-    const character = Character.toDomain(characterDoc)
+    const character = CharacterMapper.toDomain(characterDoc)
 
     // temporarily just take the first template
     const templateDoc = await IncursionTemplateModel.findOne().lean()
@@ -33,13 +32,13 @@ export function registerIncursionHandlers(io: Server, socket: Socket) {
 
     const template = IncursionTemplateMapper.toDomain(templateDoc)
     const result = IncursionGenerator.generateIncursion(template, character)
-    const toDb = Incursion.toDb(result)
+    const toDb = IncursionMapper.toDb(result)
 
     try {
       const saved = await IncursionInstanceModel.create({
         incursionId: toDb.incursionId,
         theme: toDb.theme,
-        incursionContext: toDb.incursionContext,
+        incursionContext: toDb.incursionContext
       })
       console.log('saved', saved)
       callback(toDb) // plain object, not the mongoose doc

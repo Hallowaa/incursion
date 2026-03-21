@@ -1,13 +1,18 @@
-import * as dotenv from 'dotenv'
-dotenv.config()
+import http from 'node:http'
 
-import http from 'http'
+import * as dotenv from 'dotenv'
 import { app } from './app'
 import { connectDB } from './config/db'
+import { loadItemModRegistry } from './registries/ItemModRegistry'
+import { loadItemTemplateCache } from './registries/ItemTemplateCache'
 import { initSocket } from './socket'
+
+dotenv.config()
 
 async function start() {
   await connectDB()
+  await loadItemModRegistry()
+  await loadItemTemplateCache()
 
   const server = http.createServer(app)
   initSocket(server)

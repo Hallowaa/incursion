@@ -1,7 +1,8 @@
 <script lang="ts">
+import type CommunicationManager from '@/managers/CommunicationManager'
 import { CharacterClassId } from '@incursion/dto'
 import { mapState } from 'pinia'
-import { defineComponent } from 'vue'
+import { defineComponent, inject } from 'vue'
 import { PopUpType } from '@/enums/PopUpType'
 import { useCharacterStore } from '@/stores/CharacterStore'
 import { useUIStore } from '@/stores/UIStore'
@@ -20,13 +21,10 @@ export default defineComponent({
 
   setup() {
     const uiStore = useUIStore()
+    const characterStore = useCharacterStore()
+    const communicationManager = inject('communicationManager') as CommunicationManager
 
-    return { uiStore }
-  },
-
-  data() {
-    return {
-    }
+    return { uiStore, characterStore, communicationManager }
   },
 
   computed: {
@@ -34,12 +32,13 @@ export default defineComponent({
       characterName: (store) => store.character?.name,
       characterClass: (store) => store.character?.classes[store.character.classes.length - 1],
       characterStats: (store) => store.character?.stats ?? [],
-      isClassless: (store) => store.character?.classes[store.character.classes.length - 1] === CharacterClassId.CLASSLESS
+      isClassless: (store) => store.character?.classes.at(-1)?.name === CharacterClassId.CLASSLESS
     })
   },
 
   methods: {
-    openChooseClassPopUp() {
+    async openChooseClassPopUp() {
+      this.characterStore.fetchClassAdvancements(this.communicationManager)
       this.uiStore.setCurrentPopUp(PopUpType.CHOOSE_CLASS)
     }
   }
@@ -62,13 +61,13 @@ export default defineComponent({
             </CharacterStat>
             <CharacterStat text="CLASS">
               <div v-if="characterClass && !isClassless">
-                {{ characterClass }}
+                {{ characterClass.name }}
               </div>
               <div v-else>
                 <ButtonBackgrounded text="CHOOSE CLASS" @clicked="openChooseClassPopUp()" />
               </div>
             </CharacterStat>
-            <CharacterStat v-for="stat in characterStats" :key="stat.statId" :text="stat.displayName">
+            <CharacterStat v-for="(stat, index) in characterStats" :key="stat.statId" :text="stat.displayName" :is-last="index === characterStats.length - 1">
               {{ stat.currentValue }}
             </CharacterStat>
           </div>

@@ -1,4 +1,4 @@
-import { Socket } from 'socket.io'
+import type { Socket } from 'socket.io'
 import { verifyAccessToken } from '../../middleware/auth'
 
 export function socketAuth(socket: Socket, next: (err?: Error) => void) {

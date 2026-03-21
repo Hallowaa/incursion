@@ -1,7 +1,7 @@
-import { CharacterClassId, EntityStatId } from "@incursion/dto";
-import Ability from "../../ability/Ability";
-import EntityStat from "../EntityStat";
-import CharacterClass from "./CharacterClass";
+import type Ability from '../../ability/Ability'
+import { CharacterClassId, EntityStatId } from '@incursion/dto'
+import EntityStat from '../EntityStat'
+import CharacterClass from './CharacterClass'
 
 export default class WarriorClass extends CharacterClass {
   public constructor() {
@@ -12,7 +12,9 @@ export default class WarriorClass extends CharacterClass {
       new EntityStat(EntityStatId.INTELLIGENCE, 1, [])
     ]
     const abilities: Ability[] = []
-  
-    super(name, stats, abilities)
+    const advancements: CharacterClassId[] = []
+    const description = 'Only in battle do we find true meaning.'
+
+    super(name, stats, abilities, advancements, description)
   }
 }
