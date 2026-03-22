@@ -1,9 +1,10 @@
 <script lang="ts">
 import type { EntityStatId, ICharacterClassDto } from '@incursion/dto'
 import type { PropType } from 'vue'
+import type CommunicationManager from '@/managers/CommunicationManager'
 import { CharacterClassId } from '@incursion/dto'
 import { mapState } from 'pinia'
-import { defineComponent } from 'vue'
+import { defineComponent, inject } from 'vue'
 import { useCharacterStore } from '@/stores/CharacterStore'
 import CharacterStat from '../user/CharacterStat.vue'
 
@@ -15,7 +16,17 @@ export default defineComponent({
   },
 
   props: {
-    characterClass: Object as PropType<ICharacterClassDto>
+    characterClass: {
+      type: Object as PropType<ICharacterClassDto>,
+      required: true
+    }
+  },
+
+  setup() {
+    const characterStore = useCharacterStore()
+    const comm = inject('communicationManager') as CommunicationManager
+
+    return { characterStore, comm }
   },
 
   computed: {
@@ -45,7 +56,10 @@ export default defineComponent({
   },
   methods: {
     getStatName(stat: EntityStatId) {
-      return stat.split('_')[1].toLocaleUpperCase()
+      return stat.substring(5).replaceAll('_', ' ').toLocaleUpperCase()
+    },
+    async chooseCharacterClass() {
+      await this.characterStore.chooseCharacterClass(this.comm, this.characterClass.name)
     }
   }
 
@@ -53,7 +67,7 @@ export default defineComponent({
 </script>
 
 <template>
-  <div class="choose-class-button-container">
+  <div class="choose-class-button-container" @click="chooseCharacterClass()">
     <div class="button-top">
       <h1 class="class-name">
         {{ upperName }}

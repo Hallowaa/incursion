@@ -2,7 +2,9 @@
   "permissions": {
     "allow": [
       "Bash(npx tsc:*)",
-      "Bash(pnpm add:*)"
+      "Bash(pnpm add:*)",
+      "Bash(find /c/Users/Dani/incursion -type d -name *db* -o -type d -name *mongo* -o -type d -name *models*)",
+      "Bash(find /c/Users/Dani/incursion -path */node_modules -prune -o -type f -name *migrate* -o -name *seed* -o -name *patch*)"
     ]
   }
 }

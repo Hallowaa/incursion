@@ -1,11 +1,11 @@
-import type { EquipmentType, IItemDto } from '@incursion/dto'
+import type { IItemDto, ItemType } from '@incursion/dto'
 
 export default class Item {
   public constructor(
     readonly id: string,
     readonly name: string,
     readonly description: string,
-    readonly type: EquipmentType,
+    readonly type: ItemType,
     readonly rarity: string,
     readonly levelRequirement: number,
     readonly stats: Record<string, number>,

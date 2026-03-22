@@ -9,7 +9,8 @@ export default class WarriorClass extends CharacterClass {
     const stats = [
       new EntityStat(EntityStatId.DEXTERITY, 6, []),
       new EntityStat(EntityStatId.STRENGTH, 19, []),
-      new EntityStat(EntityStatId.INTELLIGENCE, 1, [])
+      new EntityStat(EntityStatId.INTELLIGENCE, 1, []),
+      new EntityStat(EntityStatId.MOVEMENT_SPEED, 0, [])
     ]
     const abilities: Ability[] = []
     const advancements: CharacterClassId[] = []

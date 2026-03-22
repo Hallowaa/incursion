@@ -5,4 +5,5 @@ export enum EntityStatId {
   INTELLIGENCE = 'stat_intelligence',
   PHSYICAL_ENDURANCE = 'stat_physical_endurance',
   MAGIC_ENDURANCE = 'stat_magic_endurance',
+  MOVEMENT_SPEED = 'stat_movement_speed'
 }

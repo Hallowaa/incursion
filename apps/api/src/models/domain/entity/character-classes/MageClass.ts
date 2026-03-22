@@ -9,7 +9,8 @@ export default class MageClass extends CharacterClass {
     const stats = [
       new EntityStat(EntityStatId.DEXTERITY, 4, []),
       new EntityStat(EntityStatId.STRENGTH, 2, []),
-      new EntityStat(EntityStatId.INTELLIGENCE, 20, [])
+      new EntityStat(EntityStatId.INTELLIGENCE, 20, []),
+      new EntityStat(EntityStatId.MOVEMENT_SPEED, -0.2, [])
     ]
     const abilities: Ability[] = []
     const advancements: CharacterClassId[] = []

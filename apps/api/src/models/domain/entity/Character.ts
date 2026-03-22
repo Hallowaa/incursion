@@ -21,4 +21,8 @@ export default class Character extends Entity {
     this.inventory = structuredClone(config.inventory)
     this.passivePointsSpent = structuredClone(config.passivePointsSpent)
   }
+
+  public addCharacterClass(characterClass: CharacterClass) {
+    this.classes.push(characterClass)
+  }
 }

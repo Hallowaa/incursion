@@ -9,7 +9,8 @@ export default class RogueClass extends CharacterClass {
     const stats = [
       new EntityStat(EntityStatId.DEXTERITY, 13, []),
       new EntityStat(EntityStatId.STRENGTH, 9, []),
-      new EntityStat(EntityStatId.INTELLIGENCE, 4, [])
+      new EntityStat(EntityStatId.INTELLIGENCE, 4, []),
+      new EntityStat(EntityStatId.MOVEMENT_SPEED, 0.4, [])
     ]
     const abilities: Ability[] = []
     const advancements: CharacterClassId[] = []

@@ -6,9 +6,10 @@ import IncursionTemplateMapper from '../../mappers/incursion/IncursionTemplateMa
 import { CharacterModel } from '../../models/schemas/entity/CharacterSchema'
 import { IncursionInstanceModel } from '../../models/schemas/incursion/IncursionInstanceSchema'
 import { IncursionTemplateModel } from '../../models/schemas/incursion/IncursionTemplateSchema'
+import { safeHandler } from './safeHandler'
 
 export function registerIncursionHandlers(io: Server, socket: Socket) {
-  socket.on('incursion:begin', async (_data, callback) => {
+  socket.on('incursion:begin', safeHandler(async (_data, callback) => {
     const characterDoc = await CharacterModel.findOne({
       owner: socket.data.userId
     }).lean()
@@ -40,11 +41,13 @@ export function registerIncursionHandlers(io: Server, socket: Socket) {
         theme: toDb.theme,
         incursionContext: toDb.incursionContext
       })
+
+      // eslint-disable-next-line no-console
       console.log('saved', saved)
       callback(toDb) // plain object, not the mongoose doc
     } catch (err) {
       console.error('Failed to save incursion', err)
       callback()
     }
-  })
+  }))
 }

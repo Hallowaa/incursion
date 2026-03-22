@@ -41,6 +41,11 @@ export default class CharacterGenerator {
           statId: EntityStatId.MAGIC_ENDURANCE,
           baseValue: 0,
           buffs: []
+        },
+        {
+          statId: EntityStatId.MOVEMENT_SPEED,
+          baseValue: 1,
+          buffs: []
         }
       ],
       currentIncursion: undefined
