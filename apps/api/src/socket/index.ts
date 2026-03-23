@@ -1,4 +1,5 @@
 import { Server } from 'socket.io'
+import IncursionManager from '../managers/IncursionManager'
 import { registerCharacterHandlers } from './handlers/character'
 import { registerConnectionHandlers } from './handlers/connection'
 import { registerIncursionHandlers } from './handlers/incursion'
@@ -10,13 +11,15 @@ export function initSocket(server: any) {
     cors: { origin: '*' }
   })
 
+  const incursionManager = new IncursionManager()
+
   io.use(socketAuth)
 
   io.on('connection', (socket) => {
     registerConnectionHandlers(io, socket)
     registerCharacterHandlers(io, socket)
     registerUserHandlers(io, socket)
-    registerIncursionHandlers(io, socket)
+    registerIncursionHandlers(io, socket, incursionManager)
   })
 
   return io

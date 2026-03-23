@@ -1,5 +1,4 @@
-import type { IIncursionTemplate } from '../models/interfaces/incursion/IIncursionTemplate'
-
+import type IIncursionTemplate from '../models/interfaces/incursion/IIncursionTemplate'
 import { AdversaryTag, IncursionId, IncursionRoomType, IncursionTheme } from '@incursion/dto'
 import * as dotenv from 'dotenv'
 import mongoose from 'mongoose'

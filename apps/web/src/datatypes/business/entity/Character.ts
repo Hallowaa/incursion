@@ -1,4 +1,5 @@
 import type { ICharacterClassDto } from '@incursion/dto'
+import type Incursion from '../incursion/Incursion'
 import type Inventory from '../item/Inventory'
 import type EntityStat from './EntityStat'
 import type PassivePointsSpent from './PassivePointsSpent'
@@ -10,6 +11,7 @@ export default class Character {
     public classes: ICharacterClassDto[], // TODO: make own class obj
     public inventory: Inventory,
     public passivePointsSpent: PassivePointsSpent[],
-    public stats: EntityStat[]
+    public stats: EntityStat[],
+    public currentIncursion: Incursion | undefined
   ) {}
 }
