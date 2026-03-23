@@ -1,12 +1,12 @@
-import type IIncursionContext from './IIncursionContext'
+import type { IncursionId } from '@incursion/dto'
+import type IncursionRoom from './IncursionRoom'
 
 export default class Incursion {
   public constructor(
-    public theme: string,
-    public context: IIncursionContext
+    public incursionId: IncursionId,
+    public name: string,
+    public level: number,
+    public currentRoom: IncursionRoom,
+    public theme: string
   ) {}
-
-  public static fromDb(incursion: Incursion): Incursion {
-    return new Incursion(incursion.theme, incursion.context)
-  }
 }

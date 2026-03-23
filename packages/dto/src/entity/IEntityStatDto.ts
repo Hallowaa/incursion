@@ -5,4 +5,5 @@ export interface IEntityStatDto {
   statId: EntityStatId
   baseValue: number
   buffs: IEntityStatBuffDto[]
+  currentValue: number
 }

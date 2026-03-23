@@ -1,9 +1,11 @@
-import type { CharacterClassId, EntityStatId, ICharacterClassDto, ICharacterDto } from '@incursion/dto'
+import type { CharacterClassId, EntityStatId, ICharacterClassDto, ICharacterDto, IEntityStatDto } from '@incursion/dto'
+import type Character from '@/datatypes/business/entity/Character'
 import type { Result } from '@/datatypes/util/Result'
 import type CommunicationManager from '@/managers/CommunicationManager'
 import { defineStore } from 'pinia'
-import Character from '@/datatypes/business/entity/Character'
 import NotificationManager from '@/managers/NotificationManager'
+import CharacterMapper from '@/mappers/CharacterMapper'
+import EntityStatMapper from '@/mappers/EntityStatMapper'
 
 export const useCharacterStore = defineStore('character', {
   state: () => {
@@ -32,7 +34,7 @@ export const useCharacterStore = defineStore('character', {
           }
         }
 
-        const result = Character.toDomain(characterData)
+        const result = CharacterMapper.toDomain(characterData)
         this.character = result
 
         return {
@@ -104,6 +106,24 @@ export const useCharacterStore = defineStore('character', {
           error: err as Error
         }
       }
+    },
+
+    registerCharacterHandlers(comm: CommunicationManager) {
+      comm.onSocket('character:statsUpdated', (data: IEntityStatDto[]) => {
+        if (!this.character) {
+          NotificationManager.warn('Received character stats update when no character exists.')
+          return
+        }
+        this.character.stats = data.map((s) => EntityStatMapper.toDomain(s))
+      })
+
+      comm.onSocket('character:classUpdated', (data: ICharacterClassDto) => {
+        if (!this.character) {
+          NotificationManager.warn('Received character class update when no character exists.')
+          return
+        }
+        this.character.classes.push(data)
+      })
     }
   }
 })

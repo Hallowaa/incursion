@@ -16,7 +16,6 @@ const localStorageManager = new LocalStorageManager()
 const communicationManager = new CommunicationManager(uri, localStorageManager)
 
 // PROVIDE
-
 app.provide('communicationManager', communicationManager)
 app.provide('localStorageManager', localStorageManager)
 

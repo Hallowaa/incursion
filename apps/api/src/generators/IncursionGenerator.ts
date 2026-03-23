@@ -1,5 +1,4 @@
 import type Character from '../models/domain/entity/Character'
-import type IncursionContext from '../models/domain/incursion/IncursionContext'
 import type IIncursionTemplate from '../models/interfaces/incursion/IIncursionTemplate'
 import { AdversaryId, EntityStatId, IncursionRoomType } from '@incursion/dto'
 import Entity from '../models/domain/entity/Entity'
@@ -13,19 +12,19 @@ export default class IncursionGenerator {
     template: IIncursionTemplate,
     character: Character
   ) {
-    const context: IncursionContext = {
-      name: template.name,
-      level: character.experience,
-      rooms: [
-        new IncursionRoom(IncursionRoomType.FIGHT, [
-          new Entity({
-            entityId: AdversaryId.GHOUL,
-            name: 'Ghoul',
-            stats: [new EntityStat(EntityStatId.HEALTH, 15, [])]
-          })
-        ])
-      ]
-    }
-    return new Incursion(template.incursionId, template.theme, context)
+    const rooms = [
+      new IncursionRoom(IncursionRoomType.FIGHT, [
+        character,
+        new Entity({
+          entityId: AdversaryId.GHOUL,
+          name: 'Ghoul',
+          stats: [new EntityStat(EntityStatId.HEALTH, 15, [])]
+        })
+      ])
+    ]
+
+    const levelDiff = template.maxLevel - template.minLevel
+    const level = template.minLevel + Math.floor(Math.random() * levelDiff)
+    return new Incursion(template.incursionId, template.name, level, rooms, rooms[0], template.theme)
   }
 }

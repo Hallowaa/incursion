@@ -6,6 +6,6 @@ export default class Adversary extends Entity {
   public abilities: Ability[]
   public constructor(config: IAdversaryConfig) {
     super(config)
-    this.abilities = structuredClone(config.abilities)
+    this.abilities = config.abilities
   }
 }

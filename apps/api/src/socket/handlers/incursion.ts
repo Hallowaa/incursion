@@ -20,7 +20,7 @@ export function registerIncursionHandlers(io: Server, socket: Socket) {
       return
     }
 
-    const character = CharacterMapper.toDomain(characterDoc)
+    const character = await CharacterMapper.toDomain(characterDoc)
 
     // temporarily just take the first template
     const templateDoc = await IncursionTemplateModel.findOne().lean()
@@ -38,8 +38,11 @@ export function registerIncursionHandlers(io: Server, socket: Socket) {
     try {
       const saved = await IncursionInstanceModel.create({
         incursionId: toDb.incursionId,
-        theme: toDb.theme,
-        incursionContext: toDb.incursionContext
+        name: toDb.name,
+        level: toDb.level,
+        rooms: toDb.rooms,
+        currentRoom: toDb.currentRoom,
+        theme: toDb.theme
       })
 
       // eslint-disable-next-line no-console

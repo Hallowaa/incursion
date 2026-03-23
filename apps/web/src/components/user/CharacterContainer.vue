@@ -33,7 +33,10 @@ export default defineComponent({
       characterClass: (store) => store.character?.classes[store.character.classes.length - 1],
       characterStats: (store) => store.character?.stats ?? [],
       isClassless: (store) => store.character?.classes.at(-1)?.name === CharacterClassId.CLASSLESS
-    })
+    }),
+    characterClassImageUrl() {
+      return `src/assets/images/classes/${this.characterClass?.name?.toLocaleLowerCase()}.png`
+    }
   },
 
   methods: {
@@ -60,7 +63,8 @@ export default defineComponent({
               {{ characterName ?? 'NOT LOADED' }}
             </CharacterStat>
             <CharacterStat text="CLASS">
-              <div v-if="characterClass && !isClassless">
+              <div v-if="characterClass && !isClassless" class="character-class-container">
+                <img class="character-class-image" :src="characterClassImageUrl">
                 {{ characterClass.name }}
               </div>
               <div v-else>
@@ -205,5 +209,16 @@ export default defineComponent({
   flex-direction: column;
   padding: 10px;
   gap: 10px;
+}
+
+.character-class-image {
+  width: 20px;
+  height: 20px;
+}
+
+.character-class-container {
+  display: flex;
+  justify-content: center;
+  gap: 5px;
 }
 </style>

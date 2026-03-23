@@ -4,6 +4,6 @@ export default class Inventory {
   public items: Item[]
 
   public constructor(items: Item[]) {
-    this.items = structuredClone(items)
+    this.items = items
   }
 }

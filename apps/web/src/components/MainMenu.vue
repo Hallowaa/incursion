@@ -24,11 +24,13 @@ export default defineComponent({
   methods: {
     async beginIncursion() {
       NotificationManager.info('Beginning incursion.')
-      const result = await this.incursionStore.beginIncursion(this.communicationManager)
-
-      if (!result.success) {
-        NotificationManager.error('Could not begin incursion')
+      const response = await this.incursionStore.beginIncursion(this.communicationManager)
+      if (!response.success) {
+        NotificationManager.error(`Could not begin incursion: ${response.error}`)
+        return
       }
+
+      this.incursionStore.incursion = response.result
     }
   }
 })

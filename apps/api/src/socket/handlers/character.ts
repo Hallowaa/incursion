@@ -2,6 +2,7 @@ import type { CharacterClassId } from '@incursion/dto'
 import type { Server, Socket } from 'socket.io'
 import CharacterClassMapper from '../../mappers/entity/CharacterClassMapper'
 import CharacterMapper from '../../mappers/entity/CharacterMapper'
+import EntityStatMapper from '../../mappers/entity/EntityStatMapper'
 import { CharacterModel } from '../../models/schemas/entity/CharacterSchema'
 import { safeHandler } from './safeHandler'
 
@@ -16,7 +17,7 @@ export function registerCharacterHandlers(io: Server, socket: Socket) {
       return
     }
 
-    const character = CharacterMapper.toDomain(characterModel)
+    const character = await CharacterMapper.toDomain(characterModel)
     callback(CharacterMapper.toDto(character))
   }))
 
@@ -30,7 +31,7 @@ export function registerCharacterHandlers(io: Server, socket: Socket) {
       return
     }
 
-    const character = CharacterMapper.toDomain(characterModel)
+    const character = await CharacterMapper.toDomain(characterModel)
     const characterClass = character.classes.at(-1)!.advancements.map((ca) => CharacterClassMapper.toDto(CharacterClassMapper.toDomain(ca)))
     callback(characterClass)
   }))
@@ -51,10 +52,20 @@ export function registerCharacterHandlers(io: Server, socket: Socket) {
 
     // update characterClass arr of character
 
-    const character = CharacterMapper.toDomain(characterModel)
+    const character = await CharacterMapper.toDomain(characterModel)
     const characterClass = CharacterClassMapper.toDomain(characterClassId)
 
     character.addCharacterClass(characterClass)
+
+    await CharacterModel.updateOne(
+      { _id: characterModel._id },
+      { $push: { classes: characterClassId } }
+    )
+
+    const statsDto = character.stats.map((s) => EntityStatMapper.toDto(s))
+    socket.emit('character:classUpdated', characterClass)
+    socket.emit('character:statsUpdated', statsDto)
+    callback(true)
   }))
 }
 

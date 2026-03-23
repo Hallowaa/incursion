@@ -11,7 +11,8 @@ export default class EntityStatMapper {
     return {
       statId: entityStat.statId,
       baseValue: entityStat.baseValue,
-      buffs: entityStat.buffs
+      buffs: entityStat.buffs,
+      currentValue: entityStat.currentValue
     }
   }
 }

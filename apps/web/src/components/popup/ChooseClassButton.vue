@@ -6,6 +6,7 @@ import { CharacterClassId } from '@incursion/dto'
 import { mapState } from 'pinia'
 import { defineComponent, inject } from 'vue'
 import { useCharacterStore } from '@/stores/CharacterStore'
+import { useUIStore } from '@/stores/UIStore'
 import CharacterStat from '../user/CharacterStat.vue'
 
 export default defineComponent({
@@ -24,9 +25,10 @@ export default defineComponent({
 
   setup() {
     const characterStore = useCharacterStore()
+    const uiStore = useUIStore()
     const comm = inject('communicationManager') as CommunicationManager
 
-    return { characterStore, comm }
+    return { characterStore, uiStore, comm }
   },
 
   computed: {
@@ -60,6 +62,7 @@ export default defineComponent({
     },
     async chooseCharacterClass() {
       await this.characterStore.chooseCharacterClass(this.comm, this.characterClass.name)
+      this.uiStore.closeCurrentPopUp()
     }
   }
 

@@ -1,16 +1,15 @@
 import type Entity from '../../entity/Entity'
-import type Incursion from '../../incursion/Incursion'
 import type IAbilityConfig from '../IAbilityConfig'
 import { AbilityId, TargetType } from '@incursion/dto'
 import Ability from '../Ability'
 
-export default class AbilitySwiftStrike extends Ability {
+export default class AbilityMove extends Ability {
   public constructor() {
     const config: IAbilityConfig = {
-      abilityId: AbilityId.SWIFT_STRIKE,
-      name: 'SWIFT STRIKE',
-      description: 'Something something idk',
-      cooldown: 0,
+      abilityId: AbilityId.MOVE,
+      name: 'MOVE',
+      description: 'Move 1 unit up, down, left or right.',
+      cooldown: 1,
       targetType: TargetType.SELF,
       effect: function (user: Entity, context: Incursion): void {
         throw new Error('Function not implemented.')

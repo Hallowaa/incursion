@@ -1,10 +1,13 @@
 import type { IncursionId, IncursionTheme } from '@incursion/dto'
-import type IncursionContext from './IncursionContext'
+import type IncursionRoom from './IncursionRoom'
 
 export default class Incursion {
   public constructor(
     public incursionId: IncursionId,
-    public theme: IncursionTheme,
-    public context: IncursionContext
+    public name: string,
+    public level: number,
+    public rooms: IncursionRoom[],
+    public currentRoom: IncursionRoom,
+    public theme: IncursionTheme
   ) {}
 }

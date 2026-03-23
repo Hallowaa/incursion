@@ -1,4 +1,5 @@
 import { CharacterClassId } from '../enums/CharacterClassId'
+import { IIncursionDto } from '../incursion/IIncursionDto'
 import { IItemDto } from '../item/IItemDto'
 import { ICharacterClassDto } from './ICharacterClassDto'
 import { IEntityStatDto } from './IEntityStatDto'
@@ -11,5 +12,5 @@ export interface ICharacterDto {
   inventory: IItemDto[]
   passivePointsSpent: IPassivePointsSpentDto[]
   stats: IEntityStatDto[]
-  currentIncursion: string | undefined
+  currentIncursion: IIncursionDto | undefined
 }

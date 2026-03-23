@@ -10,4 +10,5 @@ export interface IItemDto {
   levelRequirement: number
   stats: Record<string, number>
   imageUrl?: string
+  // TODO: mods
 }

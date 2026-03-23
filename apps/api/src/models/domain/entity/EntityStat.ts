@@ -27,4 +27,18 @@ export default class EntityStat {
 
     return result
   }
+
+  public addBuff(buff: EntityStatBuff) {
+    const existingBuff = this.buffs.find((b) => b.name === buff.name)
+    if (existingBuff) {
+      existingBuff.flatValue = buff.flatValue
+      existingBuff.imageUrl = buff.imageUrl
+      existingBuff.isAdditive = buff.isAdditive
+      existingBuff.percentualValue = buff.percentualValue
+
+      return
+    }
+
+    this.buffs.push(buff)
+  }
 }

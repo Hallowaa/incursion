@@ -4,6 +4,7 @@ import type { Result } from '@/datatypes/util/Result'
 import { io } from 'socket.io-client'
 import RestErrorDataTransfer from '@/datatypes/transfer/RestErrorDataTransfer'
 import RestError from '@/errors/RestError'
+import { useCharacterStore } from '@/stores/CharacterStore'
 import NotificationManager from './NotificationManager'
 
 export default class CommunicationManager {
@@ -52,6 +53,10 @@ export default class CommunicationManager {
         }
       }
     })
+
+    const characterStore = useCharacterStore()
+
+    characterStore.registerCharacterHandlers(this)
   }
 
   public isAlive(): boolean {
@@ -170,6 +175,14 @@ export default class CommunicationManager {
         resolve(response)
       })
     })
+  }
+
+  public onSocket<T>(event: string, handler: (data: T) => void) {
+    this.socket?.on(event, handler)
+  }
+
+  public offSocket(event: string) {
+    this.socket?.removeAllListeners(event)
   }
 
   /**
