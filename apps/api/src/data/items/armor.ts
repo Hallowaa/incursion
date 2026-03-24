@@ -1,13 +1,15 @@
 import type IItemTemplate from '../../models/interfaces/item/IItemTemplate'
-import { ItemType } from '@incursion/dto'
+import { ItemType, ModIndex } from '@incursion/dto'
 
 // indices 0 - 999
 export const armor: IItemTemplate[] = [
   {
     itemIndex: 0,
     name: 'Cloth Robe',
-    description: 'A lightweight robe favored by apprentice mages.',
+    description: 'Sometimes, the price of fashion is inconvenience.',
     type: ItemType.BODY,
-    possibleModIndices: [3]
+    possibleModIndices: [
+      ModIndex.HEALTH_FLAT
+    ]
   }
 ]

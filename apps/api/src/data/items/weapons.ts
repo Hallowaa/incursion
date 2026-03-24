@@ -1,13 +1,16 @@
 import type IItemTemplate from '../../models/interfaces/item/IItemTemplate'
-import { ItemType } from '@incursion/dto'
+import { ItemType, ModIndex } from '@incursion/dto'
 
 // indices 1000 - 1999
 export const weapons: IItemTemplate[] = [
   {
     itemIndex: 1000,
     name: 'Dull Sword',
-    description: 'A worn blade, still sharp enough to cut.',
+    description: 'I strike, and strike, AND STRIKE! But nothing happens...',
     type: ItemType.MAIN_HAND,
-    possibleModIndices: [1, 2]
+    possibleModIndices: [
+      ModIndex.STRENGTH_FLAT,
+      ModIndex.DEXTERITY_FLAT
+    ]
   }
 ]
