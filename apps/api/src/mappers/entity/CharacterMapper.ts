@@ -6,6 +6,7 @@ import Character from '../../models/domain/entity/Character'
 import Inventory from '../../models/domain/entity/Inventory'
 import { IncursionInstanceModel } from '../../models/schemas/incursion/IncursionInstanceSchema'
 import IncursionMapper from '../incursion/IncursionMapper'
+import PositionMapper from '../incursion/PositionMapper'
 import InventoryMapper from '../item/InvetoryMapper'
 import CharacterClassMapper from './CharacterClassMapper'
 import EntityStatMapper from './EntityStatMapper'
@@ -39,7 +40,8 @@ export default class CharacterMapper {
       stats: doc.stats.map((s) => EntityStatMapper.toDomain(s)),
       inventory: new Inventory([]), // TODO: implement
       passivePointsSpent: [], // TODO: implement
-      currentIncursion
+      currentIncursion,
+      position: PositionMapper.toDomain(doc.position)
     })
     return character
   }

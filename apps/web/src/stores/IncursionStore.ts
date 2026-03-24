@@ -9,6 +9,7 @@ import IncursionMapper from '@/mappers/IncursionMapper'
 export const useIncursionStore = defineStore('incursion', {
   state: () => {
     return {
+      isViewingIncursion: false,
       incursion: undefined as Incursion | undefined
     }
   },
@@ -28,6 +29,7 @@ export const useIncursionStore = defineStore('incursion', {
 
         const result = IncursionMapper.toDomain(incursionData)
         this.incursion = result
+        this.isViewingIncursion = true
 
         return {
           success: true,

@@ -6,6 +6,7 @@ import { defineStore } from 'pinia'
 import NotificationManager from '@/managers/NotificationManager'
 import CharacterMapper from '@/mappers/CharacterMapper'
 import EntityStatMapper from '@/mappers/EntityStatMapper'
+import { useIncursionStore } from './IncursionStore'
 
 export const useCharacterStore = defineStore('character', {
   state: () => {
@@ -36,6 +37,9 @@ export const useCharacterStore = defineStore('character', {
 
         const result = CharacterMapper.toDomain(characterData)
         this.character = result
+
+        const incursionStore = useIncursionStore()
+        incursionStore.incursion = this.character.currentIncursion
 
         return {
           success: true,

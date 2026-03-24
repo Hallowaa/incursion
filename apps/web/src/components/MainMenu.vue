@@ -1,5 +1,6 @@
 <script lang="ts">
 import type CommunicationManager from '@/managers/CommunicationManager'
+import { mapState } from 'pinia'
 import { defineComponent, inject } from 'vue'
 import NotificationManager from '@/managers/NotificationManager'
 import { useIncursionStore } from '@/stores/IncursionStore'
@@ -21,8 +22,19 @@ export default defineComponent({
     return { uiStore, incursionStore, communicationManager }
   },
 
+  computed: {
+    ...mapState(useIncursionStore, {
+      incursionText: (store) => store.incursion ? 'RESUME INCURSION' : 'BEGIN INCURSION'
+    })
+  },
+
   methods: {
     async beginIncursion() {
+      if (this.incursionStore.incursion) {
+        this.incursionStore.isViewingIncursion = true
+        NotificationManager.info('Incursion exists, viewing incursion now.')
+        return
+      }
       NotificationManager.info('Beginning incursion.')
       const response = await this.incursionStore.beginIncursion(this.communicationManager)
       if (!response.success) {
@@ -38,7 +50,7 @@ export default defineComponent({
 
 <template>
   <div class="main-menu-container">
-    <MainMenuButton text="INCURSION" @clicked="beginIncursion" />
+    <MainMenuButton :text="incursionText" @clicked="beginIncursion" />
     <MainMenuButton text="MARKET" />
     <MainMenuButton text="LEADERBOARDS" />
   </div>

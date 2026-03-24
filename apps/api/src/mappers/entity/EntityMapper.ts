@@ -1,6 +1,7 @@
 import type { IEntityDto } from '@incursion/dto'
 import type IEntity from '../../models/interfaces/entity/IEntity'
 import Entity from '../../models/domain/entity/Entity'
+import PositionMapper from '../incursion/PositionMapper'
 import EntityStatMapper from './EntityStatMapper'
 
 export default class EntityMapper {
@@ -8,7 +9,8 @@ export default class EntityMapper {
     return new Entity({
       entityId: doc.entityId,
       name: doc.name,
-      stats: doc.stats.map((s) => EntityStatMapper.toDomain(s))
+      stats: doc.stats.map((s) => EntityStatMapper.toDomain(s)),
+      position: PositionMapper.toDomain(doc.position)
     })
   }
 
@@ -16,7 +18,8 @@ export default class EntityMapper {
     return {
       entityId: entity.entityId,
       name: entity.name,
-      stats: entity.stats.map((s) => EntityStatMapper.toDto(s))
+      stats: entity.stats.map((s) => EntityStatMapper.toDto(s)),
+      position: entity.position
     }
   }
 }

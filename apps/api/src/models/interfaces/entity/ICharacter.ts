@@ -1,4 +1,5 @@
 import type mongoose from 'mongoose'
+import type IPosition from '../incursion/IPosition'
 import type IItem from '../item/IItem'
 import type IEntityStat from './IEntityStat'
 import type IPassivePointsSpent from './IPassivePointsSpent'
@@ -13,4 +14,5 @@ export default interface ICharacter {
   passivePointsSpent: IPassivePointsSpent[]
   stats: IEntityStat[]
   currentIncursion: mongoose.Types.ObjectId | undefined
+  position: IPosition
 }

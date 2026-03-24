@@ -5,6 +5,7 @@ import Entity from '../models/domain/entity/Entity'
 import EntityStat from '../models/domain/entity/EntityStat'
 import Incursion from '../models/domain/incursion/Incursion'
 import IncursionRoom from '../models/domain/incursion/IncursionRoom'
+import Position from '../models/domain/incursion/Position'
 
 // The doc sent to the database is created by the mapper!
 export default class IncursionGenerator {
@@ -13,12 +14,13 @@ export default class IncursionGenerator {
     character: Character
   ) {
     const rooms = [
-      new IncursionRoom(IncursionRoomType.FIGHT, [
+      new IncursionRoom(IncursionRoomType.FIGHT, 10, 10, [
         character,
         new Entity({
           entityId: AdversaryId.GHOUL,
           name: 'Ghoul',
-          stats: [new EntityStat(EntityStatId.HEALTH, 15, [])]
+          stats: [new EntityStat(EntityStatId.HEALTH, 15, [])],
+          position: new Position(1, 1)
         })
       ])
     ]

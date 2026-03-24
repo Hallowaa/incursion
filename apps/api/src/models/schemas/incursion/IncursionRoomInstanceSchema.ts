@@ -9,5 +9,7 @@ export const IncursionRoomInstanceSchema = new Schema<IIncursionRoom>({
     enum: Object.values(IncursionRoomType),
     required: true
   },
+  width: { type: Number, required: true },
+  height: { type: Number, required: true },
   entities: { type: [EntitySchema], default: [] }
 })
