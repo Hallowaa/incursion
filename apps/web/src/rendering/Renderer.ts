@@ -1,6 +1,8 @@
 import type LoadedResources from './LoadedResources'
 import type Incursion from '@/datatypes/business/incursion/Incursion'
 import {
+  AxesHelper,
+  GridHelper,
   OrthographicCamera,
   Raycaster,
   Scene,
@@ -11,8 +13,9 @@ import {
 
 } from 'three'
 
-import { ClearPass, EffectComposer, OutputPass, RenderPass } from 'three/examples/jsm/Addons.js'
+import { ClearPass, EffectComposer, OrbitControls, OutputPass, RenderPass } from 'three/examples/jsm/Addons.js'
 import NotificationManager from '@/managers/NotificationManager'
+import IncursionSceneBuilder from './scene-builders/IncursionSceneBuilder'
 
 export default class Renderer {
   public static resources: LoadedResources = {}
@@ -33,11 +36,12 @@ export default class Renderer {
   private isPointerDown = false
   private currentButton: number | undefined
 
+  public controls!: OrbitControls
   public currentIncursion: Incursion | undefined
 
-  public constructor(private readonly canvas: HTMLCanvasElement) {
-    this.init(canvas)
-  }
+  private debugHelpersVisible = false
+  private axesHelper = new AxesHelper(400)
+  private gridHelper = new GridHelper(2000, 40, 0xFF0000, 0xFFFFFF)
 
   public async load() {
     const imageLoader = new TextureLoader()
@@ -54,7 +58,10 @@ export default class Renderer {
   }
 
   public init(canvas: HTMLCanvasElement) {
-    const aspect = window.innerWidth / window.innerHeight
+    const container = canvas.parentElement!
+    const width = container.clientWidth
+    const height = container.clientHeight
+    const aspect = width / height
 
     this.webGLRenderer = new WebGLRenderer({
       canvas,
@@ -62,9 +69,9 @@ export default class Renderer {
       alpha: true
     })
 
-    this.webGLRenderer.setSize(window.innerWidth, window.innerHeight)
+    this.webGLRenderer.setSize(width, height)
     this.webGLRenderer.setPixelRatio(window.devicePixelRatio)
-    this.webGLRenderer.setClearColor(0x010101, 1)
+    this.webGLRenderer.setClearColor(0xFFD861, 1)
     this.webGLRenderer.autoClear = false
 
     this.camera = new OrthographicCamera(
@@ -73,7 +80,7 @@ export default class Renderer {
       this.frustumSize / 2,
       this.frustumSize / -2,
       0.1,
-      2000
+      20000
     )
 
     this.cameraGui = new OrthographicCamera(
@@ -82,16 +89,26 @@ export default class Renderer {
       this.frustumSize / 2,
       this.frustumSize / -2,
       0.1,
-      200
+      500
     )
+
+    this.camera.position.set(1000, 1000, 1000)
+    this.camera.lookAt(0, 0, 0)
+
+    this.controls = new OrbitControls(this.camera, canvas)
+    this.controls.enableRotate = true
+    this.controls.enableZoom = true
+    this.controls.enablePan = true
 
     this.raycaster.layers.set(0)
     this.raycaster.setFromCamera(this.pointer, this.cameraGui)
 
     this.setupComposer()
 
-    window.onresize = () => {
-      const aspect = window.innerWidth / window.innerHeight
+    new ResizeObserver(() => {
+      const w = container.clientWidth
+      const h = container.clientHeight
+      const aspect = w / h
 
       this.camera.left = (-this.frustumSize * aspect) / 2
       this.camera.right = (this.frustumSize * aspect) / 2
@@ -106,8 +123,9 @@ export default class Renderer {
       this.camera.updateProjectionMatrix()
       this.cameraGui.updateProjectionMatrix()
 
-      this.webGLRenderer.setSize(window.innerWidth, window.innerHeight)
-    }
+      this.webGLRenderer.setSize(w, h)
+      this.composer.setSize(w, h)
+    }).observe(container)
   }
 
   private setupComposer() {
@@ -124,16 +142,18 @@ export default class Renderer {
     const outputPass = new OutputPass()
     outputPass.renderToScreen = true
 
+    const canvas = this.webGLRenderer.domElement
+    const container = canvas.parentElement!
     const renderTarget = new WebGLRenderTarget(
-      window.innerWidth,
-      window.innerHeight,
+      container.clientWidth,
+      container.clientHeight,
       {
         samples: 3
       }
     )
 
     this.composer = new EffectComposer(this.webGLRenderer, renderTarget)
-    this.composer.setSize(window.innerWidth, window.innerHeight)
+    this.composer.setSize(container.clientWidth, container.clientHeight)
     this.composer.setPixelRatio(window.devicePixelRatio)
 
     this.composer.addPass(clearPass)
@@ -144,13 +164,32 @@ export default class Renderer {
     this.composer.render()
   }
 
+  public buildIncursionScene(incursion: Incursion) {
+    const incursionSceneBuilder = new IncursionSceneBuilder(this, incursion)
+    incursionSceneBuilder.buildScene()
+    this.currentScene.add(incursionSceneBuilder.scene)
+  }
+
   public startRendering() {
     this.webGLRenderer.setAnimationLoop(this.animate.bind(this))
   }
 
   public animate(time: number) {
+    this.controls.update()
     this.webGLRenderer.clear()
     this.composer.render()
+  }
+
+  public toggleDebugHelpers() {
+    this.debugHelpersVisible = !this.debugHelpersVisible
+
+    if (this.debugHelpersVisible) {
+      this.currentScene.add(this.axesHelper)
+      this.currentScene.add(this.gridHelper)
+    } else {
+      this.currentScene.remove(this.axesHelper)
+      this.currentScene.remove(this.gridHelper)
+    }
   }
 
   public static getCSSVar(name: string) {

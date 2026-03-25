@@ -43,12 +43,12 @@ export default defineComponent({
 <template>
   <div class="stat">
     <div class="stat-body">
-      <div class="stat-name">
+      <strong class="stat-name">
         {{ text }}
-      </div>
-      <div class="stat-value">
+      </strong>
+      <strong class="stat-value">
         <slot />
-      </div>
+      </strong>
     </div>
     <HorizontalSeparator v-if="!isLast" :height="2" />
   </div>
@@ -72,7 +72,6 @@ export default defineComponent({
   align-items: center;
   justify-content: space-between;
   padding-bottom: 8px;
-  cursor: pointer;
 }
 
 .stat-value {

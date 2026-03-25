@@ -3,6 +3,8 @@ html {
   height: 100dvh;
   max-width: 100dvw;
   max-height: 100dvh;
+  margin: 0;
+  height: 0;
   background-color: var(--background-color);
 
   font-family: "Roboto Condensed", sans-serif;

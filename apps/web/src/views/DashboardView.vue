@@ -1,8 +1,10 @@
 <script lang="ts">
 import type CommunicationManager from '@/managers/CommunicationManager'
 import type LocalStorageManager from '@/managers/LocalStorageManager'
+import type Renderer from '@/rendering/Renderer'
 import { mapState } from 'pinia'
 import { defineComponent, inject } from 'vue'
+import IncursionContainer from '@/components/IncursionContainer.vue'
 import MainMenu from '@/components/MainMenu.vue'
 import PopUpBase from '@/components/popup/PopUpBase.vue'
 import PopUpChooseClass from '@/components/popup/PopUpChooseClass.vue'
@@ -14,6 +16,7 @@ import VerticalSeparator from '@/components/util/VerticalSeparator.vue'
 import UtilityBar from '@/components/UtilityBar.vue'
 import { PopUpType } from '@/enums/PopUpType'
 import router from '@/router'
+import { useIncursionStore } from '@/stores/IncursionStore'
 import { useUIStore } from '@/stores/UIStore'
 import { useUserStore } from '@/stores/UserStore'
 
@@ -29,21 +32,26 @@ export default defineComponent({
     TopBar,
     NotificationsContainer,
     PopUpBase,
-    PopUpChooseClass
+    PopUpChooseClass,
+    IncursionContainer
   },
 
   setup() {
     const uiStore = useUIStore()
     const communicationManager = inject('communicationManager') as CommunicationManager
     const localStorageManager = inject('localStorageManager') as LocalStorageManager
+    const renderer = inject('renderer') as Renderer
 
-    return { uiStore, communicationManager, localStorageManager }
+    return { uiStore, communicationManager, localStorageManager, renderer }
   },
 
   computed: {
     ...mapState(useUIStore, {
       isPopUpOpen: (store) => store.currentPopUp !== undefined,
       isPopupChooseClass: (store) => store.currentPopUp === PopUpType.CHOOSE_CLASS
+    }),
+    ...mapState(useIncursionStore, {
+      isViewingIncursion: (store) => store.isViewingIncursion
     })
   },
 
@@ -61,6 +69,8 @@ export default defineComponent({
         this.routeToLogin()
       }
     }
+
+    await this.renderer.load()
   },
 
   methods: {
@@ -81,8 +91,13 @@ export default defineComponent({
         <TopBar />
       </div>
       <div class="dashboard-left-bottom">
-        <UtilityBar />
-        <MainMenu />
+        <div class="utility-bar-container">
+          <UtilityBar />
+        </div>
+        <div class="dashboard-left-bottom-center">
+          <IncursionContainer v-if="isViewingIncursion" />
+          <MainMenu v-else />
+        </div>
       </div>
     </div>
     <VerticalSeparator :height="95" />
@@ -129,7 +144,19 @@ export default defineComponent({
 .dashboard-left-bottom {
   display: flex;
   width: 100%;
-  height: 100%;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.dashboard-left-bottom-center {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  align-items: center;
+  justify-content: center;
+  background-image: linear-gradient(to right, var(--panel-background-color), transparent);
 }
 
 .dashboard-right {
