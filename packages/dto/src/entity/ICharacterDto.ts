@@ -1,16 +1,13 @@
-import { CharacterClassId } from '../enums/CharacterClassId'
 import { IIncursionDto } from '../incursion/IIncursionDto'
 import { IItemDto } from '../item/IItemDto'
 import { ICharacterClassDto } from './ICharacterClassDto'
-import { IEntityStatDto } from './IEntityStatDto'
+import { IEntityDto } from './IEntityDto'
 import { IPassivePointsSpentDto } from './IPassivePointsSpentDto'
 
-export interface ICharacterDto {
-  name: string
+export interface ICharacterDto extends IEntityDto {
   experience: number
   classes: ICharacterClassDto[]
   inventory: IItemDto[]
   passivePointsSpent: IPassivePointsSpentDto[]
-  stats: IEntityStatDto[]
   currentIncursion: IIncursionDto | undefined
 }

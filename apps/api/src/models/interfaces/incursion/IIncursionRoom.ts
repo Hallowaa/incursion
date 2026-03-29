@@ -1,9 +1,9 @@
 import type { IncursionRoomType } from '@incursion/dto'
-import type IEntity from '../entity/IEntity'
+import type IIncursionInstanceEntity from '../entity/IIncursionInstanceEntity'
 
 export default interface IIncursionRoom {
   type: IncursionRoomType
   width: number
   height: number
-  entities: IEntity[]
+  entities: IIncursionInstanceEntity[]
 }

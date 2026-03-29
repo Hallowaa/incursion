@@ -32,5 +32,6 @@ export default defineComponent({
   background-color: var(--primary-color);
   border-radius: var(--border-radius-small);
   padding: 3px;
+  cursor: pointer;
 }
 </style>

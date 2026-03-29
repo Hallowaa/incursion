@@ -5,7 +5,7 @@ import IncursionMapper from './IncursionMapper'
 import InventoryMapper from './InventoryMapper'
 
 export default class CharacterMapper {
-  public static toDomain(dto: ICharacterDto) {
+  public static toDomain(dto: ICharacterDto): Character {
     return new Character(
       dto.name,
       dto.experience,

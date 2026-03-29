@@ -48,12 +48,14 @@ export function registerIncursionHandlers(io: Server, socket: Socket, incursionM
 
       await CharacterModel.updateOne(
         { _id: characterDoc._id },
-        { $set: { currentIncursion: saved._id } }
+        { $set: {
+          currentIncursion: saved._id
+        } }
       )
 
       incursionManager.addIncursion(saved._id.toString(), result)
 
-      callback(toDb) // plain object, not the mongoose doc
+      callback(toDb)
     } catch (err) {
       console.error('Failed to save incursion', err)
       callback()

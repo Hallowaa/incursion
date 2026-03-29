@@ -1,11 +1,11 @@
 import type { IncursionRoomType } from '@incursion/dto'
-import type Entity from '../entity/Entity'
+import type IncursionInstanceEntity from '../entity/IncursionInstanceEntity'
 
 export default class IncursionRoom {
   public constructor(
     public type: IncursionRoomType,
     public width: number,
     public height: number,
-    public entities: Entity[]
+    public entities: IncursionInstanceEntity[]
   ) {}
 }

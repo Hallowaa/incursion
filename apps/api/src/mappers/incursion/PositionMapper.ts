@@ -3,11 +3,7 @@ import type IPosition from '../../models/interfaces/incursion/IPosition'
 import Position from '../../models/domain/incursion/Position'
 
 export default class PositionMapper {
-  public static toDomain(doc: IPosition | undefined): Position | undefined {
-    if (!doc) {
-      return
-    }
-
+  public static toDomain(doc: IPosition): Position {
     return new Position(doc.x, doc.y)
   }
 

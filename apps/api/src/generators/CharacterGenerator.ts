@@ -1,6 +1,6 @@
 import type ICharacter from '../models/interfaces/entity/ICharacter'
 import type IEntityStat from '../models/interfaces/entity/IEntityStat'
-import { CharacterClassId, EntityStatId } from '@incursion/dto'
+import { CharacterClassId, EntityKind, EntityStatId } from '@incursion/dto'
 import mongoose from 'mongoose'
 
 export default class CharacterGenerator {
@@ -11,6 +11,8 @@ export default class CharacterGenerator {
     return {
       owner: new mongoose.Types.ObjectId(userId),
       name: characterName,
+      kind: EntityKind.CHARACTER,
+      entityId: 'character',
       experience: 0,
       classes: [
         CharacterClassId.CLASSLESS

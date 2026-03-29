@@ -40,8 +40,8 @@ export default class Renderer {
   public currentIncursion: Incursion | undefined
 
   private debugHelpersVisible = false
-  private axesHelper = new AxesHelper(400)
-  private gridHelper = new GridHelper(2000, 40, 0xFF0000, 0xFFFFFF)
+  private axesHelper = new AxesHelper(300)
+  private gridHelper = new GridHelper(3000, 20, 0xFF0000, 0xFFFFFF)
 
   public async load() {
     const imageLoader = new TextureLoader()
@@ -71,7 +71,7 @@ export default class Renderer {
 
     this.webGLRenderer.setSize(width, height)
     this.webGLRenderer.setPixelRatio(window.devicePixelRatio)
-    this.webGLRenderer.setClearColor(0xFFD861, 1)
+    this.webGLRenderer.setClearColor('#0e0e0f', 1)
     this.webGLRenderer.autoClear = false
 
     this.camera = new OrthographicCamera(
@@ -79,7 +79,7 @@ export default class Renderer {
       (this.frustumSize * aspect) / 2,
       this.frustumSize / 2,
       this.frustumSize / -2,
-      0.1,
+      0.01,
       20000
     )
 
@@ -92,7 +92,7 @@ export default class Renderer {
       500
     )
 
-    this.camera.position.set(1000, 1000, 1000)
+    this.camera.position.set(2000, 2000, 2000)
     this.camera.lookAt(0, 0, 0)
 
     this.controls = new OrbitControls(this.camera, canvas)

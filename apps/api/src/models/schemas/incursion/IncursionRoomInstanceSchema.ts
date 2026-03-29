@@ -1,7 +1,7 @@
 import type IIncursionRoom from '../../interfaces/incursion/IIncursionRoom'
 import { IncursionRoomType } from '@incursion/dto'
 import { Schema } from 'mongoose'
-import { EntitySchema } from '../entity/EntitySchema'
+import { IncursionInstanceEntitySchema } from '../entity/IncursionInstanceEntitySchema'
 
 export const IncursionRoomInstanceSchema = new Schema<IIncursionRoom>({
   type: {
@@ -11,5 +11,5 @@ export const IncursionRoomInstanceSchema = new Schema<IIncursionRoom>({
   },
   width: { type: Number, required: true },
   height: { type: Number, required: true },
-  entities: { type: [EntitySchema], default: [] }
+  entities: { type: [IncursionInstanceEntitySchema], default: [] }
 })

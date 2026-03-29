@@ -1,11 +1,13 @@
 import type IEntity from '../../interfaces/entity/IEntity'
-import { Schema } from 'mongoose'
-import { PositionSchema } from '../incursion/PositionSchema'
+import { EntityKind } from '@incursion/dto'
+import mongoose, { Schema } from 'mongoose'
 import { EntityStatSchema } from './EntityStatSchema'
 
 export const EntitySchema = new Schema<IEntity>({
+  kind: { type: String, required: true, enum: Object.values(EntityKind) },
   entityId: { type: String, required: true },
   name: { type: String, required: true },
-  stats: { type: [EntityStatSchema], default: [] },
-  position: { type: PositionSchema, required: false }
-})
+  stats: { type: [EntityStatSchema], default: [] }
+}, { discriminatorKey: 'kind' })
+
+export const EntityModel = mongoose.model('Entity', EntitySchema)

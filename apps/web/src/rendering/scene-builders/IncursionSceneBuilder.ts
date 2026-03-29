@@ -1,27 +1,31 @@
-import type GraphicObject from '../GraphicObject'
 import type Renderer from '../Renderer'
+import type Character from '@/datatypes/business/entity/Character'
 import type Incursion from '@/datatypes/business/incursion/Incursion'
-import { AmbientLight, Color, DirectionalLight, Vector3 } from 'three'
-import OpaqueCuboid from '../shapes/OpaqueCuboid'
+import { AmbientLight, Color, DirectionalLight, Vector2, Vector3 } from 'three'
+import CharacterModel from '../game-objects/character-models.ts/CharacterModel'
+import EntityModel from '../game-objects/character-models.ts/EntityModel'
+import Grid from '../Grid'
 import TransparentCuboid from '../shapes/TransparentCuboid'
 import SceneBuilder from './SceneBuilder'
 
 export default class IncursionSceneBuilder extends SceneBuilder {
   private FLOOR_HEIGHT = 800
-  private grid: GraphicObject[][] = []
-  private tileSize = 145
+  private grid: Grid
   private floorSize = 150
-  private tileDimensions = new Vector3(this.tileSize, 3, this.tileSize)
 
   public constructor(renderer: Renderer, public incursion: Incursion) {
     super(renderer)
+    this.grid = new Grid(
+      incursion.currentRoom.width,
+      incursion.currentRoom.height
+    )
   }
 
   public buildScene(): void {
     // LIGHTING
-    const ambient = new AmbientLight(0xFFD861, 1)
+    const ambient = new AmbientLight(0xFFFFFF, 1)
     this.scene.add(ambient)
-    const directional = new DirectionalLight(0xFFD861, 2)
+    const directional = new DirectionalLight(0xFFD861, 1)
     directional.position.set(20, 50, 0)
     this.scene.add(directional)
 
@@ -36,24 +40,28 @@ export default class IncursionSceneBuilder extends SceneBuilder {
     cuboid.position.set(0, -this.FLOOR_HEIGHT / 2, 0)
 
     // TILES
-    const tileColor = new Color(0xFF0000)
-    for (let x = 0; x < this.incursion.currentRoom.width; x++) {
-      const column: GraphicObject[] = []
-      for (let y = 0; y < this.incursion.currentRoom.height; y++) {
-        const tile = new OpaqueCuboid(this.tileDimensions, tileColor).assemble()
-        column.push(tile)
+    this.grid.assemble()
+    this.scene.add(this.grid)
+    this.renderer.currentScene.add(this.grid)
+    this.buildEntities()
+  }
 
-        this.scene.add(tile)
-        tile.position.set(
-          (x * this.floorSize) - (floorWidth / 2) + (this.floorSize / 2),
-          1.5,
-          (y * this.floorSize) - (floorDepth / 2) + (this.floorSize / 2)
-        )
+  private buildEntities() {
+    for (const iie of this.incursion.currentRoom.entities) {
+      // TODO: change this into enum
+      // TODO: use positions of InursionInstanceEntities
+      if (iie.entity.entityId === 'character') {
+        const characterModel = new CharacterModel(iie as unknown as Character).assemble()
+        this.grid.add(characterModel)
+        this.grid.placeAt(characterModel, new Vector2(iie.position.x, iie.position.y))
+      } else {
+        const entityModel = new EntityModel(iie.entity).assemble()
+        this.grid.add(entityModel)
+        this.grid.placeAt(entityModel, new Vector2(iie.position.x, iie.position.y))
       }
-      this.grid.push(column)
     }
   }
 
-  public animateScene(time: number): void {
+  public animateScene(): void {
   }
 }

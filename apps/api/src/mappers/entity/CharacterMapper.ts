@@ -1,12 +1,12 @@
 import type { ICharacterDto } from '@incursion/dto'
 import type Incursion from '../../models/domain/incursion/Incursion'
 import type ICharacter from '../../models/interfaces/entity/ICharacter'
+import { EntityKind } from '@incursion/dto'
 import CharacterGenerator from '../../generators/CharacterGenerator'
 import Character from '../../models/domain/entity/Character'
 import Inventory from '../../models/domain/entity/Inventory'
 import { IncursionInstanceModel } from '../../models/schemas/incursion/IncursionInstanceSchema'
 import IncursionMapper from '../incursion/IncursionMapper'
-import PositionMapper from '../incursion/PositionMapper'
 import InventoryMapper from '../item/InvetoryMapper'
 import CharacterClassMapper from './CharacterClassMapper'
 import EntityStatMapper from './EntityStatMapper'
@@ -33,6 +33,7 @@ export default class CharacterMapper {
     }
 
     const character = new Character({
+      kind: EntityKind.CHARACTER,
       entityId: 'character',
       name: doc.name,
       experience: doc.experience,
@@ -40,14 +41,15 @@ export default class CharacterMapper {
       stats: doc.stats.map((s) => EntityStatMapper.toDomain(s)),
       inventory: new Inventory([]), // TODO: implement
       passivePointsSpent: [], // TODO: implement
-      currentIncursion,
-      position: PositionMapper.toDomain(doc.position)
+      currentIncursion
     })
     return character
   }
 
   public static toDto(character: Character): ICharacterDto {
     return {
+      kind: EntityKind.CHARACTER,
+      entityId: 'character',
       name: character.name,
       experience: character.experience,
       classes: character.classes.map((cc) => CharacterClassMapper.toDto(cc)),

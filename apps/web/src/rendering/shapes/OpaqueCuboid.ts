@@ -1,5 +1,5 @@
 import type { Color, Vector3 } from 'three'
-import { BoxGeometry, Mesh, MeshBasicMaterial, MeshPhongMaterial } from 'three'
+import { BoxGeometry, Mesh, MeshPhongMaterial } from 'three'
 import GraphicObject from '../GraphicObject'
 
 export default class OpaqueCuboid extends GraphicObject {

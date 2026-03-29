@@ -1,8 +1,8 @@
 import type Character from '../models/domain/entity/Character'
 import type IIncursionTemplate from '../models/interfaces/incursion/IIncursionTemplate'
-import { AdversaryId, EntityStatId, IncursionRoomType } from '@incursion/dto'
+import { AdversaryId, EntityKind, IncursionRoomType } from '@incursion/dto'
 import Entity from '../models/domain/entity/Entity'
-import EntityStat from '../models/domain/entity/EntityStat'
+import IncursionInstanceEntity from '../models/domain/entity/IncursionInstanceEntity'
 import Incursion from '../models/domain/incursion/Incursion'
 import IncursionRoom from '../models/domain/incursion/IncursionRoom'
 import Position from '../models/domain/incursion/Position'
@@ -15,13 +15,21 @@ export default class IncursionGenerator {
   ) {
     const rooms = [
       new IncursionRoom(IncursionRoomType.FIGHT, 10, 10, [
-        character,
-        new Entity({
-          entityId: AdversaryId.GHOUL,
-          name: 'Ghoul',
-          stats: [new EntityStat(EntityStatId.HEALTH, 15, [])],
-          position: new Position(1, 1)
-        })
+        new IncursionInstanceEntity(
+          character,
+          new Position(0, 0)
+        ),
+        new IncursionInstanceEntity(
+          new Entity(
+            {
+              kind: EntityKind.ADVERSARY,
+              entityId: AdversaryId.GHOUL,
+              name: AdversaryId.GHOUL,
+              stats: []
+            }
+          ),
+          new Position(3, 3)
+        )
       ])
     ]
 

@@ -1,7 +1,7 @@
 import type { IIncursionRoomDto } from '@incursion/dto'
 import type IIncursionRoom from '../../models/interfaces/incursion/IIncursionRoom'
 import IncursionRoom from '../../models/domain/incursion/IncursionRoom'
-import EntityMapper from '../entity/EntityMapper'
+import IncursionInstanceEntityMapper from '../entity/IncursionInstanceEntityMapper'
 
 export default class IncursionRoomMapper {
   public static toDomain(doc: IIncursionRoom) {
@@ -9,7 +9,7 @@ export default class IncursionRoomMapper {
       doc.type,
       doc.width,
       doc.height,
-      doc.entities.map((e) => EntityMapper.toDomain(e))
+      doc.entities.map((e) => IncursionInstanceEntityMapper.toDomain(e))
     )
   }
 
@@ -18,7 +18,7 @@ export default class IncursionRoomMapper {
       type: incursionRoom.type,
       width: incursionRoom.width,
       height: incursionRoom.height,
-      entities: [] // TODO: EntityMapper.toDb
+      entities: incursionRoom.entities.map((e) => IncursionInstanceEntityMapper.toDb(e))
     }
   }
 
@@ -27,7 +27,7 @@ export default class IncursionRoomMapper {
       type: incursionRoom.type,
       width: incursionRoom.width,
       height: incursionRoom.height,
-      entities: incursionRoom.entities.map((e) => EntityMapper.toDto(e))
+      entities: incursionRoom.entities.map((e) => IncursionInstanceEntityMapper.toDto(e))
     }
   }
 }

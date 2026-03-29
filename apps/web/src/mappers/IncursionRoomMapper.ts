@@ -1,6 +1,6 @@
 import type { IIncursionRoomDto } from '@incursion/dto'
 import IncursionRoom from '@/datatypes/business/incursion/IncursionRoom'
-import EntityMapper from './EntityMapper'
+import IncursionInstanceEntityMapper from './IncursionInstanceEntityMapper'
 
 export default class IncursionroomMapper {
   public static toDomain(dto: IIncursionRoomDto) {
@@ -8,7 +8,7 @@ export default class IncursionroomMapper {
       dto.type,
       dto.width,
       dto.height,
-      dto.entities.map((e) => EntityMapper.toDomain(e))
+      dto.entities.map((e) => IncursionInstanceEntityMapper.toDomain(e))
     )
   }
 }
