@@ -6,6 +6,7 @@ const TICK_INTERVAL = 1000 / TICK_RATE
 export default class IncursionManager {
   private incursions: Map<string, Incursion> = new Map()
   private intervalId: ReturnType<typeof setInterval> | null = null
+  private lastTime = Date.now()
 
   public addIncursion(id: string, incursion: Incursion) {
     this.incursions.set(id, incursion)
@@ -28,7 +29,11 @@ export default class IncursionManager {
   }
 
   private start() {
-    this.intervalId = setInterval(() => this.tick(), TICK_INTERVAL)
+    this.intervalId = setInterval(() => {
+      const delta = Date.now() - this.lastTime
+
+      this.tick(delta)
+    }, TICK_INTERVAL)
   }
 
   private stop() {
@@ -38,7 +43,7 @@ export default class IncursionManager {
     }
   }
 
-  private tick() {
+  private tick(delta: number) {
     // TODO: implement tick logic for all active incursions
   }
 }
