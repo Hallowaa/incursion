@@ -15,9 +15,9 @@ export function registerIncursionHandlers(io: Server, socket: Socket, incursionM
       owner: socket.data.userId
     }).lean()
 
-    if (characterDoc == null) {
+    if (!characterDoc) {
       console.error('Failed to find character when beginning incursion')
-      callback()
+      callback(null)
       return
     }
 
@@ -26,15 +26,16 @@ export function registerIncursionHandlers(io: Server, socket: Socket, incursionM
     // temporarily just take the first template
     const templateDoc = await IncursionTemplateModel.findOne().lean()
 
-    if (templateDoc == null) {
+    if (!templateDoc) {
       console.error('Failed to find suitable template when beginning incursion')
-      callback()
+      callback(null)
       return
     }
 
     const template = IncursionTemplateMapper.toDomain(templateDoc)
     const result = IncursionGenerator.generateIncursion(template, character)
     const toDb = IncursionMapper.toDb(result)
+    const toDto = IncursionMapper.toDto(result)
 
     try {
       const saved = await IncursionInstanceModel.create({
@@ -54,11 +55,52 @@ export function registerIncursionHandlers(io: Server, socket: Socket, incursionM
       )
 
       incursionManager.addIncursion(saved._id.toString(), result)
+      socket.join(saved._id.toString())
 
-      callback(toDb)
+      callback(toDto)
     } catch (err) {
       console.error('Failed to save incursion', err)
-      callback()
+      callback(null)
     }
+  }))
+
+  socket.on('incursion:startTicking', safeHandler(async (_data, callback) => {
+    const characterDoc = await CharacterModel.findOne({
+      owner: socket.data.userId
+    }).lean()
+
+    if (characterDoc == null) {
+      console.error('Failed to find character when starting incursion ticking')
+      callback(null)
+      return
+    }
+
+    const character = await CharacterMapper.toDomain(characterDoc)
+    const incursionId = characterDoc.currentIncursion
+
+    if (!incursionId) {
+      console.error(`Failed to start ticking incursion for character ${characterDoc._id}`)
+      callback(null)
+      return
+    }
+
+    let existingIncursion = incursionManager.getIncursion(incursionId.toString())
+
+    if (!existingIncursion) {
+      // just add it to the manager
+      const currentIncursion = character.currentIncursion
+
+      if (!currentIncursion) {
+        console.error(`Current incursion does not exist for character ${characterDoc._id} on server, but it exists on db.`)
+        callback(null)
+        return
+      }
+      incursionManager.addIncursion(incursionId.toString(), currentIncursion)
+      existingIncursion = incursionManager.getIncursion(incursionId.toString())
+    }
+
+    existingIncursion!.active = true
+
+    socket.join(incursionId.toString())
   }))
 }

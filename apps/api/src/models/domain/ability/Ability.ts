@@ -1,5 +1,5 @@
-import type { AbilityId, TargetType } from '@incursion/dto'
-import type Entity from '../entity/Entity'
+import type { AbilityId, IActionContextDto, IDeltaDto, TargetType } from '@incursion/dto'
+import type IncursionInstanceEntity from '../entity/IncursionInstanceEntity'
 import type Incursion from '../incursion/Incursion'
 import type IAbilityConfig from './IAbilityConfig'
 
@@ -8,30 +8,26 @@ export default class Ability {
   public abilityId: AbilityId
   public name: string
   public description: string
-  public cooldown: number
   public targetType: TargetType
-  public effect: (user: Entity, context: Incursion) => void
-  public condition: (user: Entity, context: Incursion) => boolean
+  public cooldown: (user: IncursionInstanceEntity, incursion: Incursion, context: IActionContextDto) => number
+  public effect: (user: IncursionInstanceEntity, incursion: Incursion, context: IActionContextDto) => IDeltaDto | undefined
+  public condition: (user: IncursionInstanceEntity, incursion: Incursion, context: IActionContextDto) => boolean
 
   public constructor(config: IAbilityConfig) {
     this.abilityId = config.abilityId
     this.name = config.name
     this.description = config.description
-    this.cooldown = config.cooldown
     this.targetType = config.targetType
+    this.cooldown = config.cooldown
     this.effect = config.effect
     this.condition = config.condition
   }
 
-  public canUse(user: Entity, context: Incursion): boolean {
-    if (this.condition(user, context) === true) {
-      return true
-    }
-
-    return false
+  public canUse(user: IncursionInstanceEntity, incursion: Incursion, context: IActionContextDto): boolean {
+    return this.condition(user, incursion, context)
   }
 
-  public execute(user: Entity, context: Incursion): void {
-    this.effect(user, context)
+  public execute(user: IncursionInstanceEntity, incursion: Incursion, context: IActionContextDto): IDeltaDto | undefined {
+    return this.effect(user, incursion, context)
   }
 }

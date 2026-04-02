@@ -11,7 +11,7 @@ export function initSocket(server: any) {
     cors: { origin: '*' }
   })
 
-  const incursionManager = new IncursionManager()
+  const incursionManager = new IncursionManager(io)
 
   io.use(socketAuth)
 

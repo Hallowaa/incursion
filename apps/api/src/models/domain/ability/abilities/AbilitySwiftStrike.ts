@@ -1,4 +1,5 @@
-import type Entity from '../../entity/Entity'
+import type { IActionContextDto, IDeltaDto } from '@incursion/dto'
+import type IncursionInstanceEntity from '../../entity/IncursionInstanceEntity'
 import type Incursion from '../../incursion/Incursion'
 import type IAbilityConfig from '../IAbilityConfig'
 import { AbilityId, TargetType } from '@incursion/dto'
@@ -10,13 +11,15 @@ export default class AbilitySwiftStrike extends Ability {
       abilityId: AbilityId.SWIFT_STRIKE,
       name: 'SWIFT STRIKE',
       description: 'Something something idk',
-      cooldown: 0,
-      targetType: TargetType.SELF,
-      effect: function (user: Entity, context: Incursion): void {
-        throw new Error('Function not implemented.')
+      targetType: TargetType.OTHER,
+      cooldown: (user: IncursionInstanceEntity, incursion: Incursion, context: IActionContextDto): number => {
+        return 2000 // TODO: take stats into account
       },
-      condition: function (user: Entity, context: Incursion): boolean {
-        throw new Error('Function not implemented.')
+      effect: (user: IncursionInstanceEntity, incursion: Incursion, context: IActionContextDto): IDeltaDto | undefined => {
+        return undefined
+      },
+      condition: (user: IncursionInstanceEntity, incursion: Incursion, context: IActionContextDto): boolean => {
+        return true
       }
     }
 

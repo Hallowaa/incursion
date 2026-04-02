@@ -1,3 +1,4 @@
+import type { Server } from 'socket.io'
 import type Incursion from '../models/domain/incursion/Incursion'
 
 const TICK_RATE = 20
@@ -7,6 +8,10 @@ export default class IncursionManager {
   private incursions: Map<string, Incursion> = new Map()
   private intervalId: ReturnType<typeof setInterval> | null = null
   private lastTime = Date.now()
+
+  public constructor(
+    public io: Server
+  ) {}
 
   public addIncursion(id: string, incursion: Incursion) {
     this.incursions.set(id, incursion)
@@ -44,6 +49,20 @@ export default class IncursionManager {
   }
 
   private tick(delta: number) {
-    // TODO: implement tick logic for all active incursions
+    for (const el of this.incursions) {
+      const id = el[0]
+      const incursion = el[1]
+
+      if (!incursion.active) {
+        continue
+      }
+
+      incursion.tick(delta)
+      this.broadcastDeltas(id, incursion)
+    }
+  }
+
+  public broadcastDeltas(id: string, incursion: Incursion) {
+    this.io.to(id).emit('incursion:deltaUpdate', incursion.deltas)
   }
 }
