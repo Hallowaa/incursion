@@ -6,4 +6,14 @@ export default class EntityStatBuff {
     public isAdditive: boolean,
     public imageUrl: string
   ) {}
+
+  public static clone(buff: EntityStatBuff): EntityStatBuff {
+    return new EntityStatBuff(
+      buff.name,
+      buff.flatValue,
+      buff.percentualValue,
+      buff.isAdditive,
+      buff.imageUrl
+    )
+  }
 }

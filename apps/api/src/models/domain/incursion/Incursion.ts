@@ -1,10 +1,11 @@
 import type { IActionContextDto, IDeltaDto, IncursionId, IncursionTheme } from '@incursion/dto'
 import type Ability from '../ability/Ability'
 import type IncursionInstanceEntity from '../entity/IncursionInstanceEntity'
-import type IncursionRoom from './IncursionRoom'
+import IncursionRoom from './IncursionRoom'
 
 export default class Incursion {
   public active = false
+  private lastState: Incursion | undefined
   private queuedActions: {
     user: IncursionInstanceEntity
     action: Ability
@@ -19,8 +20,14 @@ export default class Incursion {
     public level: number,
     public rooms: IncursionRoom[],
     public currentRoom: IncursionRoom,
-    public theme: IncursionTheme
-  ) {}
+    public theme: IncursionTheme,
+    private isClone?: boolean
+  ) {
+    // prevent loop
+    if (!isClone) {
+      this.lastState = Incursion.clone(this)
+    }
+  }
 
   public tick(deltaTime: number) {
     if (!this.active) {
@@ -49,9 +56,25 @@ export default class Incursion {
     }
   }
 
+  private validateState() {
+    // TODO: check against state from client to see if it is valid
+  }
+
   public processCooldowns(deltaTime: number) {
     for (const iie of this.currentRoom.entities) {
       // reduce cooldown timer
     }
+  }
+
+  public static clone(incursion: Incursion): Incursion {
+    return new Incursion(
+      incursion.incursionId,
+      incursion.name,
+      incursion.level,
+      incursion.rooms.map((r) => IncursionRoom.clone(r)),
+      IncursionRoom.clone(incursion.currentRoom),
+      incursion.theme,
+      true
+    )
   }
 }

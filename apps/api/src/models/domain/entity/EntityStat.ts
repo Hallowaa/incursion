@@ -1,5 +1,5 @@
 import type { EntityStatId } from '@incursion/dto'
-import type EntityStatBuff from './EntityStatBuff'
+import EntityStatBuff from './EntityStatBuff'
 
 export default class EntityStat {
   public constructor(
@@ -40,5 +40,13 @@ export default class EntityStat {
     }
 
     this.buffs.push(buff)
+  }
+
+  public static clone(stat: EntityStat): EntityStat {
+    return new EntityStat(
+      stat.statId,
+      stat.baseValue,
+      stat.buffs.map((b) => EntityStatBuff.clone(b))
+    )
   }
 }

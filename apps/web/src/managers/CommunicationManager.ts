@@ -5,6 +5,7 @@ import { io } from 'socket.io-client'
 import RestErrorDataTransfer from '@/datatypes/transfer/RestErrorDataTransfer'
 import RestError from '@/errors/RestError'
 import { useCharacterStore } from '@/stores/CharacterStore'
+import { useIncursionStore } from '@/stores/IncursionStore'
 import NotificationManager from './NotificationManager'
 
 export default class CommunicationManager {
@@ -55,8 +56,10 @@ export default class CommunicationManager {
     })
 
     const characterStore = useCharacterStore()
+    const incursionStore = useIncursionStore()
 
     characterStore.registerCharacterHandlers(this)
+    incursionStore.registerIncursionHandlers(this)
   }
 
   public isAlive(): boolean {

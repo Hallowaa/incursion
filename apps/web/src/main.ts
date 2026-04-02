@@ -5,6 +5,7 @@ import CommunicationManager from './managers/CommunicationManager'
 import LocalStorageManager from './managers/LocalStorageManager'
 import Renderer from './rendering/Renderer'
 import router from './router'
+import { useIncursionStore } from './stores/IncursionStore'
 
 const uri = '/api'
 
@@ -21,6 +22,9 @@ const renderer = new Renderer()
 app.provide('communicationManager', communicationManager)
 app.provide('localStorageManager', localStorageManager)
 app.provide('renderer', renderer)
+
+const incursionStore = useIncursionStore()
+incursionStore.renderer = renderer
 
 app.use(router)
 app.mount('#app')

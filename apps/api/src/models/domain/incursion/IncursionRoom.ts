@@ -1,5 +1,5 @@
 import type { IncursionRoomType } from '@incursion/dto'
-import type IncursionInstanceEntity from '../entity/IncursionInstanceEntity'
+import IncursionInstanceEntity from '../entity/IncursionInstanceEntity'
 
 export default class IncursionRoom {
   public constructor(
@@ -8,4 +8,13 @@ export default class IncursionRoom {
     public height: number,
     public entities: IncursionInstanceEntity[]
   ) {}
+
+  public static clone(room: IncursionRoom): IncursionRoom {
+    return new IncursionRoom(
+      room.type,
+      room.width,
+      room.height,
+      room.entities.map((e) => IncursionInstanceEntity.clone(e))
+    )
+  }
 }

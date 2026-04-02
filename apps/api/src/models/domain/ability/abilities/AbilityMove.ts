@@ -41,6 +41,8 @@ export default class AbilityMove extends Ability {
 
         const newPos = new Position(context.targetPosition.x, context.targetPosition.y)
 
+        user.position = newPos
+
         const positionDelta: IIIEPositionDeltaDto = {
           deltaType: DeltaType.POSITION,
           iie: IncursionInstanceEntityMapper.toDto(user),

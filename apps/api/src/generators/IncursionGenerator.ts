@@ -1,6 +1,7 @@
 import type Character from '../models/domain/entity/Character'
 import type IIncursionTemplate from '../models/interfaces/incursion/IIncursionTemplate'
 import { AdversaryId, EntityKind, IncursionRoomType } from '@incursion/dto'
+import mongoose from 'mongoose'
 import Entity from '../models/domain/entity/Entity'
 import IncursionInstanceEntity from '../models/domain/entity/IncursionInstanceEntity'
 import Incursion from '../models/domain/incursion/Incursion'
@@ -23,7 +24,7 @@ export default class IncursionGenerator {
           new Entity(
             {
               kind: EntityKind.ADVERSARY,
-              entityId: AdversaryId.GHOUL,
+              entityId: new mongoose.Types.ObjectId().toString(),
               name: AdversaryId.GHOUL,
               stats: []
             }

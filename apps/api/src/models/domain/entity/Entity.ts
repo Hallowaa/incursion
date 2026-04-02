@@ -1,6 +1,6 @@
 import type { EntityKind } from '@incursion/dto'
-import type EntityStat from './EntityStat'
 import type IEntityConfig from './IEntityConfig'
+import EntityStat from './EntityStat'
 
 export default class Entity {
   public kind: EntityKind
@@ -13,5 +13,14 @@ export default class Entity {
     this.entityId = config.entityId
     this.name = config.name
     this.stats = config.stats
+  }
+
+  public static clone(entity: Entity): Entity {
+    return new Entity({
+      kind: entity.kind,
+      entityId: entity.entityId,
+      name: entity.name,
+      stats: entity.stats.map((s) => EntityStat.clone(s))
+    })
   }
 }
