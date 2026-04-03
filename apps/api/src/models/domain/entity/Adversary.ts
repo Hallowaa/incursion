@@ -8,4 +8,8 @@ export default class Adversary extends Entity {
     super(config)
     this.abilities = config.abilities
   }
+
+  public getAbilities(): Ability[] {
+    return this.abilities
+  }
 }

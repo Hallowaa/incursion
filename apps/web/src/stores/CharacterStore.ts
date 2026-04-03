@@ -41,6 +41,7 @@ export const useCharacterStore = defineStore('character', {
         const incursionStore = useIncursionStore()
         incursionStore.incursion = this.character.currentIncursion
 
+        console.log(result)
         return {
           success: true,
           result

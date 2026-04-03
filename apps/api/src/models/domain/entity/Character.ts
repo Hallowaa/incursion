@@ -1,4 +1,5 @@
 import type IPassivePointsSpent from '../../interfaces/entity/IPassivePointsSpent'
+import type Ability from '../ability/Ability'
 import type Incursion from '../incursion/Incursion'
 import type CharacterClass from './character-classes/CharacterClass'
 import type EntityStat from './EntityStat'
@@ -47,5 +48,17 @@ export default class Character extends Entity {
 
     // TODO: add stats from passive tree
     // TODO: add stats from items
+  }
+
+  public getAbilities(): Ability[] {
+    const result = []
+
+    for (const c of this.classes) {
+      for (const ability of c.abilities) {
+        result.push(ability)
+      }
+    }
+
+    return result
   }
 }

@@ -1,4 +1,5 @@
 import type { EntityKind } from '@incursion/dto'
+import type Ability from '../ability/Ability'
 import type IEntityConfig from './IEntityConfig'
 import EntityStat from './EntityStat'
 
@@ -22,5 +23,9 @@ export default class Entity {
       name: entity.name,
       stats: entity.stats.map((s) => EntityStat.clone(s))
     })
+  }
+
+  public getAbilities(): Ability[] {
+    return []
   }
 }

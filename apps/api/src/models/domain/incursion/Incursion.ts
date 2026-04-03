@@ -1,6 +1,7 @@
-import type { IActionContextDto, IDeltaDto, IncursionId, IncursionTheme } from '@incursion/dto'
+import type { IActionAbilityContextDto, IActionContextDto, IDeltaDto, IncursionId, IncursionTheme } from '@incursion/dto'
 import type Ability from '../ability/Ability'
 import type IncursionInstanceEntity from '../entity/IncursionInstanceEntity'
+import { ActionType } from '@incursion/dto'
 import IncursionRoom from './IncursionRoom'
 
 export default class Incursion {
@@ -35,9 +36,11 @@ export default class Incursion {
     }
 
     this.processQueuedActions()
+    this.processCooldowns(deltaTime)
   }
 
-  public queueAction(user: IncursionInstanceEntity, action: Ability, context: IActionContextDto) {
+  // TODO: if I ever have actions that aren't abilities, I'm screwed I think...
+  public queueAction(user: IncursionInstanceEntity, action: Ability, context: IActionAbilityContextDto) {
     if (action.canUse(user, this, context)) {
       const contextSnapshot = structuredClone(context)
       this.queuedActions.push({ user, action, contextSnapshot })
@@ -48,10 +51,17 @@ export default class Incursion {
 
   public processQueuedActions() {
     for (const qa of this.queuedActions) {
-      const delta = qa.action.execute(qa.user, this, qa.contextSnapshot)
+      switch (qa.contextSnapshot.actionType) {
+        case ActionType.USE_ABILITY: {
+          const abilityContextSnapshot = qa.contextSnapshot as IActionAbilityContextDto
+          const delta = qa.action.execute(qa.user, this, abilityContextSnapshot)
 
-      if (delta) {
-        this.deltas.push(delta)
+          if (delta) {
+            this.deltas.push(delta)
+          }
+
+          break
+        }
       }
     }
 
@@ -64,7 +74,9 @@ export default class Incursion {
 
   public processCooldowns(deltaTime: number) {
     for (const iie of this.currentRoom.entities) {
-      // reduce cooldown timer
+      for (const ability of iie.abilities()) {
+        ability.elapsed += deltaTime
+      }
     }
   }
 
@@ -79,4 +91,6 @@ export default class Incursion {
       true
     )
   }
+
+  // TODO: do checkHash
 }

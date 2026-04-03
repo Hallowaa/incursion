@@ -5,6 +5,7 @@ const TICK_RATE = 20
 const TICK_INTERVAL = 1000 / TICK_RATE
 
 export default class IncursionManager {
+  private characterIncursionMap: Map<string, string> = new Map()
   private incursions: Map<string, Incursion> = new Map()
   private intervalId: ReturnType<typeof setInterval> | null = null
   private lastTime = Date.now()
@@ -13,9 +14,12 @@ export default class IncursionManager {
     public io: Server
   ) {}
 
-  public addIncursion(id: string, incursion: Incursion) {
+  public addIncursion(characterId: string, incursionId: string, incursion: Incursion) {
+    // eslint-disable-next-line no-console
     console.log(`Added incursion ${incursion.incursionId} to manager`)
-    this.incursions.set(id, incursion)
+
+    this.incursions.set(incursionId, incursion)
+    this.characterIncursionMap.set(characterId, incursionId)
 
     if (!this.intervalId) {
       this.start()
@@ -25,6 +29,14 @@ export default class IncursionManager {
   public removeIncursion(id: string) {
     this.incursions.delete(id)
 
+    const charactersInIncursion = [...this.characterIncursionMap.entries()]
+      .filter(([, incursionId]) => incursionId === id)
+      .map(([characterId]) => characterId)
+
+    for (const entry of charactersInIncursion) {
+      this.characterIncursionMap.delete(entry[0])
+    }
+
     if (this.incursions.size === 0) {
       this.stop()
     }
@@ -32,6 +44,17 @@ export default class IncursionManager {
 
   public getIncursion(id: string): Incursion | undefined {
     return this.incursions.get(id)
+  }
+
+  public getIncursionFromCharacterId(characterId: string): Incursion | undefined {
+    const incursionId = this.characterIncursionMap.get(characterId)
+
+    if (!incursionId) {
+      console.error(`Failed to get incursion ID from ${characterId}`)
+      return
+    }
+
+    return this.getIncursion(incursionId)
   }
 
   private start() {

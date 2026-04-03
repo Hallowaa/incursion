@@ -1,3 +1,4 @@
+import type { IActionAbilityContextDto } from '@incursion/dto'
 import type { Server, Socket } from 'socket.io'
 import type IncursionManager from '../../managers/IncursionManager'
 import IncursionGenerator from '../../generators/IncursionGenerator'
@@ -54,7 +55,7 @@ export function registerIncursionHandlers(io: Server, socket: Socket, incursionM
         } }
       )
 
-      incursionManager.addIncursion(saved._id.toString(), result)
+      incursionManager.addIncursion(character.entityId, saved._id.toString(), result)
       socket.join(saved._id.toString())
 
       callback(toDto)
@@ -84,7 +85,9 @@ export function registerIncursionHandlers(io: Server, socket: Socket, incursionM
       return
     }
 
+    // eslint-disable-next-line no-console
     console.log(`Received start ticking request from ${character.name} for incursion ${incursionId.toString()}`)
+
     let existingIncursion = incursionManager.getIncursion(incursionId.toString())
 
     if (!existingIncursion) {
@@ -97,12 +100,40 @@ export function registerIncursionHandlers(io: Server, socket: Socket, incursionM
         return
       }
 
-      incursionManager.addIncursion(incursionId.toString(), currentIncursion)
+      incursionManager.addIncursion(character.entityId, incursionId.toString(), currentIncursion)
       existingIncursion = incursionManager.getIncursion(incursionId.toString())
     }
 
     existingIncursion!.active = true
 
     socket.join(incursionId.toString())
+  }))
+
+  socket.on('incursion:actionPerformed', safeHandler(async (_data: IActionAbilityContextDto, callback) => {
+    const incursion = incursionManager.getIncursionFromCharacterId(socket.data.userId)
+
+    if (!incursion) {
+      console.error(`Failed to get incursion for ${socket.data.userId}`)
+      callback(false)
+      return
+    }
+
+    const existingEntity = incursion.currentRoom.entities.find((e) => e.entity.entityId === _data.userId)
+
+    if (!existingEntity) {
+      console.error(`Failed to find entity ${_data.userId} on action performed`)
+      callback(false)
+      return
+    }
+
+    const ability = existingEntity.abilities().find((a) => a.abilityId === _data.abilityId)
+
+    if (!ability) {
+      console.error(`Failed to find ability ${_data.abilityId} for entity ${existingEntity.entity.entityId} on action performed`)
+      callback(false)
+      return
+    }
+
+    incursion.queueAction(existingEntity, ability, _data)
   }))
 }

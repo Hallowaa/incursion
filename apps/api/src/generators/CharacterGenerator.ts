@@ -12,7 +12,7 @@ export default class CharacterGenerator {
       owner: new mongoose.Types.ObjectId(userId),
       name: characterName,
       kind: EntityKind.CHARACTER,
-      entityId: 'character',
+      entityId: userId,
       experience: 0,
       classes: [
         CharacterClassId.CLASSLESS

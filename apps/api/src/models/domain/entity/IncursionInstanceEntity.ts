@@ -10,4 +10,8 @@ export default class IncursionInstanceEntity {
   public static clone(iie: IncursionInstanceEntity): IncursionInstanceEntity {
     return new IncursionInstanceEntity(Entity.clone(iie.entity), Position.clone(iie.position))
   }
+
+  public abilities() {
+    return this.entity.getAbilities()
+  }
 }

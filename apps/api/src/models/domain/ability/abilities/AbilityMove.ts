@@ -1,8 +1,9 @@
-import type { IActionContextDto, IDeltaDto, IIIEPositionDeltaDto } from '@incursion/dto'
+import type { IActionAbilityContextDto, IDeltaDto, IIIEPositionDeltaDto } from '@incursion/dto'
+import type Entity from '../../entity/Entity'
 import type IncursionInstanceEntity from '../../entity/IncursionInstanceEntity'
 import type Incursion from '../../incursion/Incursion'
 import type IAbilityConfig from '../IAbilityConfig'
-import { AbilityId, DeltaType, EntityStatId, TargetType } from '@incursion/dto'
+import { AbilityId, AbilityResourceType, DeltaType, EntityStatId, TargetType } from '@incursion/dto'
 import IncursionInstanceEntityMapper from '../../../../mappers/entity/IncursionInstanceEntityMapper'
 import PositionMapper from '../../../../mappers/incursion/PositionMapper'
 import Position from '../../incursion/Position'
@@ -15,17 +16,13 @@ export default class AbilityMove extends Ability {
       name: 'MOVE',
       description: 'Move to any tile in range',
       targetType: TargetType.SELF,
-      cooldown: function (user: IncursionInstanceEntity): number {
-        const movementSpeed = user.entity.stats.find((s) => s.statId === EntityStatId.MOVEMENT_SPEED)
-
-        if (!movementSpeed) {
-          return 1000
-        }
-
-        const result = 2000 - movementSpeed.currentValue * 1000
-        return result
-      },
-      effect: (user: IncursionInstanceEntity, incursion: Incursion, context: IActionContextDto): IDeltaDto | undefined => {
+      baseCastTime: 0,
+      baseRange: 1,
+      baseRadius: new Position(1, 1),
+      baseCooldown: 1000,
+      baseCost: 0,
+      resourceType: AbilityResourceType.NONE,
+      effect: (user: IncursionInstanceEntity, incursion: Incursion, context: IActionAbilityContextDto): IDeltaDto | undefined => {
         if (!context.targetPosition) {
           return
         }
@@ -34,8 +31,7 @@ export default class AbilityMove extends Ability {
           return
         }
 
-        // TODO: make range into a stat
-        if (!this.isInRange(user.position, context.targetPosition, 1)) {
+        if (!this.isInRange(user.position, context.targetPosition, this.computeRange())) {
           return
         }
 
@@ -49,14 +45,31 @@ export default class AbilityMove extends Ability {
           position: PositionMapper.toDto(newPos)
         }
 
+        this.elapsed = 0
+
         return positionDelta
       },
-      condition: function (): boolean {
-        return true
+      condition: (user: IncursionInstanceEntity): boolean => {
+        return this.elapsed >= this.computeCooldown(user.entity)
       }
     }
 
     super(config)
+  }
+
+  public computeRange() {
+    return 1
+  }
+
+  public computeCooldown(user: Entity): number {
+    const movementSpeed = user.stats.find((s) => s.statId === EntityStatId.MOVEMENT_SPEED)
+
+    if (!movementSpeed) {
+      return 1000
+    }
+
+    const result = 2000 - movementSpeed.currentValue * 1000
+    return result
   }
 
   public isInBounds(pos: Position, boundsX: Position, boundsY: Position) {
