@@ -32,6 +32,7 @@ export default defineComponent({
     async beginIncursion() {
       if (this.incursionStore.incursion) {
         this.incursionStore.isViewingIncursion = true
+        this.incursionStore.startTicking(this.communicationManager)
         NotificationManager.info('Incursion exists, viewing incursion now.')
         return
       }

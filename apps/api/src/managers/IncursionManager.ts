@@ -14,6 +14,7 @@ export default class IncursionManager {
   ) {}
 
   public addIncursion(id: string, incursion: Incursion) {
+    console.log(`Added incursion ${incursion.incursionId} to manager`)
     this.incursions.set(id, incursion)
 
     if (!this.intervalId) {

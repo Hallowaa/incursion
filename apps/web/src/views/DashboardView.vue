@@ -184,7 +184,6 @@ export default defineComponent({
 
 .notifications-container {
   width: 400px;
-  height: 800px;
   max-width: 400px;
   max-height: 800px;
   z-index: 50;

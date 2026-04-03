@@ -1,18 +1,22 @@
+import type Tile from './game-objects/Tile'
+import type InputEventContext from './input/InputEventContext'
 import type LoadedResources from './LoadedResources'
+
 import type Incursion from '@/datatypes/business/incursion/Incursion'
 import {
   AxesHelper,
   GridHelper,
+  HalfFloatType,
   OrthographicCamera,
+  Plane,
   Raycaster,
   Scene,
   TextureLoader,
   Vector2,
+  Vector3,
   WebGLRenderer,
   WebGLRenderTarget
-
 } from 'three'
-
 import { ClearPass, EffectComposer, OrbitControls, OutputPass, RenderPass } from 'three/examples/jsm/Addons.js'
 import NotificationManager from '@/managers/NotificationManager'
 import IncursionSceneBuilder from './scene-builders/IncursionSceneBuilder'
@@ -37,11 +41,17 @@ export default class Renderer {
   private currentButton: number | undefined
 
   public controls!: OrbitControls
+
+  // SET TO TRUE FOR DEBUGGING
+  private controlsEnabled = false
+
   public currentIncursion: Incursion | undefined
 
   private debugHelpersVisible = false
   private axesHelper = new AxesHelper(300)
   private gridHelper = new GridHelper(3000, 20, 0xFF0000, 0xFFFFFF)
+
+  private incursionSceneBuilder: IncursionSceneBuilder | undefined
 
   public async load() {
     const imageLoader = new TextureLoader()
@@ -71,7 +81,7 @@ export default class Renderer {
 
     this.webGLRenderer.setSize(width, height)
     this.webGLRenderer.setPixelRatio(window.devicePixelRatio)
-    this.webGLRenderer.setClearColor('#0e0e0f', 1)
+    this.webGLRenderer.setClearColor('#010102', 1)
     this.webGLRenderer.autoClear = false
 
     this.camera = new OrthographicCamera(
@@ -100,6 +110,8 @@ export default class Renderer {
     this.controls.enableZoom = true
     this.controls.enablePan = true
 
+    this.controls.enabled = this.controlsEnabled
+
     this.raycaster.layers.set(0)
     this.raycaster.setFromCamera(this.pointer, this.cameraGui)
 
@@ -126,6 +138,12 @@ export default class Renderer {
       this.webGLRenderer.setSize(w, h)
       this.composer.setSize(w, h)
     }).observe(container)
+
+    this.handleEvents()
+  }
+
+  private handleEvents() {
+    window.addEventListener('pointermove', (event: PointerEvent) => this.onPointerMove(event))
   }
 
   private setupComposer() {
@@ -148,7 +166,8 @@ export default class Renderer {
       container.clientWidth,
       container.clientHeight,
       {
-        samples: 3
+        samples: 3,
+        type: HalfFloatType
       }
     )
 
@@ -165,9 +184,26 @@ export default class Renderer {
   }
 
   public buildIncursionScene(incursion: Incursion) {
-    const incursionSceneBuilder = new IncursionSceneBuilder(this, incursion)
-    incursionSceneBuilder.buildScene()
-    this.currentScene.add(incursionSceneBuilder.scene)
+    this.incursionSceneBuilder = new IncursionSceneBuilder(this, incursion)
+    this.incursionSceneBuilder.buildScene()
+    this.currentScene.add(this.incursionSceneBuilder.scene)
+  }
+
+  public onPointerMove(event: PointerEvent) {
+    if (!this.incursionSceneBuilder) {
+      return
+    }
+
+    const rect = this.webGLRenderer.domElement.getBoundingClientRect()
+
+    this.pointer.x = ((event.clientX - rect.left) / rect.width) * 2 - 1
+    this.pointer.y = -((event.clientY - rect.top) / rect.height) * 2 + 1
+
+    const ctx: InputEventContext = {
+      tile: this.computeTargetTile()
+    }
+
+    this.incursionSceneBuilder.onPointerMove(ctx)
   }
 
   public startRendering() {
@@ -178,6 +214,7 @@ export default class Renderer {
     this.controls.update()
     this.webGLRenderer.clear()
     this.composer.render()
+    this.incursionSceneBuilder?.animateScene(time)
   }
 
   public toggleDebugHelpers() {
@@ -190,6 +227,21 @@ export default class Renderer {
       this.currentScene.remove(this.axesHelper)
       this.currentScene.remove(this.gridHelper)
     }
+  }
+
+  private readonly gridPlane = new Plane(new Vector3(0, 1, 0), -3)
+
+  private computeTargetTile(): Tile | undefined {
+    if (!this.incursionSceneBuilder) return
+
+    this.raycaster.setFromCamera(this.pointer, this.camera)
+
+    const target = new Vector3()
+    if (!this.raycaster.ray.intersectPlane(this.gridPlane, target)) return
+
+    const tile = this.incursionSceneBuilder.grid.tileAtWorldPos(target)
+
+    return tile
   }
 
   public static getCSSVar(name: string) {

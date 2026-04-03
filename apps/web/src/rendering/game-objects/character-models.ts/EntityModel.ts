@@ -13,7 +13,7 @@ export default class EntityModel extends GraphicObject {
   public assemble(): GraphicObject {
     const body = new OpaqueCuboid(
       new Vector3(100, 100, 100),
-      new Color(0x00FF00)
+      new Color('#00c700')
     ).assemble()
     this.add(body)
     return this

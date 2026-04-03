@@ -1,11 +1,12 @@
 import type { Color, Vector3 } from 'three'
-import { BoxGeometry, Mesh, ShaderLib, ShaderMaterial, UniformsUtils } from 'three'
+import { BoxGeometry, DoubleSide, FrontSide, Mesh, ShaderLib, ShaderMaterial, UniformsUtils } from 'three'
 import GraphicObject from '../GraphicObject'
 
 export default class TransparentCuboid extends GraphicObject {
   public constructor(
     public readonly size: Vector3,
-    public readonly color: Color
+    public readonly color: Color,
+    public readonly double: boolean = false
   ) {
     super()
     this.name = 'cube'
@@ -46,7 +47,9 @@ export default class TransparentCuboid extends GraphicObject {
       vertexShader,
       fragmentShader,
       transparent: true,
-      lights: true
+      depthWrite: false,
+      lights: true,
+      side: this.double ? DoubleSide : FrontSide
     })
 
     const cube = new Mesh(geometry, material)

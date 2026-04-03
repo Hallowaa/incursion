@@ -13,7 +13,7 @@ export default class CharacterModel extends GraphicObject {
   public assemble(): GraphicObject {
     const body = new OpaqueCuboid(
       new Vector3(100, 100, 100),
-      new Color(0xFF0000)
+      new Color('#c50000')
     ).assemble()
     this.add(body)
     return this

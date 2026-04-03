@@ -19,7 +19,7 @@ export default class Grid extends GraphicObject {
     const objWidth = this.floorSize * this.width
     const objHeight = this.floorSize * this.height
 
-    const tileColor = new Color(0xFFFFFF)
+    const tileColor = new Color(0x2E222F)
     for (let x = 0; x < this.width; x++) {
       const column: GraphicObject[] = []
       for (let y = 0; y < this.height; y++) {
@@ -46,5 +46,14 @@ export default class Grid extends GraphicObject {
 
   public gridToWorld(gridPos: Vector2) {
     return this.tiles[gridPos.x][gridPos.y].position
+  }
+
+  public tileAtWorldPos(worldPos: Vector3): Tile | undefined {
+    const gridX = Math.floor((worldPos.x + this.floorSize * this.width / 2) / this.floorSize)
+    const gridY = Math.floor((worldPos.z + this.floorSize * this.height / 2) / this.floorSize)
+
+    if (gridX < 0 || gridX >= this.width || gridY < 0 || gridY >= this.height) return undefined
+
+    return this.tiles[gridX][gridY] as Tile
   }
 }

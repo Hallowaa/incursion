@@ -54,6 +54,8 @@ export default class Incursion {
         this.deltas.push(delta)
       }
     }
+
+    this.queuedActions = []
   }
 
   private validateState() {

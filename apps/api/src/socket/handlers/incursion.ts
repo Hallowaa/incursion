@@ -84,6 +84,7 @@ export function registerIncursionHandlers(io: Server, socket: Socket, incursionM
       return
     }
 
+    console.log(`Received start ticking request from ${character.name} for incursion ${incursionId.toString()}`)
     let existingIncursion = incursionManager.getIncursion(incursionId.toString())
 
     if (!existingIncursion) {
@@ -95,6 +96,7 @@ export function registerIncursionHandlers(io: Server, socket: Socket, incursionM
         callback(null)
         return
       }
+
       incursionManager.addIncursion(incursionId.toString(), currentIncursion)
       existingIncursion = incursionManager.getIncursion(incursionId.toString())
     }

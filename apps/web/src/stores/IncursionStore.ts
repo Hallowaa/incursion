@@ -35,7 +35,7 @@ export const useIncursionStore = defineStore('incursion', {
         this.incursion = result
         this.isViewingIncursion = true
 
-        await comm.socketEmit('incursion:startTicking')
+        await this.startTicking(comm)
 
         return {
           success: true,
@@ -46,6 +46,14 @@ export const useIncursionStore = defineStore('incursion', {
           success: false,
           error: err as Error
         }
+      }
+    },
+
+    async startTicking(comm: CommunicationManager): Promise<void> {
+      try {
+        await comm.socketEmit('incursion:startTicking')
+      } catch (err) {
+        NotificationManager.error('Could start incursion ticking.')
       }
     },
 
