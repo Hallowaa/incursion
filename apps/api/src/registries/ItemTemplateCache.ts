@@ -1,5 +1,6 @@
 import type IItemTemplate from '../models/interfaces/item/IItemTemplate'
 import { ItemTemplateModel } from '../models/schemas/item/ItemTemplateSchema'
+import Log from '../util/Log'
 
 const templateCache = new Map<number, IItemTemplate>()
 
@@ -18,8 +19,7 @@ export async function loadItemTemplateCache() {
     })
   }
 
-  // eslint-disable-next-line no-console
-  console.log(`Loaded ${templateCache.size} item templates`)
+  Log.i(`Loaded ${templateCache.size} item templates`)
 }
 
 export function getItemTemplate(itemIndex: number): IItemTemplate | undefined {

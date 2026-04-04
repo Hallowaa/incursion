@@ -7,6 +7,7 @@ import { armor } from '../data/items/armor'
 import { weapons } from '../data/items/weapons'
 import { ItemModDefinitionModel } from '../models/schemas/item/ItemModDefinitionSchema'
 import { ItemTemplateModel } from '../models/schemas/item/ItemTemplateSchema'
+import Log from '../util/Log'
 
 dotenv.config()
 
@@ -14,7 +15,7 @@ const allItemTemplates = [...weapons, ...armor, ...accessories]
 
 async function seed() {
   await mongoose.connect(process.env.MONGO_URI!)
-  console.log('Connected to DB')
+  Log.i('Connected to DB')
 
   for (const modDef of itemModDefinitions) {
     await ItemModDefinitionModel.findOneAndUpdate(
@@ -22,7 +23,7 @@ async function seed() {
       modDef,
       { upsert: true, new: true }
     )
-    console.log(`Seeded mod: ${modDef.name}`)
+    Log.i(`Seeded mod: ${modDef.name}`)
   }
 
   for (const template of allItemTemplates) {
@@ -31,11 +32,11 @@ async function seed() {
       template,
       { upsert: true, new: true }
     )
-    console.log(`Seeded item: ${template.name}`)
+    Log.i(`Seeded item: ${template.name}`)
   }
 
   await mongoose.disconnect()
-  console.log('Done')
+  Log.i('Done')
 }
 
 seed().catch((err) => {

@@ -3,6 +3,7 @@ import { AdversaryTag, IncursionName, IncursionRoomType, IncursionTheme } from '
 import * as dotenv from 'dotenv'
 import mongoose from 'mongoose'
 import { IncursionTemplateModel } from '../models/schemas/incursion/IncursionTemplateSchema'
+import Log from '../util/Log'
 
 dotenv.config()
 
@@ -31,7 +32,7 @@ export const incursionTemplates: IIncursionTemplate[] = [
 
 async function seed() {
   await mongoose.connect(process.env.MONGO_URI!)
-  console.log('Connected to DB')
+  Log.i('Connected to DB')
 
   for (const template of incursionTemplates) {
     await IncursionTemplateModel.findOneAndUpdate(
@@ -42,11 +43,11 @@ async function seed() {
         new: true
       }
     )
-    console.log(`Seeded: ${template.name}`)
+    Log.i(`Seeded: ${template.name}`)
   }
 
   await mongoose.disconnect()
-  console.log('Done')
+  Log.i('Done')
 }
 
 seed().catch((err) => {

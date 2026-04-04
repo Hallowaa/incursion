@@ -1,4 +1,5 @@
 import jwt from 'jsonwebtoken'
+import Log from '../util/Log'
 
 const ACCESS_SECRET = 'access-secret'
 const REFRESH_SECRET = 'refresh-secret'
@@ -8,14 +9,13 @@ export function verifyToken(req: any, res: any, next: any) {
   if (!authHeader) return res.sendStatus(401)
 
   const token = authHeader.split(' ')[1]
-  console.log(token)
 
   try {
     const decoded = verifyAccessToken(token)
     req.user = decoded
     next()
   } catch {
-    console.log('unauth')
+    Log.e('Unauthorised request')
     return res.sendStatus(403)
   }
 }

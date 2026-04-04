@@ -1,5 +1,6 @@
 import type { Socket } from 'socket.io'
 import { verifyAccessToken } from '../../middleware/auth'
+import Log from '../../util/Log'
 
 export function socketAuth(socket: Socket, next: (err?: Error) => void) {
   const token = socket.handshake.auth.token
@@ -13,7 +14,7 @@ export function socketAuth(socket: Socket, next: (err?: Error) => void) {
     socket.data.userId = payload.userId
     next()
   } catch {
-    console.log('unauth request')
+    Log.i('Unauthorised request')
     next(new Error('Unauthorized'))
   }
 }

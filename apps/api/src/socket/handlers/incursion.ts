@@ -8,6 +8,7 @@ import IncursionTemplateMapper from '../../mappers/incursion/IncursionTemplateMa
 import { CharacterModel } from '../../models/schemas/entity/CharacterSchema'
 import { IncursionInstanceModel } from '../../models/schemas/incursion/IncursionInstanceSchema'
 import { IncursionTemplateModel } from '../../models/schemas/incursion/IncursionTemplateSchema'
+import Log from '../../util/Log'
 import { safeHandler } from './safeHandler'
 
 export function registerIncursionHandlers(io: Server, socket: Socket, incursionManager: IncursionManager) {
@@ -85,8 +86,7 @@ export function registerIncursionHandlers(io: Server, socket: Socket, incursionM
       return
     }
 
-    // eslint-disable-next-line no-console
-    console.log(`Received start ticking request from ${character.name} for incursion ${incursionId.toString()}`)
+    Log.i(`Received start ticking request from ${character.name} for incursion ${incursionId.toString()}`)
 
     let existingIncursion = incursionManager.getIncursion(incursionId.toString())
 
@@ -110,7 +110,7 @@ export function registerIncursionHandlers(io: Server, socket: Socket, incursionM
   }))
 
   socket.on('incursion:actionPerformed', safeHandler(async (_data: IActionAbilityContextDto, callback) => {
-    console.log(`Received action performed by ${_data.userId}, executing ${_data.abilityId}`)
+    Log.i(`Received action performed by ${_data.userId}, executing ${_data.abilityId}`)
     const incursion = incursionManager.getIncursionFromCharacterId(socket.data.userId)
 
     if (!incursion) {

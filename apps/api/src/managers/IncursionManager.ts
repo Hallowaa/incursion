@@ -1,5 +1,6 @@
 import type { Server } from 'socket.io'
 import type Incursion from '../models/domain/incursion/Incursion'
+import Log from '../util/Log'
 
 const TICK_RATE = 20
 const TICK_INTERVAL = 1000 / TICK_RATE
@@ -15,8 +16,7 @@ export default class IncursionManager {
   ) {}
 
   public addIncursion(characterId: string, incursionId: string, incursion: Incursion) {
-    // eslint-disable-next-line no-console
-    console.log(`Character ${characterId} is now in incurion ${incursionId}`)
+    Log.i(`Character ${characterId} is now in incurion ${incursionId}`)
 
     this.incursions.set(incursionId, incursion)
     this.characterIncursionMap.set(characterId, incursionId)

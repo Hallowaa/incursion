@@ -7,6 +7,7 @@ import type IAbilityConfig from '../IAbilityConfig'
 import { AbilityId, AbilityResourceType, DeltaType, EntityStatId, TargetType } from '@incursion/dto'
 import IncursionInstanceEntityMapper from '../../../../mappers/entity/IncursionInstanceEntityMapper'
 import PositionMapper from '../../../../mappers/incursion/PositionMapper'
+import Log from '../../../../util/Log'
 import Position from '../../incursion/Position'
 import Ability from '../Ability'
 
@@ -43,7 +44,6 @@ export default class AbilityMove extends Ability {
       position: PositionMapper.toDto(newPos)
     }
 
-    console.log(`Used Move with current time: ${this.elapsed}. Total cooldown is ${this.computeCooldown(user.entity)}`)
     this.elapsed = this.computeCooldown(user.entity)
 
     return positionDelta
@@ -73,9 +73,9 @@ export default class AbilityMove extends Ability {
     }
 
     user.computeStats()
-    console.log(movementSpeed.currentValue)
-    console.log((user as Character).classes.length)
     const result = 2000 - movementSpeed.currentValue * 1000
+
+    Log.i(`Cooldown of ${this.props.abilityId} is ${result}`)
     return result
   }
 

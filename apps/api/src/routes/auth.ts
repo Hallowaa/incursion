@@ -5,6 +5,7 @@ import jwt from 'jsonwebtoken'
 import CharacterGenerator from '../generators/CharacterGenerator'
 import { CharacterModel } from '../models/schemas/entity/CharacterSchema'
 import { UserModel } from '../models/schemas/UserSchema'
+import Log from '../util/Log'
 
 const router = Router()
 const ACCESS_SECRET = 'access-secret'
@@ -63,7 +64,6 @@ router.post('/refresh', async (req, res) => {
 })
 
 router.post('/register/', async (req, res) => {
-  console.log('Registering user:', req.body)
   const { username, password } = req.body
 
   const existingUser = await UserModel.findOne({ username })

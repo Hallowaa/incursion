@@ -6,6 +6,7 @@ import { connectDB } from './config/db'
 import { loadItemModRegistry } from './registries/ItemModRegistry'
 import { loadItemTemplateCache } from './registries/ItemTemplateCache'
 import { initSocket } from './socket'
+import Log from './util/Log'
 
 dotenv.config()
 
@@ -18,8 +19,7 @@ async function start() {
   initSocket(server)
 
   server.listen(Number(process.env.PORT), () => {
-    // eslint-disable-next-line no-console
-    console.log('Server running on http://localhost:3000')
+    Log.i('Server running on http://localhost:3000')
   })
 }
 
