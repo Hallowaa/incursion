@@ -1,4 +1,5 @@
 import type { IAbilityDef, IActionAbilityContextDto } from '@incursion/dto'
+import type Entity from '../entity/Entity'
 import type IncursionInstanceEntity from '../entity/IncursionInstanceEntity'
 import type Incursion from '../incursion/Incursion'
 import type IAbilityConfig from './IAbilityConfig'
@@ -20,6 +21,10 @@ export default class Ability {
       baseCost: config.baseCost,
       resourceType: config.resourceType
     }
+  }
+
+  public computeCooldown(user: Entity): number {
+    return 0
   }
 
   public effect(user: IncursionInstanceEntity, incursion: Incursion, context: InputEventContext): IActionAbilityContextDto | undefined {

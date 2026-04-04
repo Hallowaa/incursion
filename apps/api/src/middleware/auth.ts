@@ -2,7 +2,6 @@ import jwt from 'jsonwebtoken'
 import Log from '../util/Log'
 
 const ACCESS_SECRET = 'access-secret'
-const REFRESH_SECRET = 'refresh-secret'
 
 export function verifyToken(req: any, res: any, next: any) {
   const authHeader = req.headers.authorization

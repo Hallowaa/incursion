@@ -1,6 +1,7 @@
 import { Server } from 'socket.io'
 import CharacterManager from '../managers/CharacterManager'
 import IncursionManager from '../managers/IncursionManager'
+import Log from '../util/Log'
 import { registerCharacterHandlers } from './handlers/character'
 import { registerConnectionHandlers } from './handlers/connection'
 import { registerIncursionHandlers } from './handlers/incursion'
@@ -21,7 +22,7 @@ export function initSocket(server: any) {
     const character = await characterManager.load(socket.data.userId)
 
     if (!character) {
-      console.error(`Could not find character ${socket.data.userId}`)
+      Log.e(`Could not find character ${socket.data.userId}`)
       socket.disconnect()
       return
     }

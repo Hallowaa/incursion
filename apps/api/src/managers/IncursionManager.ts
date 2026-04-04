@@ -50,7 +50,7 @@ export default class IncursionManager {
     const incursionId = this.characterIncursionMap.get(characterId)
 
     if (!incursionId) {
-      console.error(`Failed to get incursion ID from ${characterId}`)
+      Log.e(`Failed to get incursion ID from ${characterId}`)
       return
     }
 

@@ -18,7 +18,7 @@ export function registerIncursionHandlers(io: Server, socket: Socket, incursionM
     }).lean()
 
     if (!characterDoc) {
-      console.error('Failed to find character when beginning incursion')
+      Log.e('Failed to find character when beginning incursion')
       callback(null)
       return
     }
@@ -29,7 +29,7 @@ export function registerIncursionHandlers(io: Server, socket: Socket, incursionM
     const templateDoc = await IncursionTemplateModel.findOne().lean()
 
     if (!templateDoc) {
-      console.error('Failed to find suitable template when beginning incursion')
+      Log.e('Failed to find suitable template when beginning incursion')
       callback(null)
       return
     }
@@ -61,7 +61,7 @@ export function registerIncursionHandlers(io: Server, socket: Socket, incursionM
 
       callback(toDto)
     } catch (err) {
-      console.error('Failed to save incursion', err)
+      Log.e(`Failed to save incursion: ${err}`)
       callback(null)
     }
   }))
@@ -72,7 +72,7 @@ export function registerIncursionHandlers(io: Server, socket: Socket, incursionM
     }).lean()
 
     if (characterDoc == null) {
-      console.error('Failed to find character when starting incursion ticking')
+      Log.e('Failed to find character when starting incursion ticking')
       callback(null)
       return
     }
@@ -81,7 +81,7 @@ export function registerIncursionHandlers(io: Server, socket: Socket, incursionM
     const incursionId = characterDoc.currentIncursion
 
     if (!incursionId) {
-      console.error(`Failed to start ticking incursion for character ${characterDoc._id}`)
+      Log.e(`Failed to start ticking incursion for character ${characterDoc._id}`)
       callback(null)
       return
     }
@@ -95,7 +95,7 @@ export function registerIncursionHandlers(io: Server, socket: Socket, incursionM
       const currentIncursion = character.currentIncursion
 
       if (!currentIncursion) {
-        console.error(`Current incursion does not exist for character ${characterDoc._id} on server, but it exists on db.`)
+        Log.e(`Current incursion does not exist for character ${characterDoc._id} on server, but it exists on db.`)
         callback(null)
         return
       }
@@ -114,7 +114,7 @@ export function registerIncursionHandlers(io: Server, socket: Socket, incursionM
     const incursion = incursionManager.getIncursionFromCharacterId(socket.data.userId)
 
     if (!incursion) {
-      console.error(`Failed to get incursion for ${socket.data.userId}`)
+      Log.e(`Failed to get incursion for ${socket.data.userId}`)
       callback(false)
       return
     }
@@ -122,7 +122,7 @@ export function registerIncursionHandlers(io: Server, socket: Socket, incursionM
     const existingEntity = incursion.currentRoom.entities.find((e) => e.entity.entityId === _data.userId)
 
     if (!existingEntity) {
-      console.error(`Failed to find entity ${_data.userId} on action performed`)
+      Log.e(`Failed to find entity ${_data.userId} on action performed`)
       callback(false)
       return
     }
@@ -130,7 +130,7 @@ export function registerIncursionHandlers(io: Server, socket: Socket, incursionM
     const ability = existingEntity.abilities().find((a) => a.props.abilityId === _data.abilityId)
 
     if (!ability) {
-      console.error(`Failed to find ability ${_data.abilityId} for entity ${existingEntity.entity.entityId} on action performed`)
+      Log.e(`Failed to find ability ${_data.abilityId} for entity ${existingEntity.entity.entityId} on action performed`)
       callback(false)
       return
     }

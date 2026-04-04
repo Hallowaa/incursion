@@ -5,6 +5,7 @@ import type { IActionAbilityContextDto } from '@incursion/dto'
 import type { Vector2 } from 'three'
 import type Tile from '../game-objects/Tile'
 import type InputEventContext from './InputEventContext'
+import type Ability from '@/datatypes/business/ability/Ability'
 import type CommunicationManager from '@/managers/CommunicationManager'
 import { ActionType } from '@incursion/dto'
 import NotificationManager from '@/managers/NotificationManager'
@@ -19,6 +20,7 @@ export default class CharacterController {
   public characterStore: ReturnType<typeof useCharacterStore>
   public incursionStore: ReturnType<typeof useIncursionStore>
   private lastTiles: Set<Tile> = new Set()
+  private queuedAbilities: Ability[] = []
 
   public constructor(
     public communicationManager: CommunicationManager

@@ -2,6 +2,7 @@ import type { IActionAbilityContextDto, IActionContextDto, IDeltaDto, IncursionN
 import type Ability from '../ability/Ability'
 import type IncursionInstanceEntity from '../entity/IncursionInstanceEntity'
 import { ActionType } from '@incursion/dto'
+import Log from '../../../util/Log'
 import IncursionRoom from './IncursionRoom'
 
 export default class Incursion {
@@ -45,7 +46,7 @@ export default class Incursion {
       const contextSnapshot = structuredClone(context)
       this.queuedActions.push({ user, action, contextSnapshot })
     } else {
-      console.warn(`${user.entity.entityId} tried to use ${action.props.abilityId} but can't use it.`)
+      Log.i(`${user.entity.entityId} tried to use ${action.props.abilityId} but can't use it.`)
     }
   }
 

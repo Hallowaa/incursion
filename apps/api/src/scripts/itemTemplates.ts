@@ -40,6 +40,6 @@ async function seed() {
 }
 
 seed().catch((err) => {
-  console.error(err)
+  Log.e(`${err}`)
   process.exit(1)
 })

@@ -5,7 +5,6 @@ import jwt from 'jsonwebtoken'
 import CharacterGenerator from '../generators/CharacterGenerator'
 import { CharacterModel } from '../models/schemas/entity/CharacterSchema'
 import { UserModel } from '../models/schemas/UserSchema'
-import Log from '../util/Log'
 
 const router = Router()
 const ACCESS_SECRET = 'access-secret'

@@ -1,5 +1,4 @@
 import type { IActionAbilityContextDto, IDeltaDto, IIIEPositionDeltaDto } from '@incursion/dto'
-import type Character from '../../entity/Character'
 import type Entity from '../../entity/Entity'
 import type IncursionInstanceEntity from '../../entity/IncursionInstanceEntity'
 import type Incursion from '../../incursion/Incursion'
