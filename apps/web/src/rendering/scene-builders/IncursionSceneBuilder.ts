@@ -2,6 +2,7 @@ import type GraphicObject from '../GraphicObject'
 import type Renderer from '../Renderer'
 import type Character from '@/datatypes/business/entity/Character'
 import type Incursion from '@/datatypes/business/incursion/Incursion'
+import { EntityKind } from '@incursion/dto'
 import { AmbientLight, Color, DirectionalLight, Vector2, Vector3 } from 'three'
 import CharacterModel from '../game-objects/character-models.ts/CharacterModel'
 import EntityModel from '../game-objects/character-models.ts/EntityModel'
@@ -64,7 +65,7 @@ export default class IncursionSceneBuilder extends SceneBuilder {
 
   private buildEntities() {
     for (const iie of this.incursion.currentRoom.entities) {
-      if (iie.entity.entityId.includes('character')) {
+      if (iie.entity.kind === EntityKind.CHARACTER) {
         const characterModel = new CharacterModel(iie as unknown as Character).assemble()
         this.entityModelMap.set(iie.entity.entityId, characterModel)
         this.grid.add(characterModel)

@@ -9,6 +9,7 @@ import Entity from './Entity'
 
 export default class Character extends Entity {
   public constructor(
+    public entityId: string,
     public name: string,
     public experience: number,
     public classes: CharacterClass[], // TODO: make own class obj
@@ -19,7 +20,7 @@ export default class Character extends Entity {
   ) {
     super(
       EntityKind.CHARACTER,
-      'character',
+      entityId,
       name,
       stats
     )

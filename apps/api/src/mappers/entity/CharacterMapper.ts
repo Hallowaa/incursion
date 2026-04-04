@@ -50,7 +50,7 @@ export default class CharacterMapper {
   public static toDto(character: Character): ICharacterDto {
     return {
       kind: EntityKind.CHARACTER,
-      entityId: 'character',
+      entityId: character.entityId,
       name: character.name,
       experience: character.experience,
       classes: character.classes.map((cc) => CharacterClassMapper.toDto(cc)),

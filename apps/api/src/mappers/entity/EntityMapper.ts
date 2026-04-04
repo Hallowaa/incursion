@@ -5,6 +5,7 @@ import Character from '../../models/domain/entity/Character'
 import Entity from '../../models/domain/entity/Entity'
 import Inventory from '../../models/domain/entity/Inventory'
 import CharacterClassMapper from './CharacterClassMapper'
+import CharacterMapper from './CharacterMapper'
 import EntityStatMapper from './EntityStatMapper'
 
 export default class EntityMapper {
@@ -33,6 +34,10 @@ export default class EntityMapper {
   }
 
   public static toDto(entity: Entity): IEntityDto {
+    if (entity.kind === EntityKind.CHARACTER) {
+      return CharacterMapper.toDto(entity as Character)
+    }
+
     return {
       kind: entity.kind,
       entityId: entity.entityId,
