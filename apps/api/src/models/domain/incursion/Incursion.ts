@@ -1,4 +1,4 @@
-import type { IActionAbilityContextDto, IActionContextDto, IDeltaDto, IncursionId, IncursionTheme } from '@incursion/dto'
+import type { IActionAbilityContextDto, IActionContextDto, IDeltaDto, IncursionName, IncursionTheme } from '@incursion/dto'
 import type Ability from '../ability/Ability'
 import type IncursionInstanceEntity from '../entity/IncursionInstanceEntity'
 import { ActionType } from '@incursion/dto'
@@ -16,8 +16,8 @@ export default class Incursion {
   public deltas: IDeltaDto[] = []
 
   public constructor(
-    public incursionId: IncursionId,
-    public name: string,
+    public incursionId: string,
+    public name: IncursionName,
     public level: number,
     public rooms: IncursionRoom[],
     public currentRoom: IncursionRoom,
@@ -45,7 +45,7 @@ export default class Incursion {
       const contextSnapshot = structuredClone(context)
       this.queuedActions.push({ user, action, contextSnapshot })
     } else {
-      console.warn(`${user.entity.entityId} tried to use ${action.abilityId} but can't use it.`)
+      console.warn(`${user.entity.entityId} tried to use ${action.props.abilityId} but can't use it.`)
     }
   }
 
@@ -75,7 +75,9 @@ export default class Incursion {
   public processCooldowns(deltaTime: number) {
     for (const iie of this.currentRoom.entities) {
       for (const ability of iie.abilities()) {
-        ability.elapsed += deltaTime
+        if (ability.elapsed > 0) {
+          ability.elapsed -= deltaTime
+        }
       }
     }
   }

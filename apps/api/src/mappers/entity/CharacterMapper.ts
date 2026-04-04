@@ -34,7 +34,7 @@ export default class CharacterMapper {
 
     const character = new Character({
       kind: EntityKind.CHARACTER,
-      entityId: 'character',
+      entityId: doc.entityId,
       name: doc.name,
       experience: doc.experience,
       classes: doc.classes.map((c) => CharacterClassMapper.toDomain(c)),
@@ -43,6 +43,7 @@ export default class CharacterMapper {
       passivePointsSpent: [], // TODO: implement
       currentIncursion
     })
+
     return character
   }
 

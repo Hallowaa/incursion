@@ -36,6 +36,6 @@ export default class IncursionGenerator {
 
     const levelDiff = template.maxLevel - template.minLevel
     const level = template.minLevel + Math.floor(Math.random() * levelDiff)
-    return new Incursion(template.incursionId, template.name, level, rooms, rooms[0], template.theme)
+    return new Incursion(new mongoose.Types.ObjectId().toString(), template.name, level, rooms, rooms[0], template.theme)
   }
 }

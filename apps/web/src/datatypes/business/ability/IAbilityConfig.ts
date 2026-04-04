@@ -6,10 +6,10 @@ export default interface IAbilityConfig {
   name: string
   description: string
   targetType: TargetType
+  baseCooldown: number
   baseCastTime: number
   baseRange: number
   baseRadius: Position
-  baseCooldown: number
   baseCost: number
   resourceType: AbilityResourceType
 }

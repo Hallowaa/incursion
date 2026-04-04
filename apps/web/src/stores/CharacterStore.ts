@@ -2,8 +2,10 @@ import type { CharacterClassId, EntityStatId, ICharacterClassDto, ICharacterDto,
 import type Character from '@/datatypes/business/entity/Character'
 import type { Result } from '@/datatypes/util/Result'
 import type CommunicationManager from '@/managers/CommunicationManager'
+import { AbilityId } from '@incursion/dto'
 import { defineStore } from 'pinia'
 import NotificationManager from '@/managers/NotificationManager'
+import CharacterClassMapper from '@/mappers/CharacterClassMapper'
 import CharacterMapper from '@/mappers/CharacterMapper'
 import EntityStatMapper from '@/mappers/EntityStatMapper'
 import { useIncursionStore } from './IncursionStore'
@@ -19,6 +21,12 @@ export const useCharacterStore = defineStore('character', {
   getters: {
     characterStatCurrentValue: (state) => {
       return (characterStat: EntityStatId) => state.character?.stats.find((s) => s.statId === characterStat)?.currentValue ?? -1
+    },
+    currentAbility: (state) => {
+      // for now just do move
+      const move = state.character?.getAbilities().find((a) => a.props.abilityId === AbilityId.MOVE)
+
+      return move
     }
   },
 
@@ -41,7 +49,6 @@ export const useCharacterStore = defineStore('character', {
         const incursionStore = useIncursionStore()
         incursionStore.incursion = this.character.currentIncursion
 
-        console.log(result)
         return {
           success: true,
           result
@@ -127,7 +134,7 @@ export const useCharacterStore = defineStore('character', {
           NotificationManager.warn('Received character class update when no character exists.')
           return
         }
-        this.character.classes.push(data)
+        this.character.classes.push(CharacterClassMapper.toDomain(data))
       })
     }
   }

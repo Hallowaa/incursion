@@ -1,7 +1,8 @@
 import type Tile from './game-objects/Tile'
+import type CharacterController from './input/CharacterController'
 import type InputEventContext from './input/InputEventContext'
-import type LoadedResources from './LoadedResources'
 
+import type LoadedResources from './LoadedResources'
 import type Incursion from '@/datatypes/business/incursion/Incursion'
 import {
   AxesHelper,
@@ -52,6 +53,7 @@ export default class Renderer {
   private gridHelper = new GridHelper(3000, 20, 0xFF0000, 0xFFFFFF)
 
   private incursionSceneBuilder: IncursionSceneBuilder | undefined
+  public characterController: CharacterController | undefined
 
   public async load() {
     const imageLoader = new TextureLoader()
@@ -143,7 +145,8 @@ export default class Renderer {
   }
 
   private handleEvents() {
-    window.addEventListener('pointermove', (event: PointerEvent) => this.onPointerMove(event))
+    this.webGLRenderer.domElement.addEventListener('pointermove', (event: PointerEvent) => this.onPointerMove(event))
+    this.webGLRenderer.domElement.addEventListener('pointerdown', (event: PointerEvent) => this.onPointerDown(event))
   }
 
   private setupComposer() {
@@ -187,6 +190,13 @@ export default class Renderer {
     this.incursionSceneBuilder = new IncursionSceneBuilder(this, incursion)
     this.incursionSceneBuilder.buildScene()
     this.currentScene.add(this.incursionSceneBuilder.scene)
+
+    if (!this.characterController) {
+      NotificationManager.error(`Failed to initialize character controller`)
+      return
+    }
+
+    this.characterController.grid = this.incursionSceneBuilder.grid
   }
 
   public onPointerMove(event: PointerEvent) {
@@ -203,7 +213,30 @@ export default class Renderer {
       tile: this.computeTargetTile()
     }
 
-    this.incursionSceneBuilder.onPointerMove(ctx)
+    if (!this.characterController) {
+      NotificationManager.error(`Failed to initialize character controller`)
+      return
+    }
+
+    this.characterController.onPointerMove(ctx)
+  }
+
+  public onPointerDown(event: PointerEvent) {
+    if (!this.incursionSceneBuilder) {
+      return
+    }
+
+    const ctx: InputEventContext = {
+      button: event.button, // 0 = left, 2 = right
+      tile: this.computeTargetTile()
+    }
+
+    if (!this.characterController) {
+      NotificationManager.error(`Failed to initialize character controller`)
+      return
+    }
+
+    this.characterController.onPointerDown(ctx)
   }
 
   public startRendering() {

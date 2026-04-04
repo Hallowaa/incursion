@@ -1,5 +1,4 @@
-import type Tile from '../game-objects/Tile'
-import type InputEventContext from '../input/InputEventContext'
+import type GraphicObject from '../GraphicObject'
 import type Renderer from '../Renderer'
 import type Character from '@/datatypes/business/entity/Character'
 import type Incursion from '@/datatypes/business/incursion/Incursion'
@@ -14,10 +13,9 @@ export default class IncursionSceneBuilder extends SceneBuilder {
   public grid: Grid
 
   private FLOOR_HEIGHT = 800
-  private floorSize = 150
+  private floorSize = 175
 
-  private lastTiles: Set<Tile> = new Set()
-  private selectionRange = 1
+  private entityModelMap: Map<string, GraphicObject> = new Map()
 
   public constructor(renderer: Renderer, public incursion: Incursion) {
     super(renderer)
@@ -53,49 +51,27 @@ export default class IncursionSceneBuilder extends SceneBuilder {
   }
 
   public animateScene(time: number): void {
-  }
+    for (const iie of this.incursion.currentRoom.entities) {
+      const model = this.entityModelMap.get(iie.entity.entityId)
 
-  public onPointerMove(ctx: InputEventContext) {
-    if (ctx.tile) {
-      const tiles = new Set(this.getTilesInRange(ctx.tile.coord))
-
-      for (const tile of tiles) {
-        if (!this.lastTiles.has(tile)) tile.setHover(true)
-      }
-      for (const tile of this.lastTiles) {
-        if (!tiles.has(tile)) tile.setHover(false)
+      if (!model) {
+        continue
       }
 
-      this.lastTiles = tiles
-    } else {
-      for (const tile of this.lastTiles) tile.setHover(false)
-      this.lastTiles.clear()
+      this.grid.placeAt(model, new Vector2(iie.position.x, iie.position.y))
     }
-  }
-
-  private getTilesInRange(pos: Vector2): Tile[] {
-    const half = Math.floor(this.selectionRange / 2)
-    const result: Tile[] = []
-
-    for (let x = pos.x - half; x <= pos.x + half; x++) {
-      for (let y = pos.y - half; y <= pos.y + half; y++) {
-        if (x >= 0 && x < this.grid.width && y >= 0 && y < this.grid.height) {
-          result.push(this.grid.tiles[x][y] as Tile)
-        }
-      }
-    }
-
-    return result
   }
 
   private buildEntities() {
     for (const iie of this.incursion.currentRoom.entities) {
       if (iie.entity.entityId.includes('character')) {
         const characterModel = new CharacterModel(iie as unknown as Character).assemble()
+        this.entityModelMap.set(iie.entity.entityId, characterModel)
         this.grid.add(characterModel)
         this.grid.placeAt(characterModel, new Vector2(iie.position.x, iie.position.y))
       } else {
         const entityModel = new EntityModel(iie.entity).assemble()
+        this.entityModelMap.set(iie.entity.entityId, entityModel)
         this.grid.add(entityModel)
         this.grid.placeAt(entityModel, new Vector2(iie.position.x, iie.position.y))
       }

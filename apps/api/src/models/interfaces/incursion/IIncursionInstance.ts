@@ -1,9 +1,9 @@
-import type { IncursionId, IncursionTheme } from '@incursion/dto'
+import type { IncursionName, IncursionTheme } from '@incursion/dto'
 import type IIncursionRoom from './IIncursionRoom'
 
 export default interface IIncursionInstance {
-  incursionId: IncursionId
-  name: string
+  incursionId: string
+  name: IncursionName
   level: number
   rooms: IIncursionRoom[]
   currentRoom: IIncursionRoom

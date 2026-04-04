@@ -1,10 +1,10 @@
-import { IncursionId } from "../enums/IncursionId";
+import { IncursionName } from "../enums/IncursionName";
 import { IncursionTheme } from "../enums/IncursionTheme";
 import { IIncursionRoomDto } from "./IIncursionRoomDto";
 
 export interface IIncursionDto {
-  incursionId: IncursionId
-  name: string
+  incursionId: string
+  name: IncursionName
   level: number
   room: IIncursionRoomDto[]
   currentRoom: IIncursionRoomDto

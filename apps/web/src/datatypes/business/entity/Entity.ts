@@ -1,4 +1,5 @@
 import type { EntityKind } from '@incursion/dto'
+import type Ability from '../ability/Ability'
 import type EntityStat from './EntityStat'
 
 export default class Entity {
@@ -8,4 +9,8 @@ export default class Entity {
     public name: string,
     public stats: EntityStat[]
   ) {}
+
+  public getAbilities(): Ability[] {
+    return []
+  }
 }

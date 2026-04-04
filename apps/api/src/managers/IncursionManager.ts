@@ -16,7 +16,7 @@ export default class IncursionManager {
 
   public addIncursion(characterId: string, incursionId: string, incursion: Incursion) {
     // eslint-disable-next-line no-console
-    console.log(`Added incursion ${incursion.incursionId} to manager`)
+    console.log(`Character ${characterId} is now in incurion ${incursionId}`)
 
     this.incursions.set(incursionId, incursion)
     this.characterIncursionMap.set(characterId, incursionId)
@@ -62,6 +62,7 @@ export default class IncursionManager {
       const delta = Date.now() - this.lastTime
 
       this.tick(delta)
+      this.lastTime = Date.now()
     }, TICK_INTERVAL)
   }
 

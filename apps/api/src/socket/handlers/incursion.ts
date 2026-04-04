@@ -110,6 +110,7 @@ export function registerIncursionHandlers(io: Server, socket: Socket, incursionM
   }))
 
   socket.on('incursion:actionPerformed', safeHandler(async (_data: IActionAbilityContextDto, callback) => {
+    console.log(`Received action performed by ${_data.userId}, executing ${_data.abilityId}`)
     const incursion = incursionManager.getIncursionFromCharacterId(socket.data.userId)
 
     if (!incursion) {
@@ -126,7 +127,7 @@ export function registerIncursionHandlers(io: Server, socket: Socket, incursionM
       return
     }
 
-    const ability = existingEntity.abilities().find((a) => a.abilityId === _data.abilityId)
+    const ability = existingEntity.abilities().find((a) => a.props.abilityId === _data.abilityId)
 
     if (!ability) {
       console.error(`Failed to find ability ${_data.abilityId} for entity ${existingEntity.entity.entityId} on action performed`)
@@ -135,5 +136,6 @@ export function registerIncursionHandlers(io: Server, socket: Socket, incursionM
     }
 
     incursion.queueAction(existingEntity, ability, _data)
+    callback(true)
   }))
 }

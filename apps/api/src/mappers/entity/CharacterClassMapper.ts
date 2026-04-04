@@ -1,5 +1,6 @@
 import type { ICharacterClassDto } from '@incursion/dto'
 import { CharacterClassId } from '@incursion/dto'
+import AbilityMove from '../../models/domain/ability/abilities/AbilityMove'
 import CharacterClass from '../../models/domain/entity/character-classes/CharacterClass'
 import MageClass from '../../models/domain/entity/character-classes/MageClass'
 import RogueClass from '../../models/domain/entity/character-classes/RogueClass'
@@ -20,7 +21,7 @@ export default class CharacterClassMapper {
         return new WarriorClass()
       }
       case CharacterClassId.CLASSLESS: {
-        return new CharacterClass(CharacterClassId.CLASSLESS, [], [])
+        return new CharacterClass(CharacterClassId.CLASSLESS, [], [new AbilityMove()])
       }
       default: {
         return new CharacterClass(CharacterClassId.UNKNOWN, [], [])

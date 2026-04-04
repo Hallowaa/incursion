@@ -3,6 +3,7 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import CommunicationManager from './managers/CommunicationManager'
 import LocalStorageManager from './managers/LocalStorageManager'
+import CharacterController from './rendering/input/CharacterController'
 import Renderer from './rendering/Renderer'
 import router from './router'
 import { useIncursionStore } from './stores/IncursionStore'
@@ -17,6 +18,7 @@ app.use(pinia)
 const localStorageManager = new LocalStorageManager()
 const communicationManager = new CommunicationManager(uri, localStorageManager)
 const renderer = new Renderer()
+renderer.characterController = new CharacterController(communicationManager)
 
 // PROVIDE
 app.provide('communicationManager', communicationManager)

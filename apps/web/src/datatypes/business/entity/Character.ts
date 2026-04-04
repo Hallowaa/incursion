@@ -1,6 +1,7 @@
-import type { ICharacterClassDto } from '@incursion/dto'
+import type Ability from '../ability/Ability'
 import type Incursion from '../incursion/Incursion'
 import type Inventory from '../item/Inventory'
+import type CharacterClass from './CharacterClass'
 import type EntityStat from './EntityStat'
 import type PassivePointsSpent from './PassivePointsSpent'
 import { EntityKind } from '@incursion/dto'
@@ -10,7 +11,7 @@ export default class Character extends Entity {
   public constructor(
     public name: string,
     public experience: number,
-    public classes: ICharacterClassDto[], // TODO: make own class obj
+    public classes: CharacterClass[], // TODO: make own class obj
     public inventory: Inventory,
     public passivePointsSpent: PassivePointsSpent[],
     public stats: EntityStat[],
@@ -22,5 +23,15 @@ export default class Character extends Entity {
       name,
       stats
     )
+  }
+
+  public getAbilities(): Ability[] {
+    const result = []
+
+    for (const c of this.classes) {
+      result.push(...c.abilities)
+    }
+
+    return result
   }
 }

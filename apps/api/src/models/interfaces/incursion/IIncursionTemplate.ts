@@ -1,9 +1,9 @@
-import type { IncursionId, IncursionRoomType, IncursionTheme } from '@incursion/dto'
+import type { IncursionName, IncursionRoomType, IncursionTheme } from '@incursion/dto'
 
 // Used for translating between doc and domain object
 export default interface IIncursionTemplate {
-  incursionId: IncursionId
-  name: string
+  incursionId: string
+  name: IncursionName
   theme: IncursionTheme
   minLevel: number
   maxLevel: number

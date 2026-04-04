@@ -1,5 +1,5 @@
 import type IIncursionTemplate from '../models/interfaces/incursion/IIncursionTemplate'
-import { AdversaryTag, IncursionId, IncursionRoomType, IncursionTheme } from '@incursion/dto'
+import { AdversaryTag, IncursionName, IncursionRoomType, IncursionTheme } from '@incursion/dto'
 import * as dotenv from 'dotenv'
 import mongoose from 'mongoose'
 import { IncursionTemplateModel } from '../models/schemas/incursion/IncursionTemplateSchema'
@@ -8,8 +8,8 @@ dotenv.config()
 
 export const incursionTemplates: IIncursionTemplate[] = [
   {
-    incursionId: IncursionId.FORGOTTEN_FIELD,
-    name: 'Forgotten field',
+    incursionId: 'forgotten_field_template',
+    name: IncursionName.FORGOTTEN_FIELD,
     theme: IncursionTheme.FIELD,
     minLevel: 0,
     maxLevel: 10,

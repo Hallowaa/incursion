@@ -4,8 +4,8 @@ import GraphicObject from './GraphicObject'
 
 export default class Grid extends GraphicObject {
   public tiles: GraphicObject[][] = []
-  private tileSize = 145
-  private floorSize = 150
+  private tileSize = 170
+  private floorSize = 175
   private tileDimensions = new Vector3(this.tileSize, 3, this.tileSize)
 
   public constructor(

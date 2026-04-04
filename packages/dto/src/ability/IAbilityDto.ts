@@ -11,6 +11,7 @@ export interface IAbilityDto {
   elapsed: number
   baseCooldown: number
   baseRange: number
+  baseCastTime: number
   baseRadius: IPositionDto
   baseCost: number
   resourceType: AbilityResourceType 

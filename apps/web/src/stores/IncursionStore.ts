@@ -1,4 +1,4 @@
-import type { IDeltaDto, IIIEPositionDeltaDto, IIIEStatDeltaDto, IIncursionDto } from '@incursion/dto'
+import type { IActionAbilityContextDto, IDeltaDto, IIIEPositionDeltaDto, IIIEStatDeltaDto, IIncursionDto } from '@incursion/dto'
 import type Incursion from '@/datatypes/business/incursion/Incursion'
 import type { Result } from '@/datatypes/util/Result'
 import type CommunicationManager from '@/managers/CommunicationManager'
@@ -55,6 +55,16 @@ export const useIncursionStore = defineStore('incursion', {
       } catch (err) {
         NotificationManager.error('Could start incursion ticking.')
       }
+    },
+
+    executeAbility(comm: CommunicationManager, actionContext: IActionAbilityContextDto): void {
+      comm.socketEmit('incursion:actionPerformed', actionContext).then((value) => {
+        if (value === false) {
+          NotificationManager.error(`Failed to queue ${actionContext.abilityId}`)
+        }
+      }).catch(() => {
+        NotificationManager.error(`Failed to use ability ${actionContext.abilityId}`)
+      })
     },
 
     registerIncursionHandlers(comm: CommunicationManager) {

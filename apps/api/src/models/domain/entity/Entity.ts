@@ -28,4 +28,6 @@ export default class Entity {
   public getAbilities(): Ability[] {
     return []
   }
+
+  public computeStats() {}
 }
