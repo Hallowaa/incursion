@@ -1,6 +1,7 @@
 import type Character from '../models/domain/entity/Character'
 import CharacterMapper from '../mappers/entity/CharacterMapper'
 import { CharacterModel } from '../models/schemas/entity/CharacterSchema'
+import Log from '../util/Log'
 
 export default class CharacterManager {
   private characters: Map<string, Character> = new Map()
@@ -9,7 +10,7 @@ export default class CharacterManager {
     const doc = await CharacterModel.findOne({ owner: userId }).lean()
     if (!doc) return null
 
-    const character = await CharacterMapper.toDomain(doc)
+    const character = CharacterMapper.toDomain(doc)
     this.characters.set(userId, character)
     return character
   }

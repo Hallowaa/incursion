@@ -9,7 +9,7 @@ dotenv.config()
 
 export const incursionTemplates: IIncursionTemplate[] = [
   {
-    incursionId: 'forgotten_field_template',
+    _id: new mongoose.Types.ObjectId(),
     name: IncursionName.FORGOTTEN_FIELD,
     theme: IncursionTheme.FIELD,
     minLevel: 0,
@@ -36,7 +36,7 @@ async function seed() {
 
   for (const template of incursionTemplates) {
     await IncursionTemplateModel.findOneAndUpdate(
-      { incursionId: template.incursionId },
+      { _id: template._id },
       template,
       {
         upsert: true,

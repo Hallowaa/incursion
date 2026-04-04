@@ -6,14 +6,14 @@ import type IPassivePointsSpent from './IPassivePointsSpent'
 
 // Used for translating between doc and domain object
 export default interface ICharacter {
+  _id: mongoose.Types.ObjectId
   owner: mongoose.Types.ObjectId
   name: string
-  entityId: string
   kind: EntityKind
   experience: number
   classes: string[]
   inventory: IItem[]
   passivePointsSpent: IPassivePointsSpent[]
   stats: IEntityStat[]
-  currentIncursion: mongoose.Types.ObjectId | undefined
+  currentIncursionId: mongoose.Types.ObjectId | undefined
 }

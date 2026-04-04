@@ -5,7 +5,6 @@ import { EntityStatSchema } from './EntityStatSchema'
 
 export const EntitySchema = new Schema<IEntity>({
   kind: { type: String, required: true, enum: Object.values(EntityKind) },
-  entityId: { type: String, required: true },
   name: { type: String, required: true },
   stats: { type: [EntityStatSchema], default: [] }
 }, { discriminatorKey: 'kind' })

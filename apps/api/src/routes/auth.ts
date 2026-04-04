@@ -5,6 +5,7 @@ import jwt from 'jsonwebtoken'
 import CharacterGenerator from '../generators/CharacterGenerator'
 import { CharacterModel } from '../models/schemas/entity/CharacterSchema'
 import { UserModel } from '../models/schemas/UserSchema'
+import Log from '../util/Log'
 
 const router = Router()
 const ACCESS_SECRET = 'access-secret'
@@ -78,6 +79,7 @@ router.post('/register/', async (req, res) => {
   const character = await CharacterModel.create(
     CharacterGenerator.generateCharacter(user.id, characterName)
   )
+  Log.i(`Created character with id ${character._id}. User ID is ${user.id}`)
   user.character = character.id
   await user.save()
 

@@ -8,7 +8,7 @@ import InventoryMapper from './InventoryMapper'
 export default class CharacterMapper {
   public static toDomain(dto: ICharacterDto): Character {
     return new Character(
-      dto.entityId,
+      dto._id,
       dto.name,
       dto.experience,
       dto.classes.map((c) => CharacterClassMapper.toDomain(c)), // TODO: change to actual char class objects

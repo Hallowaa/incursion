@@ -9,10 +9,10 @@ export default class CharacterGenerator {
     characterName: string
   ): ICharacter {
     return {
+      _id: new mongoose.Types.ObjectId(userId),
       owner: new mongoose.Types.ObjectId(userId),
       name: characterName,
       kind: EntityKind.CHARACTER,
-      entityId: userId,
       experience: 0,
       classes: [
         CharacterClassId.CLASSLESS
@@ -20,7 +20,7 @@ export default class CharacterGenerator {
       inventory: [],
       passivePointsSpent: [],
       stats: this.generateStats(),
-      currentIncursion: undefined
+      currentIncursionId: undefined
     }
   }
 

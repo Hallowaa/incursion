@@ -1,4 +1,4 @@
-const STACK_FILE_RE = /\((.+?):\d+:\d+\)/
+const STACK_FILE_RE = /\((.+?):(\d+):\d+\)/
 const PATH_SEP_RE = /[/\\]/
 const FILENAME_LENGTH = 28
 
@@ -12,7 +12,8 @@ export default class Log {
   }
 
   private static getFilename() {
-    const filename = `[${new Error('stack').stack?.split('\n')[3]?.match(STACK_FILE_RE)?.[1]?.split(PATH_SEP_RE).pop() ?? 'unknown'}]`
+    const match = new Error('stack').stack?.split('\n')[3]?.match(STACK_FILE_RE)
+    const filename = `[${match?.[1]?.split(PATH_SEP_RE).pop() ?? 'unknown'}:${match?.[2] ?? '?'}]`
     return filename.padEnd(FILENAME_LENGTH, '-')
   }
 }

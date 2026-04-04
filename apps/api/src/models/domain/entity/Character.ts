@@ -1,6 +1,6 @@
+import type mongoose from 'mongoose'
 import type IPassivePointsSpent from '../../interfaces/entity/IPassivePointsSpent'
 import type Ability from '../ability/Ability'
-import type Incursion from '../incursion/Incursion'
 import type CharacterClass from './character-classes/CharacterClass'
 import type EntityStat from './EntityStat'
 import type ICharacterConfig from './ICharacterConfig'
@@ -14,7 +14,7 @@ export default class Character extends Entity {
   public stats: EntityStat[]
   public inventory: Inventory
   public passivePointsSpent: IPassivePointsSpent[]
-  public currentIncursion: Incursion | undefined
+  public currentIncursionId: mongoose.Types.ObjectId | undefined
 
   public constructor(config: ICharacterConfig) {
     super(config)
@@ -24,7 +24,7 @@ export default class Character extends Entity {
     this.stats = config.stats
     this.inventory = config.inventory
     this.passivePointsSpent = config.passivePointsSpent
-    this.currentIncursion = config.currentIncursion
+    this.currentIncursionId = config.currentIncursionId
     this.computeStats()
   }
 

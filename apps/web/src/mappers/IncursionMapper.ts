@@ -5,7 +5,7 @@ import IncursionRoomMapper from './IncursionRoomMapper'
 export default class IncursionMapper {
   public static toDomain(dto: IIncursionDto) {
     return new Incursion(
-      dto.incursionId,
+      dto._id,
       dto.name,
       dto.level,
       IncursionRoomMapper.toDomain(dto.currentRoom),

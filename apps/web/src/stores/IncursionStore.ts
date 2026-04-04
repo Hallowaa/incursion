@@ -79,10 +79,10 @@ export const useIncursionStore = defineStore('incursion', {
             case DeltaType.STAT: {
               const statDelta = delta as IIIEStatDeltaDto
               // find entity and update it
-              const iie = this.incursion.currentRoom.entities.find((e) => e.entity.entityId === delta.iie.entity.entityId)
+              const iie = this.incursion.currentRoom.entities.find((e) => e.entity._id === delta.iie.entity._id)
 
               if (!iie) {
-                NotificationManager.error(`Could not find entity ${statDelta.iie.entity.entityId} on stat delta.`)
+                NotificationManager.error(`Could not find entity ${statDelta.iie.entity._id} on stat delta.`)
                 return
               }
 
@@ -103,10 +103,10 @@ export const useIncursionStore = defineStore('incursion', {
             case DeltaType.POSITION: {
               const posDelta = delta as IIIEPositionDeltaDto
 
-              const iie = this.incursion.currentRoom.entities.find((e) => e.entity.entityId === delta.iie.entity.entityId)
+              const iie = this.incursion.currentRoom.entities.find((e) => e.entity._id === delta.iie.entity._id)
 
               if (!iie) {
-                NotificationManager.error(`Could not find entity ${posDelta.iie.entity.entityId} on stat delta.`)
+                NotificationManager.error(`Could not find entity ${posDelta.iie.entity._id} on stat delta.`)
                 return
               }
 

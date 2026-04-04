@@ -1,9 +1,10 @@
 import type { IActionAbilityContextDto, IActionContextDto, IDeltaDto, IncursionName, IncursionTheme } from '@incursion/dto'
+import type mongoose from 'mongoose'
 import type Ability from '../ability/Ability'
 import type IncursionInstanceEntity from '../entity/IncursionInstanceEntity'
+import type IncursionRoom from './IncursionRoom'
 import { ActionType } from '@incursion/dto'
 import Log from '../../../util/Log'
-import IncursionRoom from './IncursionRoom'
 
 export default class Incursion {
   public active = false
@@ -17,18 +18,13 @@ export default class Incursion {
   public deltas: IDeltaDto[] = []
 
   public constructor(
-    public incursionId: string,
+    public _id: mongoose.Types.ObjectId,
     public name: IncursionName,
     public level: number,
     public rooms: IncursionRoom[],
     public currentRoom: IncursionRoom,
-    public theme: IncursionTheme,
-    private isClone?: boolean
+    public theme: IncursionTheme
   ) {
-    // prevent loop
-    if (!isClone) {
-      this.lastState = Incursion.clone(this)
-    }
   }
 
   public tick(deltaTime: number) {
@@ -46,7 +42,7 @@ export default class Incursion {
       const contextSnapshot = structuredClone(context)
       this.queuedActions.push({ user, action, contextSnapshot })
     } else {
-      Log.i(`${user.entity.entityId} tried to use ${action.props.abilityId} but can't use it.`)
+      Log.i(`${user.entity._id} tried to use ${action.props.abilityId} but can't use it.`)
     }
   }
 
@@ -81,18 +77,6 @@ export default class Incursion {
         }
       }
     }
-  }
-
-  public static clone(incursion: Incursion): Incursion {
-    return new Incursion(
-      incursion.incursionId,
-      incursion.name,
-      incursion.level,
-      incursion.rooms.map((r) => IncursionRoom.clone(r)),
-      IncursionRoom.clone(incursion.currentRoom),
-      incursion.theme,
-      true
-    )
   }
 
   // TODO: do checkHash

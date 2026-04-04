@@ -3,7 +3,7 @@ import type IIncursionTemplate from '../../models/interfaces/incursion/IIncursio
 export default class IncursionTemplateMapper {
   public static toDomain(doc: IIncursionTemplate): IIncursionTemplate {
     return {
-      incursionId: doc.incursionId,
+      _id: doc._id,
       name: doc.name,
       theme: doc.theme,
       minLevel: doc.minLevel,

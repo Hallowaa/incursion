@@ -53,7 +53,7 @@ export default class IncursionSceneBuilder extends SceneBuilder {
 
   public animateScene(time: number): void {
     for (const iie of this.incursion.currentRoom.entities) {
-      const model = this.entityModelMap.get(iie.entity.entityId)
+      const model = this.entityModelMap.get(iie.entity._id)
 
       if (!model) {
         continue
@@ -67,12 +67,12 @@ export default class IncursionSceneBuilder extends SceneBuilder {
     for (const iie of this.incursion.currentRoom.entities) {
       if (iie.entity.kind === EntityKind.CHARACTER) {
         const characterModel = new CharacterModel(iie as unknown as Character).assemble()
-        this.entityModelMap.set(iie.entity.entityId, characterModel)
+        this.entityModelMap.set(iie.entity._id, characterModel)
         this.grid.add(characterModel)
         this.grid.placeAt(characterModel, new Vector2(iie.position.x, iie.position.y))
       } else {
         const entityModel = new EntityModel(iie.entity).assemble()
-        this.entityModelMap.set(iie.entity.entityId, entityModel)
+        this.entityModelMap.set(iie.entity._id, entityModel)
         this.grid.add(entityModel)
         this.grid.placeAt(entityModel, new Vector2(iie.position.x, iie.position.y))
       }

@@ -71,7 +71,7 @@ export default class CharacterController {
     }
 
     const currentAbility = this.characterStore.currentAbility
-    const iieChar = this.incursionStore.incursion.currentRoom.entities.find((iie) => iie.entity.entityId === this.characterStore.character!.entityId)
+    const iieChar = this.incursionStore.incursion.currentRoom.entities.find((iie) => iie.entity._id === this.characterStore.character!._id)
 
     if (!iieChar) {
       NotificationManager.error(`Could not find character inside incursion on pointer down`)
@@ -82,7 +82,7 @@ export default class CharacterController {
       currentAbility.execute(iieChar, this.incursionStore.incursion, ctx)
 
       const abilityContextDto: IActionAbilityContextDto = {
-        userId: iieChar.entity.entityId,
+        userId: iieChar.entity._id,
         abilityId: currentAbility.props.abilityId,
         targetPosition: ctx.tile.coord,
         timestamp: Date.now(),

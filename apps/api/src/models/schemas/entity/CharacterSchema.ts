@@ -11,7 +11,7 @@ export const CharacterSchema = new Schema<ICharacter>({
   classes: { type: [String], default: [], enum: Object.values(CharacterClassId) },
   inventory: { type: [ItemSchema], default: [] },
   passivePointsSpent: { type: [PassivePointsSpentSchema], default: [] },
-  currentIncursion: {
+  currentIncursionId: {
     type: Schema.Types.ObjectId,
     required: false,
     ref: 'IncursionInstance'

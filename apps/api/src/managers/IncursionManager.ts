@@ -1,5 +1,8 @@
+import type mongoose from 'mongoose'
 import type { Server } from 'socket.io'
 import type Incursion from '../models/domain/incursion/Incursion'
+import type CharacterManager from './CharacterManager'
+import { EntityKind } from '@incursion/dto'
 import Log from '../util/Log'
 
 const TICK_RATE = 20
@@ -12,29 +15,44 @@ export default class IncursionManager {
   private lastTime = Date.now()
 
   public constructor(
-    public io: Server
+    public io: Server,
+    public characterManager: CharacterManager
   ) {}
 
-  public addIncursion(characterId: string, incursionId: string, incursion: Incursion) {
+  public addIncursion(characterId: mongoose.Types.ObjectId, incursionId: mongoose.Types.ObjectId, incursion: Incursion) {
     Log.i(`Character ${characterId} is now in incurion ${incursionId}`)
 
-    this.incursions.set(incursionId, incursion)
-    this.characterIncursionMap.set(characterId, incursionId)
+    // fix for wrong character ref being used
+    for (const iie of incursion.currentRoom.entities) {
+      if (iie.entity.kind === EntityKind.CHARACTER) {
+        const character = this.characterManager.get(iie.entity._id.toString())
+
+        if (!character) {
+          Log.e(`Could not find character ${iie.entity._id.toString()} when replacing reference on add incursion`)
+          continue
+        }
+
+        iie.entity = character
+      }
+    }
+
+    this.incursions.set(incursionId.toString(), incursion)
+    this.characterIncursionMap.set(characterId.toString(), incursionId.toString())
 
     if (!this.intervalId) {
       this.start()
     }
   }
 
-  public removeIncursion(id: string) {
-    this.incursions.delete(id)
+  public removeIncursion(id: mongoose.Types.ObjectId) {
+    this.incursions.delete(id.toString())
 
     const charactersInIncursion = [...this.characterIncursionMap.entries()]
-      .filter(([, incursionId]) => incursionId === id)
+      .filter(([, incursionId]) => incursionId.toString() === id.toString())
       .map(([characterId]) => characterId)
 
     for (const entry of charactersInIncursion) {
-      this.characterIncursionMap.delete(entry[0])
+      this.characterIncursionMap.delete(entry)
     }
 
     if (this.incursions.size === 0) {
@@ -42,15 +60,15 @@ export default class IncursionManager {
     }
   }
 
-  public getIncursion(id: string): Incursion | undefined {
-    return this.incursions.get(id)
+  public getIncursion(id: mongoose.Types.ObjectId | string): Incursion | undefined {
+    return this.incursions.get(id.toString())
   }
 
-  public getIncursionFromCharacterId(characterId: string): Incursion | undefined {
-    const incursionId = this.characterIncursionMap.get(characterId)
+  public getIncursionFromCharacterId(id: mongoose.Types.ObjectId): Incursion | undefined {
+    const incursionId = this.characterIncursionMap.get(id.toString())
 
     if (!incursionId) {
-      Log.e(`Failed to get incursion ID from ${characterId}`)
+      Log.e(`Failed to get incursion ID from ${id}`)
       return
     }
 
@@ -83,7 +101,7 @@ export default class IncursionManager {
       }
 
       incursion.tick(delta)
-      this.broadcastDeltas(id, incursion)
+      this.broadcastDeltas(id.toString(), incursion)
     }
   }
 

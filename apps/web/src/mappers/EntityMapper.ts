@@ -11,8 +11,8 @@ export default class EntityMapper {
     }
 
     return new Entity(
+      dto._id,
       dto.kind,
-      dto.entityId,
       dto.name,
       dto.stats.map((s) => EntityStatMapper.toDomain(s))
     )

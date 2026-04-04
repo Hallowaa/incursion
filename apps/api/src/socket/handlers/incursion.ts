@@ -1,8 +1,8 @@
 import type { IActionAbilityContextDto } from '@incursion/dto'
 import type { Server, Socket } from 'socket.io'
+import type CharacterManager from '../../managers/CharacterManager'
 import type IncursionManager from '../../managers/IncursionManager'
 import IncursionGenerator from '../../generators/IncursionGenerator'
-import CharacterMapper from '../../mappers/entity/CharacterMapper'
 import IncursionMapper from '../../mappers/incursion/IncursionMapper'
 import IncursionTemplateMapper from '../../mappers/incursion/IncursionTemplateMapper'
 import { CharacterModel } from '../../models/schemas/entity/CharacterSchema'
@@ -11,19 +11,15 @@ import { IncursionTemplateModel } from '../../models/schemas/incursion/Incursion
 import Log from '../../util/Log'
 import { safeHandler } from './safeHandler'
 
-export function registerIncursionHandlers(io: Server, socket: Socket, incursionManager: IncursionManager) {
+export function registerIncursionHandlers(io: Server, socket: Socket, incursionManager: IncursionManager, characterManager: CharacterManager) {
   socket.on('incursion:begin', safeHandler(async (_data, callback) => {
-    const characterDoc = await CharacterModel.findOne({
-      owner: socket.data.userId
-    }).lean()
+    const character = getCharacter(characterManager, socket)
 
-    if (!characterDoc) {
-      Log.e('Failed to find character when beginning incursion')
+    if (!character) {
+      Log.e(`Could not find character ${socket.data.userId} for incursion begin`)
       callback(null)
       return
     }
-
-    const character = await CharacterMapper.toDomain(characterDoc)
 
     // temporarily just take the first template
     const templateDoc = await IncursionTemplateModel.findOne().lean()
@@ -41,7 +37,7 @@ export function registerIncursionHandlers(io: Server, socket: Socket, incursionM
 
     try {
       const saved = await IncursionInstanceModel.create({
-        incursionId: toDb.incursionId,
+        _id: toDb._id,
         name: toDb.name,
         level: toDb.level,
         rooms: toDb.rooms,
@@ -50,13 +46,14 @@ export function registerIncursionHandlers(io: Server, socket: Socket, incursionM
       })
 
       await CharacterModel.updateOne(
-        { _id: characterDoc._id },
+        { _id: character._id },
         { $set: {
-          currentIncursion: saved._id
+          currentIncursionId: saved._id
         } }
       )
 
-      incursionManager.addIncursion(character.entityId, saved._id.toString(), result)
+      character.currentIncursionId = result._id
+      incursionManager.addIncursion(character._id, saved._id, result)
       socket.join(saved._id.toString())
 
       callback(toDto)
@@ -67,41 +64,50 @@ export function registerIncursionHandlers(io: Server, socket: Socket, incursionM
   }))
 
   socket.on('incursion:startTicking', safeHandler(async (_data, callback) => {
-    const characterDoc = await CharacterModel.findOne({
-      owner: socket.data.userId
-    }).lean()
+    const character = getCharacter(characterManager, socket)
 
-    if (characterDoc == null) {
-      Log.e('Failed to find character when starting incursion ticking')
+    if (!character) {
+      Log.e(`Could not find character ${socket.data.userId} for incursion start ticking`)
       callback(null)
       return
     }
 
-    const character = await CharacterMapper.toDomain(characterDoc)
-    const incursionId = characterDoc.currentIncursion
+    const incursionId = character.currentIncursionId
 
     if (!incursionId) {
-      Log.e(`Failed to start ticking incursion for character ${characterDoc._id}`)
+      Log.e(`Failed to start ticking incursion for character ${character._id.toString()}. Character has no current incursion`)
       callback(null)
       return
     }
 
     Log.i(`Received start ticking request from ${character.name} for incursion ${incursionId.toString()}`)
 
-    let existingIncursion = incursionManager.getIncursion(incursionId.toString())
+    let existingIncursion = incursionManager.getIncursion(incursionId)
 
     if (!existingIncursion) {
       // just add it to the manager
-      const currentIncursion = character.currentIncursion
+      const currentIncursionId = character.currentIncursionId
 
-      if (!currentIncursion) {
-        Log.e(`Current incursion does not exist for character ${characterDoc._id} on server, but it exists on db.`)
+      if (!currentIncursionId) {
+        Log.e(`Current incursion does not exist for character ${character._id.toString()} on server, but it may exist on db. Proceeding to instantiate it.`)
         callback(null)
         return
       }
 
-      incursionManager.addIncursion(character.entityId, incursionId.toString(), currentIncursion)
-      existingIncursion = incursionManager.getIncursion(incursionId.toString())
+      const doc = await IncursionInstanceModel.findOne(
+        { _id: incursionId }
+      )
+
+      if (!doc) {
+        Log.e(`Failed to instantiate incursion. Could not find it on db.`)
+        callback(null)
+        return
+      }
+
+      const incursion = IncursionMapper.toDomain(doc)
+
+      incursionManager.addIncursion(character._id, incursionId, incursion)
+      existingIncursion = incursionManager.getIncursion(incursionId)
     }
 
     existingIncursion!.active = true
@@ -119,7 +125,7 @@ export function registerIncursionHandlers(io: Server, socket: Socket, incursionM
       return
     }
 
-    const existingEntity = incursion.currentRoom.entities.find((e) => e.entity.entityId === _data.userId)
+    const existingEntity = incursion.currentRoom.entities.find((e) => e.entity._id.toString() === _data.userId)
 
     if (!existingEntity) {
       Log.e(`Failed to find entity ${_data.userId} on action performed`)
@@ -130,7 +136,7 @@ export function registerIncursionHandlers(io: Server, socket: Socket, incursionM
     const ability = existingEntity.abilities().find((a) => a.props.abilityId === _data.abilityId)
 
     if (!ability) {
-      Log.e(`Failed to find ability ${_data.abilityId} for entity ${existingEntity.entity.entityId} on action performed`)
+      Log.e(`Failed to find ability ${_data.abilityId} for entity ${existingEntity.entity._id.toString()} on action performed`)
       callback(false)
       return
     }
@@ -138,4 +144,11 @@ export function registerIncursionHandlers(io: Server, socket: Socket, incursionM
     incursion.queueAction(existingEntity, ability, _data)
     callback(true)
   }))
+
+  function getCharacter(manager: CharacterManager, socket: Socket) {
+    const userId = socket.data.userId
+    const character = manager.get(userId)
+
+    return character
+  }
 }

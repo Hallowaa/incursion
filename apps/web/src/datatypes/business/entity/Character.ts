@@ -9,7 +9,7 @@ import Entity from './Entity'
 
 export default class Character extends Entity {
   public constructor(
-    public entityId: string,
+    public _id: string,
     public name: string,
     public experience: number,
     public classes: CharacterClass[], // TODO: make own class obj
@@ -19,8 +19,8 @@ export default class Character extends Entity {
     public currentIncursion: Incursion | undefined
   ) {
     super(
+      _id,
       EntityKind.CHARACTER,
-      entityId,
       name,
       stats
     )

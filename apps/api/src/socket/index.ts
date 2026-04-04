@@ -13,8 +13,8 @@ export function initSocket(server: any) {
     cors: { origin: '*' }
   })
 
-  const incursionManager = new IncursionManager(io)
   const characterManager = new CharacterManager()
+  const incursionManager = new IncursionManager(io, characterManager)
 
   io.use(socketAuth)
 
@@ -28,9 +28,9 @@ export function initSocket(server: any) {
     }
 
     registerConnectionHandlers(io, socket)
-    registerCharacterHandlers(io, socket)
+    registerCharacterHandlers(io, socket, incursionManager, characterManager)
     registerUserHandlers(io, socket)
-    registerIncursionHandlers(io, socket, incursionManager)
+    registerIncursionHandlers(io, socket, incursionManager, characterManager)
   })
 
   return io

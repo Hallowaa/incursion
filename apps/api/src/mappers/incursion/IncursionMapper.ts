@@ -6,7 +6,7 @@ import IncursionRoomMapper from './IncursionRoomMapper'
 export default class IncursionMapper {
   public static toDomain(doc: IIncursionInstance) {
     return new Incursion(
-      doc.incursionId,
+      doc._id,
       doc.name,
       doc.level,
       doc.rooms.map((r) => IncursionRoomMapper.toDomain(r)),
@@ -17,7 +17,7 @@ export default class IncursionMapper {
 
   public static toDb(incursion: Incursion): IIncursionInstance {
     return {
-      incursionId: incursion.incursionId,
+      _id: incursion._id,
       name: incursion.name,
       level: incursion.level,
       rooms: incursion.rooms.map((r) => IncursionRoomMapper.toDb(r)),
@@ -28,7 +28,7 @@ export default class IncursionMapper {
 
   public static toDto(incursion: Incursion): IIncursionDto {
     return {
-      incursionId: incursion.incursionId,
+      _id: incursion._id.toString(),
       name: incursion.name,
       level: incursion.level,
       room: incursion.rooms.map((r) => IncursionRoomMapper.toDto(r)),

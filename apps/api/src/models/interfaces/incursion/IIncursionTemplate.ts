@@ -1,8 +1,9 @@
 import type { IncursionName, IncursionRoomType, IncursionTheme } from '@incursion/dto'
+import type mongoose from 'mongoose'
 
 // Used for translating between doc and domain object
 export default interface IIncursionTemplate {
-  incursionId: string
+  _id: mongoose.Types.ObjectId
   name: IncursionName
   theme: IncursionTheme
   minLevel: number

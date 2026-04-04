@@ -3,7 +3,7 @@ import { IncursionTheme } from "../enums/IncursionTheme";
 import { IIncursionRoomDto } from "./IIncursionRoomDto";
 
 export interface IIncursionDto {
-  incursionId: string
+  _id: string
   name: IncursionName
   level: number
   room: IIncursionRoomDto[]

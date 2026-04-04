@@ -23,8 +23,8 @@ export default class IncursionGenerator {
         new IncursionInstanceEntity(
           new Entity(
             {
+              _id: new mongoose.Types.ObjectId(),
               kind: EntityKind.ADVERSARY,
-              entityId: new mongoose.Types.ObjectId().toString(),
               name: AdversaryId.GHOUL,
               stats: []
             }
@@ -36,6 +36,6 @@ export default class IncursionGenerator {
 
     const levelDiff = template.maxLevel - template.minLevel
     const level = template.minLevel + Math.floor(Math.random() * levelDiff)
-    return new Incursion(new mongoose.Types.ObjectId().toString(), template.name, level, rooms, rooms[0], template.theme)
+    return new Incursion(new mongoose.Types.ObjectId(), template.name, level, rooms, rooms[0], template.theme)
   }
 }

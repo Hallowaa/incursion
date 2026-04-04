@@ -1,4 +1,5 @@
 import type { IActionAbilityContextDto, IDeltaDto, IIIEPositionDeltaDto } from '@incursion/dto'
+import type Character from '../../entity/Character'
 import type Entity from '../../entity/Entity'
 import type IncursionInstanceEntity from '../../entity/IncursionInstanceEntity'
 import type Incursion from '../../incursion/Incursion'
@@ -65,16 +66,18 @@ export default class AbilityMove extends Ability {
   }
 
   public computeCooldown(user: Entity): number {
+    user.computeStats()
+
     const movementSpeed = user.stats.find((s) => s.statId === EntityStatId.MOVEMENT_SPEED)
 
     if (!movementSpeed) {
       return 1000
     }
 
-    user.computeStats()
     const result = 2000 - movementSpeed.currentValue * 1000
 
     Log.i(`Cooldown of ${this.props.abilityId} is ${result}`)
+    Log.i(`${(user as Character).classes.length}`)
     return result
   }
 
