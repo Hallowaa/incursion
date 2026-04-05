@@ -27,6 +27,11 @@ export default class CharacterGenerator {
   public static generateStats(): IEntityStat[] {
     return [
       {
+        statId: EntityStatId.HEALTH,
+        baseValue: 100,
+        buffs: []
+      },
+      {
         statId: EntityStatId.STRENGTH,
         baseValue: 0,
         buffs: []
