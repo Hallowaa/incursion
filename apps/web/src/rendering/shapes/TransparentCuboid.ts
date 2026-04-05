@@ -6,7 +6,8 @@ export default class TransparentCuboid extends GraphicObject {
   public constructor(
     public readonly size: Vector3,
     public readonly color: Color,
-    public readonly double: boolean = false
+    public readonly double: boolean = false,
+    public readonly opacity: number = 0.5
   ) {
     super()
     this.name = 'cube'
@@ -52,6 +53,7 @@ export default class TransparentCuboid extends GraphicObject {
       side: this.double ? DoubleSide : FrontSide
     })
 
+    material.opacity = this.opacity
     const cube = new Mesh(geometry, material)
     this.add(cube)
     return this

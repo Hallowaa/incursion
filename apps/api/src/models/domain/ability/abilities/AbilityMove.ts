@@ -60,7 +60,7 @@ export default class AbilityMove extends Ability {
   }
 
   public computeRange() {
-    return 1
+    return this.props.baseRange
   }
 
   public computeCooldown(user: Entity): number {
