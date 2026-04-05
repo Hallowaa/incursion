@@ -1,5 +1,4 @@
 import type { IActionAbilityContextDto, IDeltaDto, IIIEPositionDeltaDto } from '@incursion/dto'
-import type Character from '../../entity/Character'
 import type Entity from '../../entity/Entity'
 import type IncursionInstanceEntity from '../../entity/IncursionInstanceEntity'
 import type Incursion from '../../incursion/Incursion'
@@ -7,7 +6,6 @@ import type IAbilityConfig from '../IAbilityConfig'
 import { AbilityId, AbilityResourceType, DeltaType, EntityStatId, TargetType } from '@incursion/dto'
 import IncursionInstanceEntityMapper from '../../../../mappers/entity/IncursionInstanceEntityMapper'
 import PositionMapper from '../../../../mappers/incursion/PositionMapper'
-import Log from '../../../../util/Log'
 import Position from '../../incursion/Position'
 import Ability from '../Ability'
 
@@ -75,9 +73,6 @@ export default class AbilityMove extends Ability {
     }
 
     const result = 2000 - movementSpeed.currentValue * 1000
-
-    Log.i(`Cooldown of ${this.props.abilityId} is ${result}`)
-    Log.i(`${(user as Character).classes.length}`)
     return result
   }
 

@@ -116,7 +116,6 @@ export function registerIncursionHandlers(io: Server, socket: Socket, incursionM
   }))
 
   socket.on('incursion:actionPerformed', safeHandler(async (_data: IActionAbilityContextDto, callback) => {
-    Log.i(`Received action performed by ${_data.userId}, executing ${_data.abilityId}`)
     const incursion = incursionManager.getIncursionFromCharacterId(socket.data.userId)
 
     if (!incursion) {

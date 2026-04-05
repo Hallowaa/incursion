@@ -1,7 +1,6 @@
 import type Character from '../models/domain/entity/Character'
 import CharacterMapper from '../mappers/entity/CharacterMapper'
 import { CharacterModel } from '../models/schemas/entity/CharacterSchema'
-import Log from '../util/Log'
 
 export default class CharacterManager {
   private characters: Map<string, Character> = new Map()

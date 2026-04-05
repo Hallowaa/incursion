@@ -1,16 +1,20 @@
-import type mongoose from 'mongoose'
 import type { Server } from 'socket.io'
 import type Incursion from '../models/domain/incursion/Incursion'
 import type CharacterManager from './CharacterManager'
 import { EntityKind } from '@incursion/dto'
+import mongoose from 'mongoose'
+import IncursionMapper from '../mappers/incursion/IncursionMapper'
+import { IncursionInstanceModel } from '../models/schemas/incursion/IncursionInstanceSchema'
 import Log from '../util/Log'
 
 const TICK_RATE = 20
 const TICK_INTERVAL = 1000 / TICK_RATE
+const SAVE_INTERVAL = 10000 // save every 10 seconds
 
 export default class IncursionManager {
   private characterIncursionMap: Map<string, string> = new Map()
   private incursions: Map<string, Incursion> = new Map()
+  private nextSaveAt: Map<string, number> = new Map()
   private intervalId: ReturnType<typeof setInterval> | null = null
   private lastTime = Date.now()
 
@@ -37,6 +41,7 @@ export default class IncursionManager {
     }
 
     this.incursions.set(incursionId.toString(), incursion)
+    this.nextSaveAt.set(incursionId.toString(), Date.now() + SAVE_INTERVAL)
     this.characterIncursionMap.set(characterId.toString(), incursionId.toString())
 
     if (!this.intervalId) {
@@ -46,6 +51,7 @@ export default class IncursionManager {
 
   public removeIncursion(id: mongoose.Types.ObjectId) {
     this.incursions.delete(id.toString())
+    this.nextSaveAt.delete(id.toString())
 
     const charactersInIncursion = [...this.characterIncursionMap.entries()]
       .filter(([, incursionId]) => incursionId.toString() === id.toString())
@@ -102,7 +108,45 @@ export default class IncursionManager {
 
       incursion.tick(delta)
       this.broadcastDeltas(id.toString(), incursion)
+
+      const toSave = this.nextSaveAt.get(id)
+
+      if (!toSave) {
+        this.nextSaveAt.set(id, Date.now() + SAVE_INTERVAL)
+        continue
+      }
+
+      if (toSave + SAVE_INTERVAL <= Date.now()) {
+        this.saveIncursionToDb(id)
+        this.nextSaveAt.set(id, Date.now() + SAVE_INTERVAL)
+      }
     }
+  }
+
+  public saveIncursionToDb(incursionId: string) {
+    const incursion = this.incursions.get(incursionId)
+
+    if (!incursion) {
+      Log.e(`Could not find incursion ${incursionId} when saving.`)
+      return
+    }
+
+    IncursionInstanceModel.updateOne(
+      {
+        _id: new mongoose.Types.ObjectId(incursionId)
+      },
+      IncursionMapper.toDb(incursion)
+    ).then((value) => {
+      if (value.acknowledged) {
+        if (value.matchedCount === 0) {
+          Log.e(`Failed to save incursion ${incursionId} to db.`)
+        } else {
+          Log.i(`Successfully saved incursion ${incursionId} to db`)
+        }
+      } else {
+        Log.e(`Failed to save incursion ${incursionId} to db. Update request not acknowledged`)
+      }
+    })
   }
 
   public broadcastDeltas(id: string, incursion: Incursion) {

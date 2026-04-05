@@ -45,7 +45,7 @@ export default class CharacterMapper {
       inventory: InventoryMapper.toDto(character.inventory),
       passivePointsSpent: character.passivePointsSpent.map((p) => PassivePointsSpentMapper.toDto(p)),
       stats: character.stats.map((s) => EntityStatMapper.toDto(s)),
-      currentIncursion: undefined
+      currentIncursion: undefined // set after pulling from db to prevent circular dependency
     }
   }
 }
